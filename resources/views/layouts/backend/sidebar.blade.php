@@ -27,7 +27,7 @@
             </a>
         </li>
 
-        <!-- Apps & Pages -->
+        <!-- Vehicle Management -->
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps & Pages">Vehicle Management</span>
         </li>
@@ -48,6 +48,125 @@
                     </a>
                 </li>
             </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="" class="menu-link">
+                <i class="menu-icon icon-base ti tabler-smart-home"></i>
+                <div data-i18n="Dashboards">Categories</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-users"></i>
+                <div data-i18n="Users">Vehicle Details</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">List</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Details</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-users"></i>
+                <div data-i18n="Users">Vehicle Allotment</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Up Coming</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">On Going</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Completed</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {{-- Service Management --}}
+        <li class="menu-header small">
+            <span class="menu-header-text" data-i18n="Apps & Pages">Service Management</span>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-users"></i>
+                <div data-i18n="Users">Schedules</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Time Slots</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Schedules</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-users"></i>
+                <div data-i18n="Users">Services & Jobs</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Services</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Jobs</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-users"></i>
+                <div data-i18n="Users">Service Bookings</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Company Vehicle</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="List">Other Vehicle</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="menu-item">
+            <a href="" class="menu-link">
+                <i class="menu-icon icon-base ti tabler-smart-home"></i>
+                <div data-i18n="Dashboards">Accident</div>
+            </a>
         </li>
     </ul>
 
