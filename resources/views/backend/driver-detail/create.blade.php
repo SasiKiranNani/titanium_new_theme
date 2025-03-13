@@ -8,20 +8,37 @@
 
             <div class="card">
                 <div class="row">
-                    <div class="card mb-6">
+                    <div class="col-sm-4">
                         <h5 class="card-header">Create New User</h5>
-                        <form class="card-body">
+                    </div>
+                    <div class="col-sm-8 card-header">
+                        <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                            <a href="{{ route('drivers.list') }}" class="btn create-new btn-primary">
+                                <span>
+                                    <span class="d-flex align-items-center gap-2">
+                                        <i class="icon-base ti tabler-arrow-left icon-sm"></i>
+                                        <span class="d-none d-sm-inline-block">Back</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class=" mb-6">
+
+                        <form class="card-body" action="{{ route('drivers.store') }}" method="post">
+                            @csrf
                             <div class="row g-6">
                                 <div class="col-md-6">
-                                    <label class="form-label" for="multicol-username">Username</label>
-                                    <input type="text" name="name" id="multicol-username" class="form-control"
-                                        placeholder="john.doe">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" name="name" class="form-control" placeholder="john.doe"
+                                        autocomplete="name">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-email">Email</label>
                                     <div class="input-group input-group-merge">
                                         <input type="text" name="email" id="multicol-email" class="form-control"
-                                            placeholder="john.doe" aria-label="john.doe" aria-describedby="multicol-email2">
+                                            autocomplete="email" placeholder="john.doe" aria-label="john.doe"
+                                            aria-describedby="multicol-email2">
                                         <span class="input-group-text" id="multicol-email2">@example.com</span>
                                     </div>
                                 </div>
@@ -47,27 +64,29 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="collapsible-address">Address</label>
-                                    <textarea name="address" class="form-control" id="collapsible-address" rows="2" placeholder="1456, Mall Road"></textarea>
+                                    <textarea name="address" class="form-control" id="collapsible-address" rows="2" placeholder="1456, Mall Road"
+                                        autocomplete="address"></textarea>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" for="collapsible-city">Suburb</label>
-                                    <input type="text" id="collapsible-city" class="form-control" placeholder="Jackson">
+                                    <label class="form-label">Suburb</label>
+                                    <input type="text" name="suburb" id="suburb" class="form-control">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" for="collapsible-city">State</label>
-                                    <input type="text" id="collapsible-city" class="form-control" placeholder="Jackson">
+                                    <label class="form-label">State</label>
+                                    <input type="text" name="state" id="state" class="form-control">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" for="collapsible-pincode">Pincode</label>
-                                    <input type="text" id="collapsible-pincode" class="form-control"
+                                    <label class="form-label" for="collapsible-pincode">Postalcode</label>
+                                    <input type="text" name="postalcode" id="collapsible-pincode" class="form-control"
                                         placeholder="658468">
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-password-toggle">
                                         <label class="form-label" for="multicol-password">Password</label>
                                         <div class="input-group input-group-merge">
-                                            <input type="password" id="multicol-password" class="form-control"
-                                                placeholder="············" aria-describedby="multicol-password2">
+                                            <input type="password" name="password" id="multicol-password"
+                                                class="form-control" placeholder="············"
+                                                aria-describedby="multicol-password2">
                                             <span class="input-group-text cursor-pointer" id="multicol-password2"><i
                                                     class="icon-base ti tabler-eye-off"></i></span>
                                         </div>
@@ -77,8 +96,9 @@
                                     <div class="form-password-toggle">
                                         <label class="form-label" for="multicol-confirm-password">Confirm Password</label>
                                         <div class="input-group input-group-merge">
-                                            <input type="password" id="multicol-confirm-password" class="form-control"
-                                                placeholder="············" aria-describedby="multicol-confirm-password2">
+                                            <input type="password" name="confirm_password" id="multicol-confirm-password"
+                                                class="form-control" placeholder="············"
+                                                aria-describedby="multicol-confirm-password2">
                                             <span class="input-group-text cursor-pointer"
                                                 id="multicol-confirm-password2"><i
                                                     class="icon-base ti tabler-eye-off"></i></span>
@@ -94,15 +114,15 @@
                                     <h5 class="fw-semibold">Assign Roles</h5>
                                     @if ($roles->isNotEmpty())
                                         @foreach ($roles as $role)
-                                        <div class="col-lg-2 col-md-2 col-sm-12 mt-3">
-                                            <div class="form-check mb-0 me-4 me-lg-12">
-                                                <input class="form-check-input" type="checkbox"
-                                                    id="role-{{ $role->id }}" name="role[]"
-                                                    value="{{ $role->name }}">
-                                                <label class="form-check-label"
-                                                    for="role-{{ $role->id }}">{{ $role->name }} </label>
+                                            <div class="col-lg-2 col-md-2 col-sm-12 mt-3">
+                                                <div class="form-check mb-0 me-4 me-lg-12">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="role-{{ $role->id }}" name="role[]"
+                                                        value="{{ $role->name }}">
+                                                    <label class="form-check-label"
+                                                        for="role-{{ $role->id }}">{{ $role->name }} </label>
+                                                </div>
                                             </div>
-                                        </div>
                                         @endforeach
                                     @endif
                                 </div>
@@ -141,6 +161,12 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
+        <!-- Include Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <!-- Include Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <style>
 
     </style>
@@ -168,4 +194,29 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+
+    <script>
+        // Initialize CKEditor for the add form
+        initializeCKEditor('collapsible-notes');
+
+        // Function to initialize CKEditor on the specific textarea
+        function initializeCKEditor(id) {
+            CKEDITOR.replace(id, {
+                extraPlugins: 'htmlwriter',
+                allowedContent: true,
+                versionCheck: false,
+                format_tags: 'p;h1;h2;h3;h4;h5;h6', // Allow heading tags from h1-h6
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#multicol-birthdate", {
+                dateFormat: "Y-m-d", // Format YYYY-MM-DD
+                allowInput: true, // Allow manual input
+                altInput: true, // Show a more readable date format
+                altFormat: "F j, Y", // Alternative format (e.g., January 1, 2024)
+            });
+        });
+    </script>
 @endsection

@@ -4,7 +4,10 @@
 ******************************************************************************/
 
 .menu .app-brand.demo {
-  height: 64px;
+  /* height: 64px; */
+  height: 120px;
+  /* margin-right: 0px;
+  padding-right: 0px; */
 }
 
 .app-brand-logo.demo svg {
@@ -102,4 +105,18 @@
 .layout-demo-info {
   text-align: center;
   margin-top: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+.app-brand span img{
+  width: 100px;
+  height: 100px;
 }

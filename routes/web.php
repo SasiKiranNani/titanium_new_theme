@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DriverController;
+use App\Http\Controllers\Backend\ShareController;
+use App\Http\Controllers\Backend\HirerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,9 +24,24 @@ Route::middleware([
 
         Route::get('/drivers/list', [DriverController::class, 'index'])->name('drivers.list');
         Route::get('/drivers/create', [DriverController::class, 'create'])->name('drivers.create');
+        Route::get('/drivers/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
         Route::post('/drivers/store', [DriverController::class, 'store'])->name('drivers.store');
         Route::put('/drivers/update/{id}', [DriverController::class, 'update'])->name('drivers.update');
         Route::delete('/drivers/delete/{id}', [DriverController::class, 'destroy'])->name('drivers.delete');
         Route::delete('/driver-files/{id}', [DriverController::class, 'driverFileDestroy'])->name('driver-files.destroy');
+
+        Route::get('/driver/details/{id}', [DriverController::class, 'getDriverDetail'])->name('driver.details.id');
+        Route::get('/driver/details', [DriverController::class, 'details'])->name('driver.details');
+
+
+        Route::post('/send-drivers-vehicles/email/{id}', [ShareController::class, 'sendUserVehicleEmail'])->name('send.drivers.vehicles.email');
+        Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
+
+        Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
     });
 });
+
+
+Route::get('/link-expired', function () {
+    return view('backend.pages.link-expired');
+})->name('link.expired');

@@ -1,0 +1,278 @@
+{{-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success Page</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      /* background: linear-gradient(to right, #6dd5ed, #2193b0); */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #2ecc71;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #2ecc71;
+      margin-bottom: 20px;
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+
+    .col-6 {
+      width: 50%;
+      padding: 15px;
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 1.1rem;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 10px 15px;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .footer {
+      margin-top: 30px;
+    }
+
+    .footer a {
+      text-decoration: none;
+      background: linear-gradient(to right, #34e89e, #0f3443);
+      color: #fff;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-15px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-icon">✔</div>
+    <h1>Booking Confirmed!</h1>
+    <div class="row">
+      <div class="col-6">
+        <div class="label">Name : {{ $agreementData['name'] }}</div>
+      </div>
+      <div class="col-6">
+        <div class="label">Email : {{ $agreementData['email'] }}</div>
+      </div>
+      <div class="col-6">
+        <div class="label">Vehicle Registration Number : {{ $agreementData['reg_no'] }}</div>
+      </div>
+      <div class="col-6">
+        <div class="label">Start Date : {{ $agreementData['rent_start_date'] }}</div>
+      </div>
+      <div class="col-6">
+        <div class="label">End Date : {{ $agreementData['rent_end_date'] }}</div>
+      </div>
+      <div class="col-6">
+        <div class="label">Total Price : {{ $agreementData['total_price'] }}</div>
+      </div>
+    </div>
+    <div class="footer">
+      <a href="/">Return to Homepage</a>
+    </div>
+  </div>
+</body>
+</html> --}}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success Page</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      /* background: linear-gradient(to right, #6dd5ed, #2193b0); */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #2ecc71;
+      margin-bottom: 30px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #2ecc71;
+      margin-bottom: 20px;
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+
+    .col-6 {
+      width: 50%;
+      padding: 15px;
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 1.1rem;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 10px 15px;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .footer {
+      margin-top: 30px;
+    }
+
+    .footer a {
+      text-decoration: none;
+      background: linear-gradient(to right, #34e89e, #0f3443);
+      color: #fff;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-15px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-icon">✔</div>
+    <h1>Sumbmitted Successfully!</h1>
+  </div>
+</body>
+</html>

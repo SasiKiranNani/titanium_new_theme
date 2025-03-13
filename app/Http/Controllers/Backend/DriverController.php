@@ -56,6 +56,19 @@ class DriverController extends Controller
         return view('backend.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
     }
 
+    public function edit($id)
+    {
+        $roles    = Role::get();
+        $vehicles = VehicleDetail::get();
+        $user     = User::with('roles')->whereHas('roles', function ($query) {
+                        $query->where('name', 'driver');
+                    })->findOrFail($id);
+
+        $user->files = DriverFile::where('user_id', $user->id)->get();
+
+        return view('backend.driver-detail.edit', compact('user', 'roles', 'vehicles'));
+    }
+
     public function create()
     {
         $roles = Role::get();
@@ -71,13 +84,13 @@ class DriverController extends Controller
             'password'         => 'required|min:8',
             'confirm_password' => 'required|same:password',
             // Add driver fields validation if needed
-            'dob'              => 'required|date',
-            'licence_no'       => 'required|string|max:50',
-            'contact'          => 'required|string|max:15',
-            'address'          => 'required|string|max:255',
-            'suburb'           => 'required|string|max:100',
-            'state'            => 'required|string|max:50',
-            'postalcode'       => 'required|string|max:10',
+            'dob'              => 'nullable|date',
+            'licence_no'       => 'nullable|string|max:50',
+            'contact'          => 'nullable|string|max:15',
+            'address'          => 'nullable|string|max:255',
+            'suburb'           => 'nullable|string|max:100',
+            'state'            => 'nullable|string|max:50',
+            'postalcode'       => 'nullable|string|max:10',
             'notes'            => 'nullable',
             'files.*'          => 'nullable|file|max:2048',
         ]);
@@ -118,7 +131,7 @@ class DriverController extends Controller
         // Sync roles
         $user->syncRoles($request->role);
 
-        return redirect()->back()->with('success', 'User created successfully.');
+        return redirect()->route('drivers.list')->with('success', 'User created successfully.');
     }
 
     public function update(Request $request, string $id)
@@ -128,16 +141,16 @@ class DriverController extends Controller
         $validator = Validator::make($request->all(), [
             'name'       => 'required|min:3',
             'email'      => 'required|email|unique:users,email,' . $id,
-            'dob'        => 'required|date',
-            'licence_no' => 'required|string|max:50',
-            'contact'    => 'required|string|max:15',
-            'address'    => 'required|string|max:255',
+            'dob'        => 'nullable|date',
+            'licence_no' => 'nullable|string|max:50',
+            'contact'    => 'nullable|string|max:15',
+            'address'    => 'nullable|string|max:255',
             'suburb'     => 'nullable|string|max:100',
             'state'      => 'nullable|string|max:50',
             'postalcode' => 'nullable|string|max:10',
             'abn'        => 'nullable|string|max:50',
             'notes'      => 'nullable',
-            'files.*'    => 'nullable|file|max:2048',
+            'files.*'    => 'nullable|file|max:2048|mimes:jpg,jpeg,png,pdf,doc,docx',
         ]);
 
         if ($validator->fails()) {
@@ -173,7 +186,7 @@ class DriverController extends Controller
         // Sync roles
         $user->syncRoles($request->role);
 
-        return redirect()->back()->with('success', 'User updated successfully.');
+        return redirect()->route('drivers.list')->with('success', 'User updated successfully.');
     }
 
     public function destroy($id)
@@ -216,5 +229,55 @@ class DriverController extends Controller
 
     //     return view('backend.driver-detail.details', compact('user', 'users', 'vehicles', 'payments', 'allotments'));
     // }
+
+    public function details()
+    {
+        return view('backend.driver-detail.details');
+    }
+
+    public function getDriverDetail($id)
+    {
+        $user        = User::findOrFail($id);
+        $users       = User::all();
+        $vehiclesall = VehicleDetail::all();
+
+        foreach ($vehiclesall as $vehiclesregono) {
+            $vehicleId = $vehiclesregono->reg_no; // Get the current vehicle's reg_no
+
+            // Fetch payments for the current reg_no
+            $payments1 = AssignVehicle::where('reg_no', $vehicleId)->get(); // Use where for a single reg_no
+
+            // Initialize rented status
+            $isRented = false;
+
+            foreach ($payments1 as $payment) {
+                $dateStart = $payment->rent_start_date;
+                $dateEnd   = $payment->rent_end_date;
+
+                // Check if the current date is within the rental period
+                if (now()->between($dateStart, $dateEnd)) {
+                    $isRented = true; // Set rented status to true if within the rental period
+                    break;            // No need to check further payments for this vehicle
+                }
+            }
+
+            // Update the rented status based on the checks
+            VehicleDetail::where('reg_no', $vehicleId)->update(['rented' => $isRented ? '1' : '0']);
+        }
+
+        $vehicles = VehicleDetail::where('rented', '0')->get();
+
+        // Fetch payment history for the specific user
+        $payments = AssignVehicle::where('user_id', $id)
+            ->with('vehicle') // Assuming you have a relationship defined in AssignVehicle model
+            ->get();
+
+        // Fetch vehicle allotments for the specific user
+        $allotments = AssignVehicle::where('user_id', $id)
+            ->with('vehicle') // Assuming you have a relationship defined in AssignVehicle model
+            ->get();
+
+        return view('backend.driver-detail.details', compact('user', 'users', 'vehicles', 'payments', 'allotments'));
+    }
 
 }
