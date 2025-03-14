@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DriverController;
-use App\Http\Controllers\Backend\ShareController;
 use App\Http\Controllers\Backend\HirerController;
+use App\Http\Controllers\Backend\ShareController;
+use App\Http\Controllers\Backend\VehicleDetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,9 +21,27 @@ Route::middleware([
     //     return view('dashboard');
     // })->name('dashboard');
     Route::prefix('admin')->group(function () {
+
+        // for dashboard page
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/get-rent-amount', [DashboardController::class, 'getRentAmount'])->name('get.rent.amount');
 
+        // for category page
+        Route::get('/category', [CategoryController::class, 'index'])->name('category');
+        Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+        Route::put('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+        Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+
+        // for vehicle page
+        Route::match(['get', 'post'], '/vehicles', [VehicleDetailController::class, 'index'])->name('vehicle');
+        Route::match(['get', 'post'], '/vehicles/create', [VehicleDetailController::class, 'create'])->name('vehicle.create');
+        Route::match(['get', 'post'], '/vehicles/edit', [VehicleDetailController::class, 'edit'])->name('vehicle.edit');
+        Route::post('/vehicle/store', [VehicleDetailController::class, 'store'])->name('vehicle.store');
+        Route::put('/vehicle/update/{id}', [VehicleDetailController::class, 'update'])->name('vehicle.update');
+        Route::delete('/vehicle/delete/{id}', [VehicleDetailController::class, 'destroy'])->name('vehicle.delete');
+        Route::delete('/vehicle-files/{id}', [VehicleDetailController::class, 'vehicleFileDestroy'])->name('vehicle-files.destroy');
+
+        // for driver page
         Route::get('/drivers/list', [DriverController::class, 'index'])->name('drivers.list');
         Route::get('/drivers/create', [DriverController::class, 'create'])->name('drivers.create');
         Route::get('/drivers/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
@@ -33,14 +53,12 @@ Route::middleware([
         Route::get('/driver/details/{id}', [DriverController::class, 'getDriverDetail'])->name('driver.details.id');
         Route::get('/driver/details', [DriverController::class, 'details'])->name('driver.details');
 
-
         Route::post('/send-drivers-vehicles/email/{id}', [ShareController::class, 'sendUserVehicleEmail'])->name('send.drivers.vehicles.email');
         Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
 
         Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
     });
 });
-
 
 Route::get('/link-expired', function () {
     return view('backend.vehicle-management.pages.link-expired');

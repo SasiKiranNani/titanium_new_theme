@@ -31,18 +31,20 @@
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps & Pages">Vehicle Management</span>
         </li>
-        <li class="menu-item">
+
+        {{-- driver --}}
+        <li class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Driver Details</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/drivers/list') ? 'active' : '' }}">
                     <a href="{{ route('drivers.list') }}" class="menu-link">
                         <div data-i18n="List">List</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/driver/details') ? 'active' : '' }}">
                     <a href="{{ route('driver.details') }}" class="menu-link">
                         <div data-i18n="List">Details</div>
                     </a>
@@ -50,14 +52,16 @@
             </ul>
         </li>
 
-        <li class="menu-item">
-            <a href="" class="menu-link">
+        {{-- category --}}
+        <li class="menu-item {{ request()->is('admin/category') ? 'active' : '' }}">
+            <a href="{{ route('category') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-smart-home"></i>
                 <div data-i18n="Dashboards">Categories</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        {{-- vehicle --}}
+        <li class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}"">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Vehicle Details</div>
@@ -76,6 +80,7 @@
             </ul>
         </li>
 
+        {{-- vehicle allotment --}}
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>

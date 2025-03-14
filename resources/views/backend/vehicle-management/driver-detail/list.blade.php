@@ -124,9 +124,9 @@
                     <!-- Left Side: Per Page Selection -->
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
-                        <div class="dt-info" aria-live="polite" id="DataTables_Table_0_info" role="status">
+                        {{-- <div class="dt-info" aria-live="polite" id="DataTables_Table_0_info" role="status">
                             Showing 1 to 10 of 100 entries
-                        </div>
+                        </div> --}}
 
                         <!-- Dropdown for Per Page Selection -->
                         <form method="GET" action="{{ route('drivers.list') }}" class="ms-3">
@@ -174,7 +174,7 @@
                                     <i class="icon-base ti tabler-trash me-1 fs-36 text-danger"></i>
                                 </div>
                             </div>
-                            <h4 class="mb-2">Remove Vehicle?</h4>
+                            <h4 class="mb-2">Remove Driver?</h4>
                             <p class="mb-0">Are you sure you want to remove this {{ $user->name }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
