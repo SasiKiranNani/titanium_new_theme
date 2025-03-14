@@ -43,5 +43,5 @@ Route::middleware([
 
 
 Route::get('/link-expired', function () {
-    return view('backend.pages.link-expired');
+    return view('backend.vehicle-management.pages.link-expired');
 })->name('link.expired');

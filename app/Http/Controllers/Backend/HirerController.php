@@ -274,7 +274,7 @@ class HirerController extends Controller
         }
         });
 
-        return view('backend.pages.success', compact('agreementData'));
+        return view('backend.vehicle-management.pages.success', compact('agreementData'));
     }
 
     protected function validateAge($dob, $fieldName)

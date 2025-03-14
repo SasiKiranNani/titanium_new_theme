@@ -108,7 +108,7 @@ class ShareController extends Controller
         $vehicle = VehicleDetail::findOrFail($tokenData->vehicle_id);
 
         // Pass the token to the view
-        return view('backend.vehicle-agreement.vehicle-details', compact(
+        return view('backend.vehicle-management.vehicle-agreement.vehicle-details', compact(
             'vehicle', 'tokenData'
         ));
     }
@@ -202,7 +202,7 @@ class ShareController extends Controller
         $user = User::findOrFail($tokenData->user_id);
         $vehicle = VehicleDetail::findOrFail($tokenData->vehicle_id);
 
-        return view('backend.vehicle-agreement.agreement', compact(
+        return view('backend.vehicle-management.vehicle-agreement.agreement', compact(
             'user',
             'vehicle',
             'tokenData'

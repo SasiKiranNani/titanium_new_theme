@@ -53,7 +53,7 @@ class DriverController extends Controller
             $user->files = DriverFile::where('user_id', $user->id)->get();
         }
 
-        return view('backend.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
+        return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
     }
 
     public function edit($id)
@@ -66,14 +66,14 @@ class DriverController extends Controller
 
         $user->files = DriverFile::where('user_id', $user->id)->get();
 
-        return view('backend.driver-detail.edit', compact('user', 'roles', 'vehicles'));
+        return view('backend.vehicle-management.driver-detail.edit', compact('user', 'roles', 'vehicles'));
     }
 
     public function create()
     {
         $roles = Role::get();
         $vehicles = VehicleDetail::get();
-        return view('backend.driver-detail.create', compact('roles', 'vehicles'));
+        return view('backend.vehicle-management.driver-detail.create', compact('roles', 'vehicles'));
     }
 
     public function store(Request $request)
@@ -232,7 +232,7 @@ class DriverController extends Controller
 
     public function details()
     {
-        return view('backend.driver-detail.details');
+        return view('backend.vehicle-management.driver-detail.details');
     }
 
     public function getDriverDetail($id)
@@ -277,7 +277,7 @@ class DriverController extends Controller
             ->with('vehicle') // Assuming you have a relationship defined in AssignVehicle model
             ->get();
 
-        return view('backend.driver-detail.details', compact('user', 'users', 'vehicles', 'payments', 'allotments'));
+        return view('backend.vehicle-management.driver-detail.details', compact('user', 'users', 'vehicles', 'payments', 'allotments'));
     }
 
 }
