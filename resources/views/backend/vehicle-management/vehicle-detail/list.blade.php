@@ -9,23 +9,55 @@
             <div class="card">
                 <div class="row card-header">
                     <div class="col-sm-4">
+                        <!-- Search Form -->
                         <form id="searchForm" action="{{ route('vehicle') }}" method="GET">
-                            <input type="hidden" name="per_page" value="{{ request('per_page') }}">
-                            <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Name" value="{{ request('search') }}">
+                                    value="{{ request('search') }}"
+                                    placeholder="Search Reg No., Make, Model, Company, ABN">
                             </div>
                         </form>
                     </div>
-
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                            <div class="dropdown me-2">
+                                <select id="categoryFilter" class="form-select">
+                                    <option value="">All Categories</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Sorting Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
+                                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                        Descending</option>
+                                </select>
+                            </div>
+
+                            <!-- Rental Status Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="rentedFilter" class="form-select">
+                                    <option value="">All Vehicles</option>
+                                    <option value="rented" {{ request('rented') == 'rented' ? 'selected' : '' }}>Rented
+                                    </option>
+                                    <option value="not_rented"
+                                        {{ request('rented') == 'not_rented' ? 'selected' : '' }}>Not Rented</option>
+                                </select>
+                            </div>
+
                             <a href="{{ route('vehicle.create') }}" class="btn create-new btn-primary">
                                 <span>
                                     <span class="d-flex align-items-center gap-2">
                                         <i class="icon-base ti tabler-plus icon-sm"></i>
-                                        <span class="d-none d-sm-inline-block">Add Driver</span>
+                                        <span class="d-none d-sm-inline-block">Add Vehicle</span>
                                     </span>
                                 </span>
                             </a>
@@ -90,7 +122,7 @@
                                                     <i class="icon-base ti tabler-dots-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href=""><i
+                                                    <a class="dropdown-item waves-effect" href="{{ route('vehicle.details.id', ['id' => $vehicle->id]) }}"><i
                                                             class="icon-base ti tabler-info-circle me-1 text-blue"></i>
                                                         Details</a>
                                                     <a class="dropdown-item waves-effect"
@@ -115,7 +147,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="12" class="text-center">No drivers found.</td>
+                                    <td colspan="12" class="text-center">No vehicles found.</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -196,7 +228,113 @@
     @endforeach
 
     {{-- share modal --}}
+    @if ($vehicles->isNotEmpty())
+        @foreach ($vehicles as $vehicle)
+            <div class="modal fade" id="modaldemo8_{{ $vehicle->id ?? '' }}" tabindex="-1"
+                aria-labelledby="modaldemo8Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                    <div class="modal-content modal-content-demo">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modaldemo8Label">Share Vehicle Details</h4>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="shareVehicleForm_{{ $vehicle->id ?? '' }}" method="POST"
+                            action="{{ route('vehicle.share', ['id' => $vehicle->id ?? '']) }}">
+                            @csrf
+                            <div class="modal-body text-start">
 
+                                <input type="hidden" name="vehicle_id" value="{{ $vehicle->id ?? '' }}">
+
+                                <!-- Vehicle Registration Number Dropdown -->
+                                <div class="mb-3">
+                                    <label for="reg_no" class="form-label">Vehicle Registration
+                                        Number</label>
+                                    <input type="text" name="reg_no" id="reg_no" class="form-control"
+                                        value="{{ $vehicle->reg_no ?? '' }}" readonly>
+                                </div>
+
+                                <!-- New Fields Based on JavaScript -->
+                                <div class="mb-3">
+                                    <label for="cost_per_week" class="form-label">Cost Per Week</label>
+                                    <input type="number" class="form-control" id="cost_per_week" name="cost_per_week"
+                                        value="{{ $vehicle->cost_per_week }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="cost_per_week" class="form-label">Deposit Amount</label>
+                                    <input type="number" class="form-control" id="deposit_amount"
+                                        name="deposit_amount">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="odometer" class="form-label">Odometer</label>
+                                    <input type="number" class="form-control" id="odometer" name="odometer">
+                                </div>
+
+                                <div class="row">
+                                    <!-- Count and Time Unit -->
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="count" class="form-label">Duration</label>
+                                            <input type="number" class="form-control" id="count" name="count"
+                                                min="1" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="time_unit" class="form-label">Duration</label>
+                                            <select class="form-select" id="time_unit" name="time_unit" required>
+                                                <option value="" disabled selected>Select
+                                                    Duration
+                                                </option>
+                                                <option value="days">Days</option>
+                                                <option value="weeks">Weeks</option>
+                                                <option value="months">Months</option>
+                                                <option value="years">Years</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="rent_start_date" class="form-label">Rent Start Date</label>
+                                    <input type="date" class="form-control" id="rent_start_date"
+                                        name="rent_start_date">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rent_end_date" class="form-label">Rent End Date</label>
+                                    <input type="date" class="form-control" id="rent_end_date" name="rent_end_date">
+                                </div>
+
+                                <!-- Email Address Field -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ $user->email ?? '' }}" required>
+                                </div>
+                                <input type="hidden" class="form-control" id="total_days" name="total_days"
+                                    value="" readonly>
+                                <input type="hidden" class="form-control" id="total_price" name="total_price"
+                                    value="" readonly>
+                                <input type="hidden" name="company_name" id="company_name"
+                                    value="{{ $vehicle->company_name }}" readonly>
+
+                                <p class="text-muted mb-0">Please enter the email address to which you want to
+                                    share the vehicle details.</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" form="shareVehicleForm_{{ $vehicle->id ?? '' }}"
+                                    class="btn btn-primary">Send</button>
+                                <button class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
 
 @endsection
 
@@ -280,6 +418,11 @@
         .text-blue {
             color: blue;
         }
+
+        .vehicle_img {
+            width: 250px;
+            height: 130px;
+        }
     </style>
 @endsection
 
@@ -307,151 +450,140 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".modal").forEach(function(modal) {
-                const searchInput = modal.querySelector(".custom-dropdown input");
-                const optionsContainer = modal.querySelector(".options");
-                const costPerWeekInput = modal.querySelector("#cost_per_week");
-                const companyNameInput = modal.querySelector("#company_name");
-                const countInput = modal.querySelector("#count");
-                const timeUnitSelect = modal.querySelector("#time_unit");
-                const rentStartDateInput = modal.querySelector("#rent_start_date");
-                const rentEndDateInput = modal.querySelector("#rent_end_date");
-                const totalDaysInput = modal.querySelector("#total_days");
-                const totalPriceInput = modal.querySelector("#total_price");
-                const vehicleIdInput = modal.querySelector("#vehicle_id");
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            updateUrl();
+        });
 
-                if (!searchInput) return;
+        document.getElementById('searchInput').addEventListener('blur', function() {
+            updateUrl();
+        });
 
-                // Set the minimum rent_start_date to 3 months ago
-                const today = new Date();
-                const threeMonthsAgo = new Date();
-                threeMonthsAgo.setMonth(today.getMonth() - 3);
-                rentStartDateInput.min = formatDate(threeMonthsAgo);
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                updateUrl();
+            }
+        });
 
-                // Show options when the input is clicked
-                searchInput.addEventListener("click", function() {
-                    optionsContainer.style.display = "block";
-                    this.value = ""; // Clear the input when dropdown opens
-                    filterOptions("", optionsContainer); // Reset the filter
-                });
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            updateUrl();
+        });
 
-                // Filter options based on input
-                searchInput.addEventListener("input", function() {
-                    filterOptions(this.value.toLowerCase(), optionsContainer);
-                });
+        document.getElementById('per_page').addEventListener('change', function() {
+            updateUrl();
+        });
 
-                // Handle option selection
-                optionsContainer.addEventListener("click", function(event) {
-                    if (event.target.classList.contains("option")) {
-                        const selectedOption = event.target;
-                        const costPerWeek = selectedOption.getAttribute("data-cost_per_week");
-                        const companyName = selectedOption.getAttribute("data-company_name");
+        document.getElementById('rentedFilter').addEventListener('change', function() {
+            updateUrl();
+        });
 
-                        // Update the fields
-                        costPerWeekInput.value = costPerWeek;
-                        companyNameInput.value = companyName;
-                        vehicleIdInput.value = selectedOption.getAttribute("data-value");
+        function updateUrl() {
+            let selectedCategory = document.getElementById('categoryFilter').value;
+            let searchQuery = document.getElementById('searchInput').value;
+            let selectedSortOrder = document.getElementById('sortOrder').value;
+            let perPage = document.getElementById('per_page').value;
+            let rentedFilter = document.getElementById('rentedFilter').value;
 
-                        // Recalculate the total price
-                        calculateTotal();
+            let url = "{{ route('vehicle') }}?category_id=" + selectedCategory +
+                "&search=" + searchQuery +
+                "&sort_order=" + selectedSortOrder +
+                "&per_page=" + perPage +
+                "&rented=" + rentedFilter;
 
-                        // Hide the dropdown
-                        optionsContainer.style.display = "none";
-                        searchInput.value = selectedOption.textContent.trim();
-                    }
-                });
+            window.location.href = url;
+        }
+    </script>
 
-                // Hide options when clicking outside
-                document.addEventListener("click", function(event) {
-                    if (!event.target.closest(".custom-dropdown")) {
-                        optionsContainer.style.display = "none";
-                    }
-                });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all modals
+            const modals = document.querySelectorAll('.modal');
 
-                // Filter options function
-                function filterOptions(query, container) {
-                    const options = container.querySelectorAll(".option");
-                    options.forEach((option) => {
-                        const text = option.textContent.toLowerCase();
-                        option.style.display = text.includes(query) ? "block" : "none";
+            modals.forEach(modal => {
+                // Get the rent start date input
+                const rentStartDateInput = modal.querySelector('[name="rent_start_date"]');
+
+                // Check if rentStartDateInput exists
+                if (rentStartDateInput) {
+                    // Add event listener for change event
+                    rentStartDateInput.addEventListener('change', function() {
+                        calculateValues(modal);
                     });
                 }
 
-                // Calculate total days and price
-                function calculateTotal() {
-                    const count = parseInt(countInput.value) || 1;
-                    const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
-                    const perDayPrice = costPerWeek / 7;
-                    const timeUnit = timeUnitSelect.value;
-                    let totalDays = 0;
+                // Get the count input and time unit select
+                const countInput = modal.querySelector('[name="count"]');
+                const timeUnitSelect = modal.querySelector('[name="time_unit"]');
 
-                    if (timeUnit === "days") {
-                        totalDays = count;
-                    } else if (timeUnit === "weeks") {
-                        totalDays = count * 7;
-                    } else if (timeUnit === "months") {
-                        totalDays = getDaysBetweenDates(rentStartDateInput.value, count, "months");
-                    } else if (timeUnit === "years") {
-                        totalDays = count * 365;
-                    }
-
-                    const totalPrice = perDayPrice * totalDays;
-
-                    totalDaysInput.value = totalDays;
-                    totalPriceInput.value = Math.round(totalPrice);
+                // Check if countInput exists
+                if (countInput) {
+                    countInput.addEventListener('input', function() {
+                        calculateValues(modal);
+                    });
                 }
 
-                // Function to calculate days between dates
-                function getDaysBetweenDates(startDate, count, timeUnit) {
-                    if (!startDate) return 0;
-                    const start = new Date(startDate);
-                    let endDate = new Date(start);
-
-                    if (timeUnit === "months") {
-                        endDate.setMonth(start.getMonth() + count);
-                    } else if (timeUnit === "years") {
-                        endDate.setFullYear(start.getFullYear() + count);
-                    }
-
-                    return Math.ceil((endDate - start) / (1000 * 3600 * 24));
+                // Check if timeUnitSelect exists
+                if (timeUnitSelect) {
+                    timeUnitSelect.addEventListener('change', function() {
+                        calculateValues(modal);
+                    });
                 }
-
-                // Update rent_end_date
-                function refreshEndDate() {
-                    const startDate = new Date(rentStartDateInput.value);
-                    if (isNaN(startDate.getTime())) return;
-
-                    let endDate = new Date(startDate);
-                    const count = parseInt(countInput.value) || 1;
-                    const timeUnit = timeUnitSelect.value;
-
-                    if (timeUnit === "days") {
-                        endDate.setDate(startDate.getDate() + count);
-                    } else if (timeUnit === "weeks") {
-                        endDate.setDate(startDate.getDate() + count * 7);
-                    } else if (timeUnit === "months") {
-                        endDate.setMonth(startDate.getMonth() + count);
-                    } else if (timeUnit === "years") {
-                        endDate.setFullYear(startDate.getFullYear() + count);
-                    }
-
-                    rentEndDateInput.value = endDate.toISOString().split("T")[0];
-                    calculateTotal();
-                }
-
-                rentStartDateInput.addEventListener("change", refreshEndDate);
-                countInput.addEventListener("input", refreshEndDate);
-                timeUnitSelect.addEventListener("change", refreshEndDate);
             });
-
-            // Utility function to format Date object as yyyy-mm-dd
-            function formatDate(date) {
-                const year = date.getFullYear();
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const day = date.getDate().toString().padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            }
         });
+
+        function calculateValues(modal) {
+            const countInput = modal.querySelector('[name="count"]');
+            const timeUnitSelect = modal.querySelector('[name="time_unit"]');
+            const rentStartDateInput = modal.querySelector('[name="rent_start_date"]');
+            const rentEndDateInput = modal.querySelector('[name="rent_end_date"]');
+            const totalDaysInput = modal.querySelector('[name="total_days"]');
+            const costPerWeekInput = modal.querySelector('[name="cost_per_week"]');
+            const totalPriceInput = modal.querySelector('[name="total_price"]');
+
+            const count = parseInt(countInput.value) || 1;
+            const timeUnit = timeUnitSelect.value;
+            const rentStartDateValue = rentStartDateInput.value;
+
+            console.log("Selected Rent Start Date:", rentStartDateValue);
+
+            if (!rentStartDateValue) {
+                console.log("No start date selected");
+                return;
+            }
+
+            const rentStartDate = new Date(rentStartDateValue);
+            let rentEndDate = new Date(rentStartDate);
+
+            // Calculate end date
+            if (timeUnit === 'months') {
+                rentEndDate.setMonth(rentEndDate.getMonth() + count);
+            } else if (timeUnit === 'years') {
+                rentEndDate.setFullYear(rentEndDate.getFullYear() + count);
+            } else if (timeUnit === 'weeks') {
+                rentEndDate.setDate(rentEndDate.getDate() + (7 * count));
+            } else if (timeUnit === 'days') {
+                rentEndDate.setDate(rentEndDate.getDate() + count);
+            }
+
+            // Update Rent End Date Input
+            rentEndDateInput.value = formatDate(rentEndDate);
+            console.log("Calculated Rent End Date:", rentEndDateInput.value);
+
+            // Calculate total days
+            const totalDays = Math.floor((rentEndDate - rentStartDate) / (1000 * 60 * 60 * 24));
+            totalDaysInput.value = totalDays;
+
+            // Calculate total price
+            const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
+            const costPerDay = costPerWeek / 7;
+            const totalPrice = totalDays * costPerDay;
+            totalPriceInput.value = Math.round(totalPrice);
+        }
+
+        function formatDate(date) {
+            const d = new Date(date);
+            return d.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        }
     </script>
+
 @endsection

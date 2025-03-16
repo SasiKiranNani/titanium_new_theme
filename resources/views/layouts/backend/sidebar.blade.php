@@ -68,12 +68,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('vehicle') }}" class="menu-link">
                         <div data-i18n="List">List</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('vehicle.details') }}" class="menu-link">
                         <div data-i18n="List">Details</div>
                     </a>
                 </li>
@@ -88,7 +88,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('assign.vehicle.list') }}" class="menu-link">
                         <div data-i18n="List">Up Coming</div>
                     </a>
                 </li>

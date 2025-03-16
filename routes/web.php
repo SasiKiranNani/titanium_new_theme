@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\DriverController;
 use App\Http\Controllers\Backend\HirerController;
 use App\Http\Controllers\Backend\ShareController;
 use App\Http\Controllers\Backend\VehicleDetailController;
+use App\Http\Controllers\Backend\AssignVehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,11 +36,17 @@ Route::middleware([
         // for vehicle page
         Route::match(['get', 'post'], '/vehicles', [VehicleDetailController::class, 'index'])->name('vehicle');
         Route::match(['get', 'post'], '/vehicles/create', [VehicleDetailController::class, 'create'])->name('vehicle.create');
-        Route::match(['get', 'post'], '/vehicles/edit', [VehicleDetailController::class, 'edit'])->name('vehicle.edit');
+        Route::match(['get', 'post'], '/vehicles/edit/{id}', [VehicleDetailController::class, 'edit'])->name('vehicle.edit');
         Route::post('/vehicle/store', [VehicleDetailController::class, 'store'])->name('vehicle.store');
         Route::put('/vehicle/update/{id}', [VehicleDetailController::class, 'update'])->name('vehicle.update');
         Route::delete('/vehicle/delete/{id}', [VehicleDetailController::class, 'destroy'])->name('vehicle.delete');
         Route::delete('/vehicle-files/{id}', [VehicleDetailController::class, 'vehicleFileDestroy'])->name('vehicle-files.destroy');
+
+        Route::post('/share-vehicle', [ShareController::class, 'shareVehicle'])->name('vehicle.share');
+        Route::get('/vehicle-details/{id}', [ShareController::class, 'showVehicleDetails'])->name('share.vehicle.details');
+
+        Route::get('/vehicle/details/{id}', [VehicleDetailController::class, 'getVehicleDetail'])->name('vehicle.details.id');
+        Route::get('/vehicle/details', [VehicleDetailController::class, 'details'])->name('vehicle.details');
 
         // for driver page
         Route::get('/drivers/list', [DriverController::class, 'index'])->name('drivers.list');
@@ -57,6 +64,13 @@ Route::middleware([
         Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
 
         Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
+
+        // for assign vehicle pages
+        Route::get('/assign-vehicle/upcoming', [AssignVehicleController::class, 'index'])->name('assign.vehicle.list');
+        Route::put('/assign-vehicle/update/{id}', [AssignVehicleController::class, 'update'])->name('assign.vehicle.update');
+        Route::delete('/assign-vehicle/delete/{id}', [AssignVehicleController::class, 'destroy'])->name('assign.vehicle.delete');
+        Route::get('/assign-vehicle/agreement/{id}', [AssignVehicleController::class, 'getagreement1'])->name('assign.vehicle.agreement');
+
     });
 });
 

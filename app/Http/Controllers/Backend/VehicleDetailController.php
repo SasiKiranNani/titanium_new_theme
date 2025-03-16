@@ -192,7 +192,7 @@ class VehicleDetailController extends Controller
         }
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'Vehicle detail created successfully.');
+        return redirect()->route('vehicle')->with('success', 'Vehicle detail created successfully.');
     }
 
     public function update(Request $request)
@@ -313,7 +313,7 @@ class VehicleDetailController extends Controller
             }
         }
         // Redirect with success message
-        return redirect()->back()->with('success', 'Vehicle detail updated successfully.');
+        return redirect()->route('vehicle')->with('success', 'Vehicle detail updated successfully.');
     }
 
     public function destroy($id)
@@ -345,5 +345,17 @@ class VehicleDetailController extends Controller
         $file->delete();
 
         return response()->json(['message' => 'File deleted successfully.']);
+    }
+
+    public function getVehicleDetail($id)
+    {
+        $vehicle = VehicleDetail::findOrFail($id);
+        return view('backend.vehicle-management.vehicle-detail.details', compact('vehicle'));
+    }
+
+    public function details()
+    {
+        $vehicle = null;
+        return view('backend.vehicle-management.vehicle-detail.details', compact('vehicle'));
     }
 }
