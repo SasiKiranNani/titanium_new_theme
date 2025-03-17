@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    <div class="menu-inner-shadow"></div>
+    {{-- <div class="menu-inner-shadow"></div> --}}
 
 
 
@@ -61,18 +61,18 @@
         </li>
 
         {{-- vehicle --}}
-        <li class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}"">
+        <li class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Vehicle Details</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/vehicles') ? 'active' : '' }}">
                     <a href="{{ route('vehicle') }}" class="menu-link">
                         <div data-i18n="List">List</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/vehicle/details') ? 'active' : '' }}">
                     <a href="{{ route('vehicle.details') }}" class="menu-link">
                         <div data-i18n="List">Details</div>
                     </a>
@@ -81,24 +81,24 @@
         </li>
 
         {{-- vehicle allotment --}}
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Vehicle Allotment</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') ? 'active' : '' }}">
                     <a href="{{ route('assign.vehicle.list') }}" class="menu-link">
                         <div data-i18n="List">Up Coming</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="" class="menu-link">
+                <li class="menu-item {{ request()->is('admin/assign/vehicle/ongoing') ? 'active' : '' }}">
+                    <a href="{{ route('assign.vehicle.ongoing') }}" class="menu-link">
                         <div data-i18n="List">On Going</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="" class="menu-link">
+                <li class="menu-item {{ request()->is('admin/assign/vehicle/completed') ? 'active' : '' }}">
+                    <a href="{{ route('assign.vehicle.completed') }}" class="menu-link">
                         <div data-i18n="List">Completed</div>
                     </a>
                 </li>
@@ -110,23 +110,11 @@
             <span class="menu-header-text" data-i18n="Apps & Pages">Service Management</span>
         </li>
 
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
-                <div data-i18n="Users">Schedules</div>
+        <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
+            <a href="{{ route('time.slots') }}" class="menu-link">
+                <i class="menu-icon icon-base ti tabler-smart-home"></i>
+                <div data-i18n="Dashboards">Time Slot</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="" class="menu-link">
-                        <div data-i18n="List">Time Slots</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="" class="menu-link">
-                        <div data-i18n="List">Schedules</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <li class="menu-item">
@@ -136,7 +124,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('services.service') }}" class="menu-link">
                         <div data-i18n="List">Services</div>
                     </a>
                 </li>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Backend\HirerController;
 use App\Http\Controllers\Backend\ShareController;
 use App\Http\Controllers\Backend\VehicleDetailController;
 use App\Http\Controllers\Backend\AssignVehicleController;
+use App\Http\Controllers\Backend\SchedulesController;
+use App\Http\Controllers\Backend\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,6 +28,7 @@ Route::middleware([
         // for dashboard page
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/get-rent-amount', [DashboardController::class, 'getRentAmount'])->name('get.rent.amount');
+        // vehicle Management Started
 
         // for category page
         Route::get('/category', [CategoryController::class, 'index'])->name('category');
@@ -68,9 +71,37 @@ Route::middleware([
         // for assign vehicle pages
         Route::get('/assign-vehicle/upcoming', [AssignVehicleController::class, 'index'])->name('assign.vehicle.list');
         Route::put('/assign-vehicle/update/{id}', [AssignVehicleController::class, 'update'])->name('assign.vehicle.update');
+
+        Route::get('/assign/vehicle/ongoing', [AssignVehicleController::class, 'onGoing'])->name('assign.vehicle.ongoing');
+        Route::get('/assign/vehicle/completed', [AssignVehicleController::class, 'completed'])->name('assign.vehicle.completed');
+
+
         Route::delete('/assign-vehicle/delete/{id}', [AssignVehicleController::class, 'destroy'])->name('assign.vehicle.delete');
         Route::get('/assign-vehicle/agreement/{id}', [AssignVehicleController::class, 'getagreement1'])->name('assign.vehicle.agreement');
 
+        // Vehicle Management Ended
+
+        // Service Management Started
+
+        // time slots
+        Route::match(['get', 'post'], '/time-slots', [SchedulesController::class, 'timeSlots'])->name('time.slots');
+        Route::post('/time-slots/store', [SchedulesController::class, 'storeTimeSlots'])->name('time-slots.store');
+        Route::put('/time-slots/update/{id}', [SchedulesController::class, 'updateTimeSlots'])->name('time-slots.update');
+        Route::delete('/time-slots/delete/{id}', [SchedulesController::class, 'destroyTimeSlots'])->name('time-slots.delete');
+
+        // for service page
+        Route::get('/services/service', [ServiceController::class, 'index'])->name('services.service');
+        Route::post('/services/service/store', [ServiceController::class, 'store'])->name('services.service.store');
+        Route::put('/services/service/update/{id}', [ServiceController::class, 'update'])->name('services.service.update');
+        Route::delete('/services/service/delete/{id}', [ServiceController::class, 'destroy'])->name('services.service.delete');
+
+        // for job page
+        Route::get('/services/job', [ServiceController::class, 'job'])->name('services.job');
+        Route::post('/services/job/store', [ServiceController::class, 'jobStore'])->name('services.job.store');
+        Route::put('/services/job/update/{id}', [ServiceController::class, 'jobUpdate'])->name('services.job.update');
+        Route::delete('/services/job/delete/{id}', [ServiceController::class, 'jobDestroy'])->name('services.job.delete');
+
+        // Service Management Ended
     });
 });
 

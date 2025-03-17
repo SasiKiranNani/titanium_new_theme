@@ -115,8 +115,12 @@
 
                                                     <a class="dropdown-item waves-effect" href="javascript:void(0);"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#delete_driver_{{ $vehicle->id }}">
+                                                        data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
                                                         <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                    </a>
+                                                    <a class="dropdown-item waves-effect"  href="{{ route('assign.vehicle.agreement', $vehicle->id) }}" target="_blank" title="Agreement">
+                                                        <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
+                                                        Agreement
                                                     </a>
                                                 </div>
                                             </div>
@@ -170,7 +174,7 @@
     </div>
 
 
-    {{-- edit category modal --}}
+    {{-- edit modal --}}
     @if ($upcomingVehicles->isNotEmpty())
         @foreach ($upcomingVehicles as $vehicle)
             <div class="modal fade" id="modaldemo8_{{ $vehicle->id ?? '' }}" tabindex="-1"
@@ -288,8 +292,8 @@
                                             <label class="col-form-label">Outstanding <span
                                                     class="text-danger">*</span></label>
                                             <input type="number" name="outstanding_amount" class="form-control"
-                                                value="{{ old('outstanding_amount', $vehicle->outstanding_amount) }}" readonly
-                                                required>
+                                                value="{{ old('outstanding_amount', $vehicle->outstanding_amount) }}"
+                                                readonly required>
                                             @error('outstanding_amount')
                                                 <p class="text-danger">{{ $message }}</p>
                                             @enderror
@@ -326,9 +330,8 @@
                                 <!-- Form Buttons -->
 
                                 <div class="modal-footer">
-                                    <button type="submit" form="editCategoryForm_{{ $vehicle->id ?? '' }}"
-                                        class="btn btn-primary">Send</button>
-                                    <button class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </form>
                         </div>
@@ -337,6 +340,39 @@
             </div>
         @endforeach
     @endif
+
+    {{-- delete modal --}}
+    @foreach ($upcomingVehicles as $vehicle)
+        <!-- Delete User Modal -->
+        <div class="modal fade" id="delete_assign_vehicle_{{ $vehicle->id }}" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <div class="icon d-flex justify-content-center">
+                                <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3 d-flex align-items-center justify-content-center" style="background: #FFEEEC;">
+                                    <i class="icon-base ti tabler-trash fs-36 text-danger" style="width: 60% !important; height: 100% !important;"></i>
+                                </div>
+                            </div>
+                            <h4 class="mb-2">Remove Vehicle Allotment?</h4>
+                            <p class="mb-0">Are you sure you want to remove this {{ $vehicle->reg_no }}?</p>
+                            <div class="d-flex align-items-center justify-content-center mt-4">
+                                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
+                                <form action="{{ route('assign.vehicle.delete', $vehicle->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Yes, Delete it</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection
 
 
