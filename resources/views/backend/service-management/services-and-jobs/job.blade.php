@@ -23,17 +23,21 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="text-center">#</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-start">#</th>
+                                <th class="text-start">Service</th>
+                                <th class="text-start">Job Name</th>
+                                <th class="text-start">Price</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($services->isNotEmpty())
-                                @foreach ($services as $service)
+                            @if ($serviceJobs->isNotEmpty())
+                                @foreach ($serviceJobs as $serviceJob)
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td class="text-center">{{ $service->name }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $serviceJob->service->name }}</td>
+                                        <td>{{ $serviceJob->name }}</td>
+                                        <td>{{ $serviceJob->price }}</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -43,13 +47,13 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item waves-effect" href="javascript:void(0);"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $service->id ?? '' }}">
+                                                        data-bs-target="#modaldemo8_{{ $serviceJob->id ?? '' }}">
                                                         <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
                                                     </a>
 
                                                     <a class="dropdown-item waves-effect" href="javascript:void(0);"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $service->id }}">
+                                                        data-bs-target="#delete_service_{{ $serviceJob->id }}">
                                                         <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
                                                     </a>
                                                 </div>
@@ -91,7 +95,7 @@
                         class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
                         <div class="dt-paging">
                             @if ($perPage !== 'all')
-                                {{ $services->appends(request()->query())->links('pagination::bootstrap-4') }}
+                                {{ $serviceJobs->appends(request()->query())->links('pagination::bootstrap-4') }}
                             @endif
                         </div>
                     </div>
@@ -110,17 +114,42 @@
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-start">
-                    <form action="{{ route('services.service.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('services.job.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div>
                             <!-- Basic Info -->
                             <div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="col-form-label">Service Name <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="service_id" id="service_id" class="form-control">
+                                                <option value="">Select Category</option>
+                                                @foreach ($services as $service)
+                                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('name')
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="col-form-label">Name <span class="text-danger">*</span></label>
                                             <input type="text" name="name" id="name" class="form-control">
                                             @error('name')
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="col-form-label">Price <span class="text-danger">*</span></label>
+                                            <input type="text" name="price" id="price" class="form-control">
+                                            @error('price')
                                                 <p class="text-red-400 font-medium">{{ $message }}</p>
                                             @enderror
                                         </div>
@@ -140,7 +169,8 @@
                             <!-- /Basic Info -->
                         </div>
                         <div class="d-flex align-items-center justify-content-center mt-3">
-                            <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </form>
@@ -151,43 +181,67 @@
 
 
     {{-- edit modal --}}
-    @if ($services->isNotEmpty())
-        @foreach ($services as $service)
-            <div class="modal fade" id="modaldemo8_{{ $service->id ?? '' }}" tabindex="-1"
+    @if ($serviceJobs->isNotEmpty())
+        @foreach ($serviceJobs as $serviceJob)
+            <div class="modal fade" id="modaldemo8_{{ $serviceJob->id ?? '' }}" tabindex="-1"
                 aria-labelledby="modaldemo8Label" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered text-center" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modaldemo8Label">Edit Service</h4>
+                            <h4 class="modal-title" id="modaldemo8Label">Edit Job</h4>
                             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body text-start">
-                            <form action="{{ route('services.service.update', $service->id) }}" method="post"
+                            <form action="{{ route('services.job.update', $serviceJob->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
-                                    <!-- Name Field -->
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="col-form-label">Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control"
-                                                value="{{ old('name', $service->name) }}"
-                                                placeholder="Enter service name">
+                                            <label class="col-form-label">Service Name <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="service_id" id="service_id" class="form-control">
+                                                <option value="">Select Category</option>
+                                                @foreach ($services as $service)
+                                                    <option value="{{ $service->id }}"
+                                                        {{ $serviceJob->service_id == $service->id ? 'selected' : '' }}>
+                                                        {{ $service->name }}</option>
+                                                @endforeach
+                                            </select>
+
                                             @error('name')
-                                                <p class="text-danger">{{ $message }}</p>
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <!-- Cost Field -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="col-form-label">Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="name" id="name" class="form-control"
+                                                value="{{ $serviceJob->name }}">
+                                            @error('name')
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="col-form-label">Price <span class="text-danger">*</span></label>
+                                            <input type="text" name="price" id="price" class="form-control"
+                                                value="{{ $serviceJob->price }}">
+                                            @error('price')
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="col-form-label">Description <span
                                                     class="text-danger">*</span></label>
-                                            <textarea name="description" id="description_edit_{{ $service->id }}" cols="30" rows="10">{{ old('description', $service->description) }}</textarea>
+                                            <textarea name="description" id="description_edit_{{ $serviceJob->id }}" cols="30" rows="10">{{ $serviceJob->description }}</textarea>
                                             @error('description')
-                                                <p class="text-danger">{{ $message }}</p>
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -195,7 +249,8 @@
 
                                 <!-- Form Buttons -->
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                        data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
@@ -207,7 +262,7 @@
     @endif
 
     {{-- delete modal --}}
-    @foreach ($services as $service)
+    @foreach ($serviceJobs as $service)
         <!-- Delete User Modal -->
         <div class="modal fade" id="delete_service_{{ $service->id }}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -221,7 +276,7 @@
                                         style="width: 60% !important; height: 100% !important;"></i>
                                 </div>
                             </div>
-                            <h4 class="mb-2">Remove Service?</h4>
+                            <h4 class="mb-2">Remove Job?</h4>
                             <p class="mb-0">Are you sure you want to remove this {{ $service->name }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
@@ -300,8 +355,8 @@
         initializeCKEditor('description_add');
 
         // Initialize CKEditor for each edit form
-        @foreach ($services as $service)
-            initializeCKEditor('description_edit_{{ $service->id }}');
+        @foreach ($serviceJobs as $serviceJob)
+            initializeCKEditor('description_edit_{{ $serviceJob->id }}');
         @endforeach
 
         // Function to initialize CKEditor on the specific textarea

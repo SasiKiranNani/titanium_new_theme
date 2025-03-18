@@ -253,7 +253,7 @@
                         </div>
                         <div class="modal-footer">
                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                <a href="#" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
+                                <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </div>
@@ -319,8 +319,7 @@
 
                                 <!-- Form Buttons -->
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-light me-2"
-                                        data-bs-dismiss="offcanvas">Cancel</button>
+                                    <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>

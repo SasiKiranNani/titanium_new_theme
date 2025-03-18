@@ -12,9 +12,8 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
-                                Service
+                            <a href="{{ route('services.other-vehicle.create') }}" class="btn btn-primary"></i>Add
+                                Servicing Details
                             </a>
                         </div>
                     </div>
@@ -23,17 +22,39 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="text-center">#</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-start">#</th>
+                                <th class="text-start">Schedule Date & Time Slot</th>
+                                <th class="text-start">Registration No.</th>
+                                <th class="text-start">Odometer</th>
+                                <th class="text-start">Next Service Due</th>
+                                {{-- <th class="text-start">Work Done</th> category, subcategory data and Miscellaneous --}}
+                                <th class="text-start">GST</th>
+                                <th class="text-start">Paid Amount</th>
+                                <th class="text-start">Due Amount</th>
+                                <th class="text-start">Total</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($services->isNotEmpty())
-                                @foreach ($services as $service)
+                            @if ($serviceBooking->isNotEmpty())
+                                @foreach ($serviceBooking as $index => $booking)
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td class="text-center">{{ $service->name }}</td>
+                                        <td>{{ $loop->iteration }}</td> <!-- Serial Number -->
+                                        <td>{{ $booking->date }} / {{ $booking->timeSlot->time_slot }}</td>
+                                        <td>{{ $booking->reg_no }}</td>
+                                        <td>{{ $booking->odometer }}</td>
+                                        <td>{{ $booking->next_service_due }}</td>
+                                        {{-- <td class="text-wrap">
+                                            @foreach (json_decode($booking->service_job_id) as $jobId)
+                                                {{ \App\Models\ServiceJob::find($jobId)->name }}@if (!$loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        </td> --}}
+                                        <td>{{ number_format($booking->gst_percentage, 0) }}</td>
+                                        <td>{{ number_format($booking->total_paid, 0) }}</td>
+                                        <td>{{ number_format($booking->balance_due, 0) }}</td>
+                                        <td>{{ number_format($booking->total, 0) }}</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -41,15 +62,13 @@
                                                     <i class="icon-base ti tabler-dots-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $service->id ?? '' }}">
+                                                    <a class="dropdown-item waves-effect" href="{{ route('services.other-vehicle.edit', $booking->id) }}">
                                                         <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
                                                     </a>
 
                                                     <a class="dropdown-item waves-effect" href="javascript:void(0);"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $service->id }}">
+                                                        data-bs-target="#delete_service_{{ $booking->id }}">
                                                         <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
                                                     </a>
                                                 </div>
@@ -59,7 +78,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="6" class="text-center">No data found</td>
+                                    <td colspan="11" class="text-center">No data found</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -91,7 +110,7 @@
                         class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
                         <div class="dt-paging">
                             @if ($perPage !== 'all')
-                                {{ $services->appends(request()->query())->links('pagination::bootstrap-4') }}
+                                {{ $serviceBooking->appends(request()->query())->links('pagination::bootstrap-4') }}
                             @endif
                         </div>
                     </div>
@@ -101,115 +120,10 @@
         </div>
     </div>
 
-    {{-- create category modal --}}
-    <div class="modal fade" id="modaldemo8" tabindex="-1" aria-labelledby="modaldemo8Label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-            <div class="modal-content modal-content-demo">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modaldemo8Label">Create Service</h4>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-start">
-                    <form action="{{ route('services.service.store') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div>
-                            <!-- Basic Info -->
-                            <div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="col-form-label">Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" id="name" class="form-control">
-                                            @error('name')
-                                                <p class="text-red-400 font-medium">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="col-form-label">Description <span
-                                                    class="text-danger">*</span></label>
-                                            <textarea name="description" id="description_add" cols="30" rows="10"></textarea>
-                                            @error('description')
-                                                <p class="text-red-400 font-medium">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /Basic Info -->
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center mt-3">
-                            <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- edit modal --}}
-    @if ($services->isNotEmpty())
-        @foreach ($services as $service)
-            <div class="modal fade" id="modaldemo8_{{ $service->id ?? '' }}" tabindex="-1"
-                aria-labelledby="modaldemo8Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                    <div class="modal-content modal-content-demo">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modaldemo8Label">Edit Service</h4>
-                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body text-start">
-                            <form action="{{ route('services.service.update', $service->id) }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="row">
-                                    <!-- Name Field -->
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="col-form-label">Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control"
-                                                value="{{ old('name', $service->name) }}"
-                                                placeholder="Enter service name">
-                                            @error('name')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Cost Field -->
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label class="col-form-label">Description <span
-                                                    class="text-danger">*</span></label>
-                                            <textarea name="description" id="description_edit_{{ $service->id }}" cols="30" rows="10">{{ old('description', $service->description) }}</textarea>
-                                            @error('description')
-                                                <p class="text-danger">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Form Buttons -->
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    @endif
-
     {{-- delete modal --}}
-    @foreach ($services as $service)
+    @foreach ($serviceBooking as $booking)
         <!-- Delete User Modal -->
-        <div class="modal fade" id="delete_service_{{ $service->id }}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_service_{{ $booking->id }}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -221,11 +135,13 @@
                                         style="width: 60% !important; height: 100% !important;"></i>
                                 </div>
                             </div>
-                            <h4 class="mb-2">Remove Service?</h4>
-                            <p class="mb-0">Are you sure you want to remove this {{ $service->name }}?</p>
+                            <h4 class="mb-2">Remove Job?</h4>
+                            <p class="mb-0">Are you sure you want to remove this schedule
+                                {{ $booking->date ?? '' }} /
+                                {{ $booking->timeSlot->time_slot ?? '' }} of {{ $booking->reg_no }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
-                                <form action="{{ route('services.service.delete', $service->id) }}" method="POST"
+                                <form action="{{ route('services.company-vehicle.delete', $booking->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE')
@@ -295,23 +211,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
-    <script>
-        // Initialize CKEditor for the add form
-        initializeCKEditor('description_add');
-
-        // Initialize CKEditor for each edit form
-        @foreach ($services as $service)
-            initializeCKEditor('description_edit_{{ $service->id }}');
-        @endforeach
-
-        // Function to initialize CKEditor on the specific textarea
-        function initializeCKEditor(id) {
-            CKEDITOR.replace(id, {
-                extraPlugins: 'htmlwriter',
-                allowedContent: true,
-                versionCheck: false,
-                format_tags: 'p;h1;h2;h3;h4;h5;h6', // Allow heading tags from h1-h6
-            });
-        }
-    </script>
 @endsection

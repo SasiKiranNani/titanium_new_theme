@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\HirerController;
 use App\Http\Controllers\Backend\ShareController;
 use App\Http\Controllers\Backend\VehicleDetailController;
 use App\Http\Controllers\Backend\AssignVehicleController;
+use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\SchedulesController;
 use App\Http\Controllers\Backend\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,24 @@ Route::middleware([
         Route::post('/services/job/store', [ServiceController::class, 'jobStore'])->name('services.job.store');
         Route::put('/services/job/update/{id}', [ServiceController::class, 'jobUpdate'])->name('services.job.update');
         Route::delete('/services/job/delete/{id}', [ServiceController::class, 'jobDestroy'])->name('services.job.delete');
+
+        // company vehicle bookings pages
+        Route::get('/services/company-vehicle', [BookingController::class, 'companyVehicle'])->name('services.company-vehicle');
+        Route::get('/services/company-vehicle/create', [BookingController::class, 'createCompanyVehicle'])->name('services.company-vehicle.create');
+        Route::post('/services/company-vehicle/store', [BookingController::class, 'storeCompanyVehicle'])->name('services.company-vehicle.store');
+        Route::get('/get-time-slots', [BookingController::class, 'getTimeSlots'])->name('get.time.slots');
+        Route::get('/get-time-slots-edit', [BookingController::class, 'getTimeSlotsEdit'])->name('get.time.slots-edit');
+        Route::get('/services/company-vehicle/edit/{id}', [BookingController::class, 'editCompanyVehicle'])->name('services.company-vehicle.edit');
+        Route::put('/services/company-vehicle/{id}', [BookingController::class, 'updateCompanyVehicle'])->name('services.company-vehicle.update');
+        Route::delete('/services/company-vehicle/delete/{id}', [BookingController::class, 'destroyCompanyVehicle'])->name('services.company-vehicle.delete');
+
+        //other company vehicle bookings pages
+        Route::get('/services/other-vehicle', [BookingController::class, 'otherVehicle'])->name('services.other-vehicle');
+        Route::get('/services/other-vehicle/create', [BookingController::class, 'createOtherVehicle'])->name('services.other-vehicle.create');
+        Route::post('/services/other-vehicle/store', [BookingController::class, 'storeOtherVehicle'])->name('services.other-vehicle.store');
+        Route::get('/services/other-vehicle/edit/{id}', [BookingController::class, 'editOtherVehicle'])->name('services.other-vehicle.edit');
+        Route::put('/services/other-vehicle/update/{id}', [BookingController::class, 'updateOtherVehicle'])->name('services.other-vehicle.update');
+        Route::delete('/services/other-vehicle/delete/{id}', [BookingController::class, 'destroyOtherVehicle'])->name('services.other-vehicle.delete');
 
         // Service Management Ended
     });

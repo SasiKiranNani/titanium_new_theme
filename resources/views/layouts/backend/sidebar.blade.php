@@ -33,7 +33,8 @@
         </li>
 
         {{-- driver --}}
-        <li class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Driver Details</div>
@@ -61,7 +62,8 @@
         </li>
 
         {{-- vehicle --}}
-        <li class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Vehicle Details</div>
@@ -81,7 +83,8 @@
         </li>
 
         {{-- vehicle allotment --}}
-        <li class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Vehicle Allotment</div>
@@ -129,7 +132,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('services.job') }}" class="menu-link">
                         <div data-i18n="List">Jobs</div>
                     </a>
                 </li>
@@ -143,12 +146,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('services.company-vehicle') }}" class="menu-link">
                         <div data-i18n="List">Company Vehicle</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('services.other-vehicle') }}" class="menu-link">
                         <div data-i18n="List">Other Vehicle</div>
                     </a>
                 </li>

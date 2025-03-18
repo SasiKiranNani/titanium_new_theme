@@ -37,6 +37,9 @@ class ServiceBooking extends Model
         'vin',
         'purchase_date',
         'engine_no',
+        'payment',
+        'total_paid',
+        'balance_due',
     ];
 
     protected $casts = [

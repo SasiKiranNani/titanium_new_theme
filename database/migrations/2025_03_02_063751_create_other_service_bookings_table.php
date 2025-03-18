@@ -24,12 +24,15 @@ return new class extends Migration
             $table->boolean('gst_toggle')->default(false);
             $table->decimal('gst_percentage', 5, 2)->nullable();
             $table->decimal('total', 10, 2)->nullable();
+            $table->string('payment')->nullable();
+            $table->string('total_paid')->nullable();
+            $table->string('balance_due')->nullable();
             $table->string('abn', 15)->nullable();
             $table->string('repair_order_no', 50)->nullable();
             $table->string('color', 20)->nullable();
             $table->string('mobile', 15)->nullable();
             $table->string('cust_name', 100)->nullable();
-            $table->string('street', 100)->nullable();
+            $table->string('street', 100000)->nullable();
             $table->string('state', 50)->nullable();
             $table->string('post_code', 10)->nullable();
             $table->string('make', 50)->nullable();
