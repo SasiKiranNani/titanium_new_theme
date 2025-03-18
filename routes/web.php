@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\AssignVehicleController;
 use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\SchedulesController;
 use App\Http\Controllers\Backend\ServiceController;
+use App\Http\Controllers\Backend\AccidentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -120,6 +121,12 @@ Route::middleware([
         Route::put('/services/other-vehicle/update/{id}', [BookingController::class, 'updateOtherVehicle'])->name('services.other-vehicle.update');
         Route::delete('/services/other-vehicle/delete/{id}', [BookingController::class, 'destroyOtherVehicle'])->name('services.other-vehicle.delete');
 
+        // Accident Module
+        Route::get('/services/accident', [AccidentController::class, 'index'])->name('services.accident');
+        Route::post('/services/accident/store', [AccidentController::class, 'store'])->name('services.accident.store');
+        Route::put('/services/accident/update/{id}', [AccidentController::class, 'update'])->name('services.accident.update');
+        Route::delete('/services/accident/delete/{id}', [AccidentController::class, 'destroy'])->name('services.accident.delete');
+        Route::delete('/services/accident/file/{id}', [AccidentController::class, 'deleteFile'])->name('services.accident.file.delete');
         // Service Management Ended
     });
 });
