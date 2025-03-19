@@ -2,6 +2,21 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -13,8 +28,7 @@
                         <form id="searchForm" action="{{ route('vehicle') }}" method="GET">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    value="{{ request('search') }}"
-                                    placeholder="Search Reg No., Make, Model, Company, ABN">
+                                    value="{{ request('search') }}" placeholder="Search Reg No., Make, Model, Company, ABN">
                             </div>
                         </form>
                     </div>
@@ -48,8 +62,9 @@
                                     <option value="">All Vehicles</option>
                                     <option value="rented" {{ request('rented') == 'rented' ? 'selected' : '' }}>Rented
                                     </option>
-                                    <option value="not_rented"
-                                        {{ request('rented') == 'not_rented' ? 'selected' : '' }}>Not Rented</option>
+                                    <option value="not_rented" {{ request('rented') == 'not_rented' ? 'selected' : '' }}>
+                                        Not
+                                        Rented</option>
                                 </select>
                             </div>
 
@@ -83,7 +98,7 @@
                             @if ($vehicles->isNotEmpty())
                                 @foreach ($vehicles as $vehicle)
                                     <tr class="table-default">
-                                        <td>{{ ($vehicles->currentPage() - 1) * $vehicles->perPage() + $loop->iteration }}
+                                        <td>{{ request('sort_order') == 'desc' ? $vehicles->total() - (($vehicles->currentPage() - 1) * $vehicles->perPage() + $loop->iteration - 1) : ($vehicles->currentPage() - 1) * $vehicles->perPage() + $loop->iteration }}
                                         </td>
                                         <td>
                                             @if ($vehicle->thumbnail)
@@ -122,7 +137,8 @@
                                                     <i class="icon-base ti tabler-dots-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="{{ route('vehicle.details.id', ['id' => $vehicle->id]) }}"><i
+                                                    <a class="dropdown-item waves-effect"
+                                                        href="{{ route('vehicle.details.id', ['id' => $vehicle->id]) }}"><i
                                                             class="icon-base ti tabler-info-circle me-1 text-blue"></i>
                                                         Details</a>
                                                     <a class="dropdown-item waves-effect"
@@ -197,7 +213,7 @@
 
     @foreach ($vehicles as $vehicle)
         <!-- Delete User Modal -->
-        <div class="modal fade" id="delete_driver_{{ $vehicle->id }}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_vehicle_{{ $vehicle->id }}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -209,7 +225,7 @@
                             </div>
                             <h4 class="mb-2">Remove Vehicle?</h4>
                             <p class="mb-0">Are you sure you want to remove this
-                                {{ $vehicle->make . ' ' . $vehicle->model }}?</p>
+                                {{ $vehicle->make . ' ' . $vehicle->model . ' of REG No. ' . $vehicle->reg_no }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
                                 <form action="{{ route('vehicle.delete', $vehicle->id) }}" method="POST"
@@ -359,6 +375,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         .form-check-input:checked,
         .form-check-input:disabled~.form-check-label,
         .form-check-input[disabled]~.form-check-label {
@@ -585,5 +631,4 @@
             return d.toISOString().split('T')[0]; // Format as YYYY-MM-DD
         }
     </script>
-
 @endsection

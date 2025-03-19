@@ -113,7 +113,7 @@ class VehicleDetailController extends Controller
             'company_name'                            => 'required',
             'abn'                                     => 'nullable',
             'notes'                                   => 'nullable',
-            'files.*'                                 => 'nullable|file|max:2048', // Validate multiple files
+            'files.*'                                 => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
         ]);
 
         // Convert the purchase_date from 'YYYY-MM' to 'YYYY-MM-DD' only if it's not null
@@ -226,7 +226,7 @@ class VehicleDetailController extends Controller
             'company_name'                            => 'required',
             'abn'                                     => 'nullable',
             'notes'                                   => 'nullable',
-            'files.*'                                 => 'nullable|file|max:2048', // Validate multiple files
+            'files.*'                                 => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
         ]);
 
         // Convert the purchase_date from 'YYYY-MM' to 'YYYY-MM-DD' only if it's not null

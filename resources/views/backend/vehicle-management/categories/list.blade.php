@@ -2,6 +2,22 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -9,7 +25,7 @@
             <div class="card">
                 <div class="row card-header">
                     <div class="col-sm-4">
-                        <form id="searchForm" action="{{ route('drivers.list') }}" method="GET">
+                        <form id="searchForm" action="{{ route('category') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
                             <div class="icon-form mb-3 mb-sm-0">
@@ -87,7 +103,7 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('drivers.list') }}" class="ms-3">
+                        <form method="GET" action="{{ route('category') }}" class="ms-3">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
                             <label for="per_page" class="form-label me-2">Show:</label>
@@ -156,12 +172,14 @@
                             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body text-start">
-                            <form id="editCategoryForm_{{ $category->id ?? '' }}" method="POST" action="{{ route('category.update', $category->id) }}">
+                            <form id="editCategoryForm_{{ $category->id ?? '' }}" method="POST"
+                                action="{{ route('category.update', $category->id) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name' , $category->name) }}">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ old('name', $category->name) }}">
                                 </div>
                             </form>
                         </div>
@@ -231,7 +249,35 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
     <style>
-        
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
     </style>
 @endsection
 

@@ -25,7 +25,8 @@
                     </div>
                     <div class=" mb-6">
 
-                        <form action="{{ route('services.company-vehicle.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('services.company-vehicle.store') }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             <div>
                                 <!-- Basic Info -->
@@ -66,8 +67,10 @@
                                                             <div class="option" data-value="{{ $v->id }}"
                                                                 data-make="{{ $v->make }}"
                                                                 data-purchase_date="{{ $v->purchase_date }}"
-                                                                data-vin="{{ $v->vin }}" data-engine_no="{{ $v->engine_no }}"
-                                                                data-model="{{ $v->model }}" data-color="{{ $v->color }}">
+                                                                data-vin="{{ $v->vin }}"
+                                                                data-engine_no="{{ $v->engine_no }}"
+                                                                data-model="{{ $v->model }}"
+                                                                data-color="{{ $v->color }}">
                                                                 {{ $v->reg_no }}
                                                             </div>
                                                         @endforeach
@@ -89,7 +92,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="service_interval" class="col-form-label">Service Interval</label>
+                                                <label for="service_interval" class="col-form-label">Service
+                                                    Interval</label>
                                                 <select name="service_interval" id="service_interval" class="form-control">
                                                     <option value="">Select Service Interval</option>
                                                     <option value="10000">10K</option>
@@ -102,7 +106,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="next_service_due" class="col-form-label">Next Service Due</label>
+                                                <label for="next_service_due" class="col-form-label">Next Service
+                                                    Due</label>
                                                 <input type="text" name="next_service_due" id="next_service_due"
                                                     class="form-control" readonly>
                                                 @error('next_service_due')
@@ -113,11 +118,12 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Job </label>
-                                                <select name="service_job_id[]" id="service_job_id" class="form-control select2"
-                                                    multiple>
+                                                <select name="service_job_id[]" id="service_job_id"
+                                                    class="form-control select2" multiple>
                                                     <option value="">Select Job</option>
                                                     @foreach ($serviceJobs as $job)
-                                                        <option value="{{ $job->id }}" data-price="{{ $job->price }}">
+                                                        <option value="{{ $job->id }}"
+                                                            data-price="{{ $job->price }}">
                                                             {{ $job->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -138,15 +144,16 @@
                                         </div>
                                         <div class="heads mb-3">
                                             <label class="">Miscellaneous</label>
-                                            <button type="button" id="add_miscellaneous_store" class="btn btn-success btn-sm">Add
+                                            <button type="button" id="add_miscellaneous_store"
+                                                class="btn btn-success btn-sm">Add
                                                 More</button>
                                         </div>
                                         <div id="miscellaneous_container_store">
                                             <div class="row misc-row">
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <input type="text" name="miscellaneous_name[]" class="form-control"
-                                                            placeholder="Enter Name">
+                                                        <input type="text" name="miscellaneous_name[]"
+                                                            class="form-control" placeholder="Enter Name">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -158,7 +165,8 @@
                                                 <div class="col-md-2">
                                                     <div class="mb-3 d-flex position-relative">
                                                         <input type="text" name="miscellaneous_quantity[]"
-                                                            class="form-control misc-quantity" placeholder="Enter Quantity">
+                                                            class="form-control misc-quantity"
+                                                            placeholder="Enter Quantity">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -187,8 +195,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">GST Percentage </label>
-                                                <input type="text" name="gst_percentage" id="gst_percentage" class="form-control"
-                                                    value="10"> <!-- Default value set to 10 -->
+                                                <input type="text" name="gst_percentage" id="gst_percentage"
+                                                    class="form-control" value="10"> <!-- Default value set to 10 -->
                                                 @error('gst_percentage')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -197,7 +205,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount </label>
-                                                <input type="text" name="total" id="total" class="form-control">
+                                                <input type="number" name="total" id="total" class="form-control" step="0.01">
                                                 @error('total')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -219,7 +227,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid" class="form-control">
+                                                <input type="number" name="total_paid" id="total_paid" class="form-control" step="0.01">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -228,7 +236,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Balance Due </label>
-                                                <input type="number" name="balance_due" id="balance_due" class="form-control">
+                                                <input type="number" name="balance_due" id="balance_due" class="form-control" step="0.01">
                                                 @error('balance_due')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -237,7 +245,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="abn" class="col-form-label">ABN/ACN</label>
-                                                <input type="text" name="abn" id="abn" class="form-control">
+                                                <input type="text" name="abn" id="abn"
+                                                    class="form-control">
                                                 @error('abn')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -246,7 +255,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="make" class="col-form-label">Make</label>
-                                                <input type="text" name="make" id="make" class="form-control" readonly>
+                                                <input type="text" name="make" id="make" class="form-control"
+                                                    readonly>
                                                 @error('make')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -255,7 +265,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="model" class="col-form-label">Model</label>
-                                                <input type="text" name="model" id="model" class="form-control" readonly>
+                                                <input type="text" name="model" id="model" class="form-control"
+                                                    readonly>
                                                 @error('model')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -264,32 +275,36 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="purchase_date" class="col-form-label">Year</label>
-                                                <input type="text" name="purchase_date" id="purchase_date" class="form-control"
-                                                    readonly>
+                                                <input type="text" name="purchase_date" id="purchase_date"
+                                                    class="form-control" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="vin" class="col-form-label">VIN</label>
-                                                <input type="text" name="vin" id="vin" class="form-control" readonly>
+                                                <input type="text" name="vin" id="vin" class="form-control"
+                                                    readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="engine_no" class="col-form-label">Engine Number</label>
-                                                <input type="text" name="engine_no" id="engine_no" class="form-control">
+                                                <input type="text" name="engine_no" id="engine_no"
+                                                    class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="color" class="col-form-label">Colour</label>
-                                                <input type="text" name="color" id="color" class="form-control" readonly>
+                                                <input type="text" name="color" id="color" class="form-control"
+                                                    readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="mobile" class="col-form-label">Mobile</label>
-                                                <input type="text" name="mobile" id="mobile" class="form-control">
+                                                <input type="text" name="mobile" id="mobile"
+                                                    class="form-control">
                                                 @error('mobile')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -298,7 +313,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="cust_name" class="col-form-label">Customer Name</label>
-                                                <input type="text" name="cust_name" id="cust_name" class="form-control">
+                                                <input type="text" name="cust_name" id="cust_name"
+                                                    class="form-control">
                                                 @error('cust_name')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -332,7 +348,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="post_code" class="col-form-label">Post Code</label>
-                                                <input type="text" name="post_code" id="post_code" class="form-control">
+                                                <input type="text" name="post_code" id="post_code"
+                                                    class="form-control">
                                                 @error('post_code')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -375,14 +392,14 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
-        <!-- Include Flatpickr CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-        <!-- Include Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
- .custom-dropdown {
+        .custom-dropdown {
             position: relative;
             width: 100%;
         }

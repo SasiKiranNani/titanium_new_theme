@@ -41,7 +41,7 @@ class AssignVehicleController extends Controller
             ->with(['user:id,name', 'vehicle:id,rented'])
             ->where('rented', 0)
             ->where('rent_start_date', '>', now())
-            ->latest();
+            ->orderBy('rent_start_date', 'asc');
 
             if ($categoryId) {
                 $query->whereHas('vehicle', function ($query) use ($categoryId) {
@@ -101,7 +101,7 @@ class AssignVehicleController extends Controller
             ->where('rented', 1)
             ->where('rent_start_date', '<=', now())
             ->where('rent_end_date', '>=', now())
-            ->latest();
+            ->orderBy('rent_start_date', 'asc'); // Order by rent_start_date in ascending order
 
         // Filter by category if selected
         if ($categoryId) {
@@ -144,7 +144,7 @@ class AssignVehicleController extends Controller
 
         // Query for completed rentals
         $query = AssignVehicle::where('rent_end_date', '<', now()) // Rent has ended
-            ->latest();
+            ->orderBy('rent_start_date', 'asc');
 
             if ($categoryId) {
                 $query->whereHas('vehicle', function ($query) use ($categoryId) {
@@ -198,7 +198,7 @@ class AssignVehicleController extends Controller
 
         return redirect()->back()->with('success', 'Vehicle assignment updated successfully.');
     }
-    
+
     public function getagreement1($id)
     {
         $assignVehicle = AssignVehicle::find($id);

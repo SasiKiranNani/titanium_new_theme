@@ -2,6 +2,22 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -262,9 +278,9 @@
     @endif
 
     {{-- delete modal --}}
-    @foreach ($serviceJobs as $service)
+    @foreach ($serviceJobs as $serviceJob)
         <!-- Delete User Modal -->
-        <div class="modal fade" id="delete_service_{{ $service->id }}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_service_{{ $serviceJob->id }}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -277,10 +293,10 @@
                                 </div>
                             </div>
                             <h4 class="mb-2">Remove Job?</h4>
-                            <p class="mb-0">Are you sure you want to remove this {{ $service->name }}?</p>
+                            <p class="mb-0">Are you sure you want to remove this {{ $serviceJob->name }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
-                                <form action="{{ route('services.service.delete', $service->id) }}" method="POST"
+                                <form action="{{ route('services.job.delete', $serviceJob->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE')
@@ -319,6 +335,36 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         .modal {
             --bs-modal-width: 40rem !important;
         }

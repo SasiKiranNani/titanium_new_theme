@@ -2,6 +2,21 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -14,7 +29,8 @@
                             <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Name" value="{{ request('search') }}">
+                                    placeholder="Search Name / Email / Contact / Licence Number"
+                                    value="{{ request('search') }}">
                             </div>
                         </form>
                     </div>
@@ -91,7 +107,7 @@
                                                     <a class="dropdown-item waves-effect"
                                                         href="{{ route('driver.details.id', $user->id) }}"><i
                                                             class="icon-base ti tabler-info-circle me-1 text-blue"></i>
-                                                             Details</a>
+                                                        Details</a>
                                                     <a class="dropdown-item waves-effect"
                                                         href="{{ route('drivers.edit', $user->id) }}"><i
                                                             class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit</a>
@@ -101,8 +117,8 @@
                                                         <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
                                                     </a>
                                                     <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modaldemo8_{{ $user->id }}">
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modaldemo8_{{ $user->id }}">
                                                         <i class="icon-base ti tabler-mail me-1 text-blue"></i> Share Via
                                                         Mail
                                                     </a>
@@ -345,6 +361,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         .form-check-input:checked,
         .form-check-input:disabled~.form-check-label,
         .form-check-input[disabled]~.form-check-label {
@@ -381,6 +427,7 @@
         .option:hover {
             background-color: #f1f1f1;
         }
+
         .avatar.avatar-xl {
             width: 4rem;
             height: 4rem;
@@ -439,152 +486,152 @@
         });
     </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".modal").forEach(function(modal) {
-            const searchInput = modal.querySelector(".custom-dropdown input");
-            const optionsContainer = modal.querySelector(".options");
-            const costPerWeekInput = modal.querySelector("#cost_per_week");
-            const companyNameInput = modal.querySelector("#company_name");
-            const countInput = modal.querySelector("#count");
-            const timeUnitSelect = modal.querySelector("#time_unit");
-            const rentStartDateInput = modal.querySelector("#rent_start_date");
-            const rentEndDateInput = modal.querySelector("#rent_end_date");
-            const totalDaysInput = modal.querySelector("#total_days");
-            const totalPriceInput = modal.querySelector("#total_price");
-            const vehicleIdInput = modal.querySelector("#vehicle_id");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".modal").forEach(function(modal) {
+                const searchInput = modal.querySelector(".custom-dropdown input");
+                const optionsContainer = modal.querySelector(".options");
+                const costPerWeekInput = modal.querySelector("#cost_per_week");
+                const companyNameInput = modal.querySelector("#company_name");
+                const countInput = modal.querySelector("#count");
+                const timeUnitSelect = modal.querySelector("#time_unit");
+                const rentStartDateInput = modal.querySelector("#rent_start_date");
+                const rentEndDateInput = modal.querySelector("#rent_end_date");
+                const totalDaysInput = modal.querySelector("#total_days");
+                const totalPriceInput = modal.querySelector("#total_price");
+                const vehicleIdInput = modal.querySelector("#vehicle_id");
 
-            if (!searchInput) return;
+                if (!searchInput) return;
 
-            // Set the minimum rent_start_date to 3 months ago
-            const today = new Date();
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(today.getMonth() - 3);
-            rentStartDateInput.min = formatDate(threeMonthsAgo);
+                // Set the minimum rent_start_date to 3 months ago
+                const today = new Date();
+                const threeMonthsAgo = new Date();
+                threeMonthsAgo.setMonth(today.getMonth() - 3);
+                rentStartDateInput.min = formatDate(threeMonthsAgo);
 
-            // Show options when the input is clicked
-            searchInput.addEventListener("click", function() {
-                optionsContainer.style.display = "block";
-                this.value = ""; // Clear the input when dropdown opens
-                filterOptions("", optionsContainer); // Reset the filter
-            });
-
-            // Filter options based on input
-            searchInput.addEventListener("input", function() {
-                filterOptions(this.value.toLowerCase(), optionsContainer);
-            });
-
-            // Handle option selection
-            optionsContainer.addEventListener("click", function(event) {
-                if (event.target.classList.contains("option")) {
-                    const selectedOption = event.target;
-                    const costPerWeek = selectedOption.getAttribute("data-cost_per_week");
-                    const companyName = selectedOption.getAttribute("data-company_name");
-
-                    // Update the fields
-                    costPerWeekInput.value = costPerWeek;
-                    companyNameInput.value = companyName;
-                    vehicleIdInput.value = selectedOption.getAttribute("data-value");
-
-                    // Recalculate the total price
-                    calculateTotal();
-
-                    // Hide the dropdown
-                    optionsContainer.style.display = "none";
-                    searchInput.value = selectedOption.textContent.trim();
-                }
-            });
-
-            // Hide options when clicking outside
-            document.addEventListener("click", function(event) {
-                if (!event.target.closest(".custom-dropdown")) {
-                    optionsContainer.style.display = "none";
-                }
-            });
-
-            // Filter options function
-            function filterOptions(query, container) {
-                const options = container.querySelectorAll(".option");
-                options.forEach((option) => {
-                    const text = option.textContent.toLowerCase();
-                    option.style.display = text.includes(query) ? "block" : "none";
+                // Show options when the input is clicked
+                searchInput.addEventListener("click", function() {
+                    optionsContainer.style.display = "block";
+                    this.value = ""; // Clear the input when dropdown opens
+                    filterOptions("", optionsContainer); // Reset the filter
                 });
-            }
 
-            // Calculate total days and price
-            function calculateTotal() {
-                const count = parseInt(countInput.value) || 1;
-                const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
-                const perDayPrice = costPerWeek / 7;
-                const timeUnit = timeUnitSelect.value;
-                let totalDays = 0;
+                // Filter options based on input
+                searchInput.addEventListener("input", function() {
+                    filterOptions(this.value.toLowerCase(), optionsContainer);
+                });
 
-                if (timeUnit === "days") {
-                    totalDays = count;
-                } else if (timeUnit === "weeks") {
-                    totalDays = count * 7;
-                } else if (timeUnit === "months") {
-                    totalDays = getDaysBetweenDates(rentStartDateInput.value, count, "months");
-                } else if (timeUnit === "years") {
-                    totalDays = count * 365;
+                // Handle option selection
+                optionsContainer.addEventListener("click", function(event) {
+                    if (event.target.classList.contains("option")) {
+                        const selectedOption = event.target;
+                        const costPerWeek = selectedOption.getAttribute("data-cost_per_week");
+                        const companyName = selectedOption.getAttribute("data-company_name");
+
+                        // Update the fields
+                        costPerWeekInput.value = costPerWeek;
+                        companyNameInput.value = companyName;
+                        vehicleIdInput.value = selectedOption.getAttribute("data-value");
+
+                        // Recalculate the total price
+                        calculateTotal();
+
+                        // Hide the dropdown
+                        optionsContainer.style.display = "none";
+                        searchInput.value = selectedOption.textContent.trim();
+                    }
+                });
+
+                // Hide options when clicking outside
+                document.addEventListener("click", function(event) {
+                    if (!event.target.closest(".custom-dropdown")) {
+                        optionsContainer.style.display = "none";
+                    }
+                });
+
+                // Filter options function
+                function filterOptions(query, container) {
+                    const options = container.querySelectorAll(".option");
+                    options.forEach((option) => {
+                        const text = option.textContent.toLowerCase();
+                        option.style.display = text.includes(query) ? "block" : "none";
+                    });
                 }
 
-                const totalPrice = perDayPrice * totalDays;
+                // Calculate total days and price
+                function calculateTotal() {
+                    const count = parseInt(countInput.value) || 1;
+                    const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
+                    const perDayPrice = costPerWeek / 7;
+                    const timeUnit = timeUnitSelect.value;
+                    let totalDays = 0;
 
-                totalDaysInput.value = totalDays;
-                totalPriceInput.value = Math.round(totalPrice);
-            }
+                    if (timeUnit === "days") {
+                        totalDays = count;
+                    } else if (timeUnit === "weeks") {
+                        totalDays = count * 7;
+                    } else if (timeUnit === "months") {
+                        totalDays = getDaysBetweenDates(rentStartDateInput.value, count, "months");
+                    } else if (timeUnit === "years") {
+                        totalDays = count * 365;
+                    }
 
-            // Function to calculate days between dates
-            function getDaysBetweenDates(startDate, count, timeUnit) {
-                if (!startDate) return 0;
-                const start = new Date(startDate);
-                let endDate = new Date(start);
+                    const totalPrice = perDayPrice * totalDays;
 
-                if (timeUnit === "months") {
-                    endDate.setMonth(start.getMonth() + count);
-                } else if (timeUnit === "years") {
-                    endDate.setFullYear(start.getFullYear() + count);
+                    totalDaysInput.value = totalDays;
+                    totalPriceInput.value = Math.round(totalPrice);
                 }
 
-                return Math.ceil((endDate - start) / (1000 * 3600 * 24));
-            }
+                // Function to calculate days between dates
+                function getDaysBetweenDates(startDate, count, timeUnit) {
+                    if (!startDate) return 0;
+                    const start = new Date(startDate);
+                    let endDate = new Date(start);
 
-            // Update rent_end_date
-            function refreshEndDate() {
-                const startDate = new Date(rentStartDateInput.value);
-                if (isNaN(startDate.getTime())) return;
+                    if (timeUnit === "months") {
+                        endDate.setMonth(start.getMonth() + count);
+                    } else if (timeUnit === "years") {
+                        endDate.setFullYear(start.getFullYear() + count);
+                    }
 
-                let endDate = new Date(startDate);
-                const count = parseInt(countInput.value) || 1;
-                const timeUnit = timeUnitSelect.value;
-
-                if (timeUnit === "days") {
-                    endDate.setDate(startDate.getDate() + count);
-                } else if (timeUnit === "weeks") {
-                    endDate.setDate(startDate.getDate() + count * 7);
-                } else if (timeUnit === "months") {
-                    endDate.setMonth(startDate.getMonth() + count);
-                } else if (timeUnit === "years") {
-                    endDate.setFullYear(startDate.getFullYear() + count);
+                    return Math.ceil((endDate - start) / (1000 * 3600 * 24));
                 }
 
-                rentEndDateInput.value = endDate.toISOString().split("T")[0];
-                calculateTotal();
-            }
+                // Update rent_end_date
+                function refreshEndDate() {
+                    const startDate = new Date(rentStartDateInput.value);
+                    if (isNaN(startDate.getTime())) return;
 
-            rentStartDateInput.addEventListener("change", refreshEndDate);
-            countInput.addEventListener("input", refreshEndDate);
-            timeUnitSelect.addEventListener("change", refreshEndDate);
+                    let endDate = new Date(startDate);
+                    const count = parseInt(countInput.value) || 1;
+                    const timeUnit = timeUnitSelect.value;
+
+                    if (timeUnit === "days") {
+                        endDate.setDate(startDate.getDate() + count);
+                    } else if (timeUnit === "weeks") {
+                        endDate.setDate(startDate.getDate() + count * 7);
+                    } else if (timeUnit === "months") {
+                        endDate.setMonth(startDate.getMonth() + count);
+                    } else if (timeUnit === "years") {
+                        endDate.setFullYear(startDate.getFullYear() + count);
+                    }
+
+                    rentEndDateInput.value = endDate.toISOString().split("T")[0];
+                    calculateTotal();
+                }
+
+                rentStartDateInput.addEventListener("change", refreshEndDate);
+                countInput.addEventListener("input", refreshEndDate);
+                timeUnitSelect.addEventListener("change", refreshEndDate);
+            });
+
+            // Utility function to format Date object as yyyy-mm-dd
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
         });
-
-        // Utility function to format Date object as yyyy-mm-dd
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-    });
-</script>
+    </script>
 @endsection

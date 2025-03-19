@@ -2,6 +2,21 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -147,11 +162,13 @@
                                                         - 4am</label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label><input type="checkbox" name="time_slots[]" value="4am - 5am"> 4am
+                                                    <label><input type="checkbox" name="time_slots[]" value="4am - 5am">
+                                                        4am
                                                         - 5am</label>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label><input type="checkbox" name="time_slots[]" value="5am - 6am"> 5am
+                                                    <label><input type="checkbox" name="time_slots[]" value="5am - 6am">
+                                                        5am
                                                         - 6am</label>
                                                 </div>
                                             </div>
@@ -253,7 +270,8 @@
                         </div>
                         <div class="modal-footer">
                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                    data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </div>
@@ -319,7 +337,8 @@
 
                                 <!-- Form Buttons -->
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                        data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
@@ -389,6 +408,36 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         .schedule-card-body label {
             font-size: 17px;
             margin: 5px 5px;

@@ -31,7 +31,8 @@
                         <h1 class="text-xl font-bold text-gray-800">🚗 Vehicle Details</h1>
                         <span class="text-sm text-gray-600">
                             @if (isset($vehicle) && $vehicle->last_service_date)
-                                Last Service Date: <span class="font-semibold">{{ $vehicle->last_service_date }}</span>
+                                Last Service Date: <span
+                                    class="font-semibold">{{ \Carbon\Carbon::parse($vehicle->last_service_date)->format('d M Y') }}</span>
                             @else
                                 <span class="text-red-500">No Service Done</span>
                             @endif
@@ -44,12 +45,24 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">📅 Company Name:</span>
+                            <span class="font-semibold">{{ $vehicle->company_name ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">📅 ABN:</span>
+                            <span class="font-semibold">{{ $vehicle->abn ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">📅 Purchase Month/Year:</span>
                             <span class="font-semibold">{{ $vehicle->purchase_date ?? '' }}</span>
                         </div>
                         <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">⛽ Fuel Type:</span>
                             <span class="font-semibold">{{ $vehicle->fuel_type ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">⛽ Battery Size:</span>
+                            <span class="font-semibold">{{ $vehicle->battery_size ?? '' }}</span>
                         </div>
                         <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">🏭 Make:</span>
@@ -80,6 +93,10 @@
                             <span class="font-semibold">{{ $vehicle->engine_no ?? '' }}</span>
                         </div>
                         <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">⚙️ Odometer Reading:</span>
+                            <span class="font-semibold">{{ $vehicle->odometer ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">🎨 Color:</span>
                             <span class="font-semibold">{{ $vehicle->color ?? '' }}</span>
                         </div>
@@ -94,6 +111,18 @@
                         <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">💰 Total Service Amount:</span>
                             <span class="font-semibold">{{ $vehicle->total_service_amount ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">📜 Registration Expiry:</span>
+                            <span class="font-semibold">{{ $vehicle->reg_expiry_date ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">📜 Insurance Company:</span>
+                            <span class="font-semibold">{{ $vehicle->insurance_company ?? '' }}</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-md">
+                            <span class="font-semibold text-gray-700">📜 Insurance Number:</span>
+                            <span class="font-semibold">{{ $vehicle->insurance_number ?? '' }}</span>
                         </div>
                         <div class="bg-white p-3 rounded-md">
                             <span class="font-semibold text-gray-700">📜 Vehicle Inspection Report Expiry Date:</span>

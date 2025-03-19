@@ -234,7 +234,7 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" name="total" id="final_total" class="form-control"
+                                                <input type="text" name="total" id="final_total" class="form-control" step="0.01"
                                                     value="{{ old('total', $serviceBooking->total) }}" readonly>
                                                 @error('total')
                                                     <p class="text-danger font-medium">{{ $message }}</p>
@@ -263,7 +263,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid" class="form-control"
+                                                <input type="number" name="total_paid" id="total_paid" class="form-control" step="0.01"
                                                     value="{{ old('total_paid', $serviceBooking->total_paid) }}">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -274,7 +274,7 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Balance Due </label>
                                                 <input type="number" name="balance_due" id="balance_due"
-                                                    class="form-control"
+                                                    class="form-control" step="0.01"
                                                     value="{{ old('balance_due', $serviceBooking->balance_due) }}">
                                                 @error('balance_due')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -862,7 +862,7 @@
 
                 // Calculate balance due
                 let balanceDue = finalTotal - totalPaid;
-                if (balanceDue < 0) balanceDue = 0; // Ensure balance due is not negative
+                // if (balanceDue < 0) balanceDue = 0;
 
                 // Update job service price, final total, and balance due fields
                 $(`#job_service_price_${bookingId}`).val(totalJobPrice.toFixed(2));

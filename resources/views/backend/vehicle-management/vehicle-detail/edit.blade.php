@@ -60,7 +60,7 @@
                                                     class="form-control" readonly>
                                                 <input type="text" name="category_name" class="form-control"
                                                     value="{{ $vehicle->category->name }}" readonly>
-                                                @error('category_name')
+                                                @error('category_id')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
                                             </div>
@@ -100,6 +100,9 @@
                                                         Vaa Transport Pty Ltd</option>
                                                 </select>
                                             </div>
+                                            @error('company_name')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">

@@ -61,8 +61,8 @@ class DriverController extends Controller
         $roles    = Role::get();
         $vehicles = VehicleDetail::get();
         $user     = User::with('roles')->whereHas('roles', function ($query) {
-                        $query->where('name', 'driver');
-                    })->findOrFail($id);
+            $query->where('name', 'driver');
+        })->findOrFail($id);
 
         $user->files = DriverFile::where('user_id', $user->id)->get();
 
@@ -150,7 +150,7 @@ class DriverController extends Controller
             'postalcode' => 'nullable|string|max:10',
             'abn'        => 'nullable|string|max:50',
             'notes'      => 'nullable',
-            'files.*'    => 'nullable|file|max:2048|mimes:jpg,jpeg,png,pdf,doc,docx',
+            'files.*'    => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx',
         ]);
 
         if ($validator->fails()) {
@@ -279,5 +279,4 @@ class DriverController extends Controller
 
         return view('backend.vehicle-management.driver-detail.details', compact('user', 'users', 'vehicles', 'payments', 'allotments'));
     }
-
 }

@@ -107,11 +107,12 @@ Route::middleware([
         Route::get('/services/company-vehicle', [BookingController::class, 'companyVehicle'])->name('services.company-vehicle');
         Route::get('/services/company-vehicle/create', [BookingController::class, 'createCompanyVehicle'])->name('services.company-vehicle.create');
         Route::post('/services/company-vehicle/store', [BookingController::class, 'storeCompanyVehicle'])->name('services.company-vehicle.store');
-        Route::get('/get-time-slots', [BookingController::class, 'getTimeSlots'])->name('get.time.slots');
-        Route::get('/get-time-slots-edit', [BookingController::class, 'getTimeSlotsEdit'])->name('get.time.slots-edit');
         Route::get('/services/company-vehicle/edit/{id}', [BookingController::class, 'editCompanyVehicle'])->name('services.company-vehicle.edit');
         Route::put('/services/company-vehicle/{id}', [BookingController::class, 'updateCompanyVehicle'])->name('services.company-vehicle.update');
         Route::delete('/services/company-vehicle/delete/{id}', [BookingController::class, 'destroyCompanyVehicle'])->name('services.company-vehicle.delete');
+
+        Route::get('/get-time-slots', [BookingController::class, 'getTimeSlots'])->name('get.time.slots');
+        Route::get('/get-time-slots-edit', [BookingController::class, 'getTimeSlotsEdit'])->name('get.time.slots-edit');
 
         //other company vehicle bookings pages
         Route::get('/services/other-vehicle', [BookingController::class, 'otherVehicle'])->name('services.other-vehicle');
@@ -121,9 +122,15 @@ Route::middleware([
         Route::put('/services/other-vehicle/update/{id}', [BookingController::class, 'updateOtherVehicle'])->name('services.other-vehicle.update');
         Route::delete('/services/other-vehicle/delete/{id}', [BookingController::class, 'destroyOtherVehicle'])->name('services.other-vehicle.delete');
 
+        // Bookings invoices
+        Route::get('/services/company-invoice/{id}', [BookingController::class, 'companyInvoice'])->name('services.invoice');
+        Route::get('/services/other-invoice/{id}', [BookingController::class, 'otherInvoice'])->name('services.other-invoice');
+
         // Accident Module
         Route::get('/services/accident', [AccidentController::class, 'index'])->name('services.accident');
+        Route::get('/services/accident/create', [AccidentController::class, 'create'])->name('services.accident.create');
         Route::post('/services/accident/store', [AccidentController::class, 'store'])->name('services.accident.store');
+        Route::get('/services/accident/edit/{id}', [AccidentController::class, 'edit'])->name('services.accident.edit');
         Route::put('/services/accident/update/{id}', [AccidentController::class, 'update'])->name('services.accident.update');
         Route::delete('/services/accident/delete/{id}', [AccidentController::class, 'destroy'])->name('services.accident.delete');
         Route::delete('/services/accident/file/{id}', [AccidentController::class, 'deleteFile'])->name('services.accident.file.delete');

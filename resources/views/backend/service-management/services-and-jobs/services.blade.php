@@ -2,6 +2,21 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -140,7 +155,8 @@
                             <!-- /Basic Info -->
                         </div>
                         <div class="d-flex align-items-center justify-content-center mt-3">
-                            <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </form>
@@ -195,7 +211,8 @@
 
                                 <!-- Form Buttons -->
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-cancel waves-effect waves-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-cancel waves-effect waves-light"
+                                        data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
@@ -264,6 +281,36 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         .modal {
             --bs-modal-width: 40rem !important;
         }

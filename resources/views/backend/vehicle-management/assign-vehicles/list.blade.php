@@ -2,6 +2,22 @@
 
 
 @section('content')
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -88,8 +104,10 @@
                                         <td>{{ $loop->iteration ?? '' }}</td>
                                         <td>{{ $vehicle->user->name ?? '' }}</td>
                                         <td>{{ $vehicle->reg_no ?? '' }}</td>
-                                        <td>{{ $vehicle->rent_start_date ?? '' }}</td>
-                                        <td>{{ $vehicle->rent_end_date ?? '' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($vehicle->rent_start_date)->format('d M Y') ?? '' }}
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($vehicle->rent_end_date)->format('d M Y') ?? '' }}
+                                        </td>
                                         <td>{{ $vehicle->total_price ?? '' }}</td>
                                         <td>{{ $vehicle->deposit_amount ?? '' }}</td>
                                         <td>{{ $vehicle->outstanding_amount ?? '' }}</td>
@@ -118,7 +136,9 @@
                                                         data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
                                                         <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
                                                     </a>
-                                                    <a class="dropdown-item waves-effect"  href="{{ route('assign.vehicle.agreement', $vehicle->id) }}" target="_blank" title="Agreement">
+                                                    <a class="dropdown-item waves-effect"
+                                                        href="{{ route('assign.vehicle.agreement', $vehicle->id) }}"
+                                                        target="_blank" title="Agreement">
                                                         <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
                                                         Agreement
                                                     </a>
@@ -350,8 +370,10 @@
                     <div class="modal-body">
                         <div class="text-center">
                             <div class="icon d-flex justify-content-center">
-                                <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3 d-flex align-items-center justify-content-center" style="background: #FFEEEC;">
-                                    <i class="icon-base ti tabler-trash fs-36 text-danger" style="width: 60% !important; height: 100% !important;"></i>
+                                <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3 d-flex align-items-center justify-content-center"
+                                    style="background: #FFEEEC;">
+                                    <i class="icon-base ti tabler-trash fs-36 text-danger"
+                                        style="width: 60% !important; height: 100% !important;"></i>
                                 </div>
                             </div>
                             <h4 class="mb-2">Remove Vehicle Allotment?</h4>
@@ -399,6 +421,35 @@
 
 
     <style>
+ .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+        .alert-danger li {
+            list-style-type: none;
+        }
+
         #dateInput {
             width: 100%;
             padding: 10px;

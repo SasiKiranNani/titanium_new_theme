@@ -31,18 +31,25 @@
                             @method('PUT')
                             <div class="row g-6">
                                 <div class="col-md-6">
-                                    <label class="form-label">Username</label>
+                                    <label class="form-label">Name <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" placeholder="john.doe"
                                         value="{{ old('name', $user->name) }}" autocomplete="name">
+                                    @error('name')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label" for="multicol-email">Email</label>
+                                    <label class="form-label" for="multicol-email">Email <span
+                                            class="text-danger">*</span></label>
                                     <div class="input-group input-group-merge">
                                         <input type="text" name="email" id="multicol-email" class="form-control"
                                             autocomplete="email" placeholder="john.doe" aria-label="john.doe"
                                             value="{{ old('email', $user->email) }}" aria-describedby="multicol-email2">
                                         <span class="input-group-text" id="multicol-email2">@example.com</span>
                                     </div>
+                                    @error('email')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-abn">ABN</label>
@@ -101,8 +108,13 @@
                                                 @foreach ($user->files as $file)
                                                     <div class="col-md-3 mb-3">
                                                         <div class="file-preview-item border p-2">
-                                                            <img src="{{ asset($file->file_path) }}" class="img-fluid"
-                                                                alt="{{ $file->file_name }}">
+                                                            @if (in_array(pathinfo($file->file_path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'webp', 'png']))
+                                                                <img src="{{ asset($file->file_path) }}" class="img-fluid"
+                                                                    alt="{{ $file->file_name }}" style="width: 100%; max-height: 100px; object-fit: cover;">
+                                                            @elseif (in_array(pathinfo($file->file_path, PATHINFO_EXTENSION), ['pdf', 'doc', 'docx']))
+                                                                <iframe src="{{ asset($file->file_path) }}" class="img-fluid" style="width: 100%; height: 100px; border: none;" scrolling="no"
+                                                                    alt="{{ $file->file_name }}"></iframe>
+                                                            @endif
                                                             <div class="mt-2 text-center">
                                                                 <a href="{{ asset($file->file_path) }}" target="_blank"
                                                                     class="btn btn-primary btn-sm">
@@ -128,7 +140,7 @@
                                 <!-- File Upload Section -->
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label class="col-form-label">Upload Files</label>
+                                        <label class="col-form-label">Upload Files ( mimes : jpg,jpeg,webp,png,pdf,doc,docx )</label>
                                         <input type="file" name="files[]" class="form-control"
                                             id="fileInputUpdate_{{ $user->id }}" multiple>
                                     </div>
@@ -140,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <h5 class="fw-semibold">Assign Roles</h5>
+                                    <h5 class="fw-semibold">Assign Roles <span class="text-danger">*</span></h5>
                                     @if ($roles->isNotEmpty())
                                         @foreach ($roles as $role)
                                             <div class="col-lg-2 col-md-2 col-sm-12 mt-3">

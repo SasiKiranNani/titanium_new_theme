@@ -194,7 +194,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount </label>
-                                                <input type="text" name="total" id="total"
+                                                <input type="text" name="total" id="total" step="0.01"
                                                     class="form-control">
                                                 @error('total')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -217,7 +217,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid"
+                                                <input type="number" name="total_paid" id="total_paid" step="0.01"
                                                     class="form-control">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -227,7 +227,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Balance Due </label>
-                                                <input type="number" name="balance_due" id="balance_due"
+                                                <input type="number" name="balance_due" id="balance_due" step="0.01"
                                                     class="form-control">
                                                 @error('balance_due')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>

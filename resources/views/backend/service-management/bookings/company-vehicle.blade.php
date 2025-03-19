@@ -2,6 +2,23 @@
 
 
 @section('content')
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -9,6 +26,7 @@
             <div class="card">
                 <div class="row card-header">
                     <div class="col-sm-4">
+
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
@@ -23,6 +41,7 @@
                         <thead>
                             <tr>
                                 <th class="text-start">#</th>
+                                {{-- <th class="text-start">Invoice No.</th> --}}
                                 <th class="text-start">Schedule Date & Time Slot</th>
                                 <th class="text-start">Registration No.</th>
                                 <th class="text-start">Odometer</th>
@@ -40,6 +59,7 @@
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td> <!-- Serial Number -->
+                                        {{-- <td>{{ $booking->repair_order_no }}</td> --}}
                                         <td>{{ $booking->date }} / {{ $booking->timeSlot->time_slot }}</td>
                                         <td>{{ $booking->vehicle->reg_no }}</td>
                                         <td>{{ $booking->odometer }}</td>
@@ -62,7 +82,13 @@
                                                     <i class="icon-base ti tabler-dots-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="{{ route('services.company-vehicle.edit', $booking->id) }}">
+                                                    <a class="dropdown-item waves-effect" target="_blank"
+                                                        href="{{ route('services.invoice', $booking->id) }}">
+                                                        <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
+                                                    </a>
+
+                                                    <a class="dropdown-item waves-effect"
+                                                        href="{{ route('services.company-vehicle.edit', $booking->id) }}">
                                                         <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
                                                     </a>
 
@@ -182,6 +208,35 @@
     <style>
         .modal {
             --bs-modal-width: 40rem !important;
+        }
+
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #cd1616;
+            color: white;
+        }
+        .alert-danger li {
+            list-style-type: none;
         }
     </style>
 @endsection

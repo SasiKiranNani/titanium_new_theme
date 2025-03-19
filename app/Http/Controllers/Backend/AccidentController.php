@@ -12,34 +12,32 @@ class AccidentController extends Controller
 {
     public function index(Request $request)
     {
-        // Get the per_page value from the request or set a default
-        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
-
-        // Start Query with Relationships
+        $perPage = $request->input('per_page', 10);
         $query = VehicleAccident::with(['vehicle', 'files']);
 
-        // Check if any filter is applied
-        $hasSearch    = $request->has('search') && !empty($request->search);
-        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
-
         // Apply search filter if search term is provided
-        if ($hasSearch) {
+        if ($request->filled('search')) {
             $query->whereHas('vehicle', function ($q) use ($request) {
                 $q->where('reg_no', 'LIKE', "%{$request->search}%");
             });
         }
 
         // Apply date range filter if both start_date and end_date are provided
-        if ($hasStartDate && $hasEndDate) {
+        if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('accident_date', [$request->start_date, $request->end_date]);
         }
 
-        // Paginate the results
         $accidents = $query->paginate($perPage);
         $vehicles = VehicleDetail::all();
 
         return view('backend.service-management.accidents.index', compact('accidents', 'vehicles'));
+    }
+
+
+    public function create()
+    {
+        $vehicles = VehicleDetail::all();
+        return view('backend.service-management.accidents.create', compact('vehicles'));
     }
 
     public function store(Request $request)
@@ -87,7 +85,14 @@ class AccidentController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Accident added successfully');
+        return redirect()->route('services.accident')->with('success', 'Accident added successfully');
+    }
+
+    public function edit($id)
+    {
+        $accident = VehicleAccident::findOrFail($id);
+        $vehicles = VehicleDetail::all();
+        return view('backend.service-management.accidents.edit', compact('accident', 'vehicles'));
     }
 
     public function update(Request $request, $id)
@@ -134,7 +139,7 @@ class AccidentController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Accident updated successfully');
+        return redirect()->route('services.accident')->with('success', 'Accident updated successfully');
     }
 
     public function destroy($id)

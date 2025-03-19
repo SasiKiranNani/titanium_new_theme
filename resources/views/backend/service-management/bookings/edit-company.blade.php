@@ -2,9 +2,23 @@
 
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
-
 
             <div class="card">
                 <div class="row">
@@ -93,8 +107,8 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Odometer Reading <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" name="odometer" id="odometer_{{ $serviceBooking->id }}"
-                                                    class="form-control"
+                                                <input type="text" name="odometer"
+                                                    id="odometer_{{ $serviceBooking->id }}" class="form-control"
                                                     value="{{ old('odometer', $serviceBooking->odometer) }}">
                                                 @error('odometer')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -105,8 +119,8 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Service Interval <span
                                                         class="text-danger">*</span></label>
-                                                <select name="service_interval" id="service_interval_{{ $serviceBooking->id }}"
-                                                    class="form-control">
+                                                <select name="service_interval"
+                                                    id="service_interval_{{ $serviceBooking->id }}" class="form-control">
                                                     <option value="">Select Service Interval</option>
                                                     <option value="10000"
                                                         {{ old('service_interval', $serviceBooking->service_interval) == 10000 ? 'selected' : '' }}>
@@ -134,12 +148,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="col-form-label">Job <span class="text-danger">*</span></label>
-                                                <select name="service_job_id[]" id="service_job_id" class="form-control select2"
-                                                    multiple>
+                                                <label class="col-form-label">Job <span
+                                                        class="text-danger">*</span></label>
+                                                <select name="service_job_id[]" id="service_job_id"
+                                                    class="form-control select2" multiple>
                                                     <option value="">Select Job</option>
                                                     @foreach ($serviceJobs as $job)
-                                                        <option value="{{ $job->id }}" data-price="{{ $job->price }}"
+                                                        <option value="{{ $job->id }}"
+                                                            data-price="{{ $job->price }}"
                                                             {{ in_array($job->id, $selectedJobIds) ? 'selected' : '' }}>
                                                             {{ $job->name }}
                                                         </option>
@@ -173,21 +189,24 @@
                                                     <div class="row misc-row">
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
-                                                                <input type="text" name="misc_name[]" class="form-control"
-                                                                    placeholder="Enter Name" value="{{ $misc->name }}">
+                                                                <input type="text" name="misc_name[]"
+                                                                    class="form-control" placeholder="Enter Name"
+                                                                    value="{{ $misc->name }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="mb-3 d-flex position-relative">
                                                                 <input type="text" name="misc_cost[]"
-                                                                    class="form-control misc-cost" placeholder="Enter Price"
+                                                                    class="form-control misc-cost"
+                                                                    placeholder="Enter Price"
                                                                     value="{{ $misc->price }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
                                                             <div class="mb-3 d-flex position-relative">
                                                                 <input type="text" name="misc_qty[]"
-                                                                    class="form-control misc-qty" placeholder="Enter Quantity"
+                                                                    class="form-control misc-qty"
+                                                                    placeholder="Enter Quantity"
                                                                     value="{{ $misc->quantity }}">
                                                             </div>
                                                         </div>
@@ -201,7 +220,8 @@
                                                                     class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
                                                             </div>
                                                         </div>
-                                                        <input type="hidden" name="misc_id[]" value="{{ $misc->id }}">
+                                                        <input type="hidden" name="misc_id[]"
+                                                            value="{{ $misc->id }}">
                                                     </div>
                                                 @endforeach
                                             @else
@@ -224,7 +244,8 @@
                                         </div>
                                         <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label class="col-form-label">GST <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">GST <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" name="gst_percentage" id="gst_rate"
                                                     class="form-control"
                                                     value="{{ old('gst_percentage', $serviceBooking->gst_percentage) }}">
@@ -237,8 +258,10 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" name="total" id="final_total" class="form-control"
-                                                    value="{{ old('total', $serviceBooking->total) }}" readonly>
+                                                <input type="number" name="total" id="final_total"
+                                                    class="form-control"
+                                                    value="{{ old('total', $serviceBooking->total) }}" step="0.01"
+                                                    readonly>
                                                 @error('total')
                                                     <p class="text-danger font-medium">{{ $message }}</p>
                                                 @enderror
@@ -266,7 +289,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid" class="form-control"
+                                                <input type="number" name="total_paid" id="total_paid"
+                                                    class="form-control" step="0.01"
                                                     value="{{ old('total_paid', $serviceBooking->total_paid) }}">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -277,7 +301,7 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Balance Due </label>
                                                 <input type="number" name="balance_due" id="balance_due"
-                                                    class="form-control"
+                                                    class="form-control" step="0.01"
                                                     value="{{ old('balance_due', $serviceBooking->balance_due) }}">
                                                 @error('balance_due')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -332,8 +356,9 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="engine_no" class="col-form-label">Engine Number</label>
-                                                <input type="text" name="engine_no" id="engine_no" class="form-control"
-                                                     value="{{ old('engine_no', $serviceBooking->engine_no) }}">
+                                                <input type="text" name="engine_no" id="engine_no"
+                                                    class="form-control"
+                                                    value="{{ old('engine_no', $serviceBooking->engine_no) }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -356,7 +381,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="cust_name" class="col-form-label">Customer Name</label>
-                                                <input type="text" name="cust_name" id="cust_name" class="form-control"
+                                                <input type="text" name="cust_name" id="cust_name"
+                                                    class="form-control"
                                                     value="{{ old('cust_name', $serviceBooking->cust_name) }}">
                                                 @error('cust_name')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -389,10 +415,12 @@
                                                         QLD
                                                     </option>
                                                     <option value="WA"
-                                                        {{ old('state', $serviceBooking->state) == 'WA' ? 'selected' : '' }}>WA
+                                                        {{ old('state', $serviceBooking->state) == 'WA' ? 'selected' : '' }}>
+                                                        WA
                                                     </option>
                                                     <option value="SA"
-                                                        {{ old('state', $serviceBooking->state) == 'SA' ? 'selected' : '' }}>SA
+                                                        {{ old('state', $serviceBooking->state) == 'SA' ? 'selected' : '' }}>
+                                                        SA
                                                     </option>
                                                     <option value="TAS"
                                                         {{ old('state', $serviceBooking->state) == 'TAS' ? 'selected' : '' }}>
@@ -407,7 +435,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="post_code" class="col-form-label">Post Code</label>
-                                                <input type="text" name="post_code" id="post_code" class="form-control"
+                                                <input type="text" name="post_code" id="post_code"
+                                                    class="form-control"
                                                     value="{{ old('post_code', $serviceBooking->post_code) }}">
                                                 @error('post_code')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -421,7 +450,7 @@
                             <div class="d-flex align-items-center justify-content-center mt-3">
                                 <input type="hidden" name="repair_order_no"
                                     value="{{ $serviceBooking->repair_order_no ?? '' }}">
-                                <a href="#" class="btn btn-light me-2" data-bs-dismiss="offcanvas">Cancel</a>
+                                
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
@@ -460,9 +489,36 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
+        .content-wrapper {
+            position: relative;
+        }
+
+        .alert-success {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: #17a917;
+            color: white;
+        }
+
+        .alert-danger {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            padding: 11px !important;
+            width: 30%;
+            z-index: 1;
+            background: red;
+            color: white;
+        }
+
         .select2-container {
             width: 100% !important;
         }
+
         .custom-dropdown {
             position: relative;
             width: 100%;
@@ -767,7 +823,7 @@
 
                 // Calculate balance due
                 let balanceDue = finalTotal - totalPaid;
-                if (balanceDue < 0) balanceDue = 0; // Ensure balance due is not negative
+                // if (balanceDue < 0) balanceDue = 0;
 
                 // Update job service price, final total, and balance due fields
                 $(`#job_service_price_${bookingId}`).val(totalJobPrice.toFixed(2));
@@ -820,30 +876,30 @@
                 let miscContainer = $(`#misc_container_edit_${bookingId}`);
 
                 let newMiscRow = `
-            <div class="row misc-row">
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <input type="text" name="misc_name[]" class="form-control" placeholder="Enter Name">
+                    <div class="row misc-row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <input type="text" name="misc_name[]" class="form-control" placeholder="Enter Name">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3 d-flex position-relative">
+                                <input type="text" name="misc_cost[]" class="form-control misc-cost" placeholder="Enter Price">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3 d-flex position-relative">
+                                <input type="text" name="misc_qty[]" class="form-control misc-qty" placeholder="Enter Quantity">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3 d-flex position-relative">
+                                <input type="text" name="misc_total_cost[]" class="form-control misc-total-cost" placeholder="Enter Total" readonly>
+                                <button type="button" class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="mb-3 d-flex position-relative">
-                        <input type="text" name="misc_cost[]" class="form-control misc-cost" placeholder="Enter Price">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="mb-3 d-flex position-relative">
-                        <input type="text" name="misc_qty[]" class="form-control misc-qty" placeholder="Enter Quantity">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="mb-3 d-flex position-relative">
-                        <input type="text" name="misc_total_cost[]" class="form-control misc-total-cost" placeholder="Enter Total" readonly>
-                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
-                    </div>
-                </div>
-            </div>
-            `;
+                    `;
                 miscContainer.append(newMiscRow);
             });
 

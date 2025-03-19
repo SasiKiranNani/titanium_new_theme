@@ -438,7 +438,7 @@ class BookingController extends Controller
             ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
             ->get();
 
-        $pdf = Pdf::loadView('backend.services.services.invoice', [
+        $pdf = Pdf::loadView('backend.service-management.bookings.invoice.invoice', [
             'serviceBooking' => $serviceBooking,
             'serviceJobs' => $serviceJobs,
             'miscellaneousItems' => $miscellaneousItems,
@@ -462,7 +462,7 @@ class BookingController extends Controller
             ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
             ->get();
 
-        $pdf = Pdf::loadView('backend.services.services.invoice', [
+        $pdf = Pdf::loadView('backend.service-management.bookings.invoice.invoice', [
             'serviceBooking' => $serviceBooking,
             'serviceJobs' => $serviceJobs,
             'miscellaneousItems' => $miscellaneousItems,

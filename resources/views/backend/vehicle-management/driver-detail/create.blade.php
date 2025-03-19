@@ -29,89 +29,129 @@
                             @csrf
                             <div class="row g-6">
                                 <div class="col-md-6">
-                                    <label class="form-label">Username</label>
+                                    <label class="form-label">Name <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" placeholder="john.doe"
                                         autocomplete="name">
+                                    @error('name')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label" for="multicol-email">Email</label>
+                                    <label class="form-label" for="multicol-email">Email <span
+                                            class="text-danger">*</span></label>
                                     <div class="input-group input-group-merge">
                                         <input type="text" name="email" id="multicol-email" class="form-control"
                                             autocomplete="email" placeholder="john.doe" aria-label="john.doe"
                                             aria-describedby="multicol-email2">
                                         <span class="input-group-text" id="multicol-email2">@example.com</span>
                                     </div>
+                                    @error('email')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-abn">ABN</label>
                                     <input type="text" name="abn" id="multicol-abn" class="form-control">
+                                    @error('abn')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-birthdate">Birth Date</label>
                                     <input type="text" id="multicol-birthdate" name="dob"
                                         class="form-control dob-picker flatpickr-input" placeholder="YYYY-MM-DD"
                                         readonly="readonly">
+                                    @error('dob')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-licence_no">Licence Number</label>
                                     <input type="text" name="licence_no" id="multicol-licence_no" class="form-control"
                                         placeholder="Licence Number">
+                                    @error('licence_no')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-contact">Contact </label>
                                     <input type="text" name="contact" id="multicol-contact" class="form-control"
                                         placeholder="Contact">
+                                    @error('contact')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="collapsible-address">Address</label>
                                     <textarea name="address" class="form-control" id="collapsible-address" rows="2" placeholder="1456, Mall Road"
                                         autocomplete="address"></textarea>
+                                    @error('address')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Suburb</label>
                                     <input type="text" name="suburb" id="suburb" class="form-control">
+                                    @error('suburb')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">State</label>
                                     <input type="text" name="state" id="state" class="form-control">
+                                    @error('state')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="collapsible-pincode">Postalcode</label>
-                                    <input type="text" name="postalcode" id="collapsible-pincode" class="form-control"
-                                        placeholder="658468">
+                                    <input type="text" name="postalcode" id="collapsible-pincode"
+                                        class="form-control" placeholder="658468">
+                                    @error('postalcode')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-password-toggle">
-                                        <label class="form-label" for="multicol-password">Password</label>
+                                        <label class="form-label" for="multicol-password">Password <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group input-group-merge">
                                             <input type="password" name="password" id="multicol-password"
                                                 class="form-control" placeholder="············"
                                                 aria-describedby="multicol-password2">
-                                            <span class="input-group-text cursor-pointer" id="multicol-password2"><i
-                                                    class="icon-base ti tabler-eye-off"></i></span>
+                                            <span class="input-group-text cursor-pointer" id="multicol-password2"></span>
                                         </div>
                                     </div>
+                                    @error('password')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-password-toggle">
-                                        <label class="form-label" for="multicol-confirm-password">Confirm Password</label>
+                                        <label class="form-label" for="multicol-confirm-password">Confirm Password <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group input-group-merge">
                                             <input type="password" name="confirm_password" id="multicol-confirm-password"
                                                 class="form-control" placeholder="············"
                                                 aria-describedby="multicol-confirm-password2">
                                             <span class="input-group-text cursor-pointer"
-                                                id="multicol-confirm-password2"><i
-                                                    class="icon-base ti tabler-eye-off"></i></span>
+                                                id="multicol-confirm-password2"></span>
                                         </div>
                                     </div>
+                                    @error('confirm_password')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label" for="collapsible-notes">Notes</label>
                                     <textarea name="notes" class="form-control" id="collapsible-notes" rows="2"></textarea>
+                                    @error('notes')
+                                        <p class="text-red-400 font-medium">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="row mb-3">
-                                    <h5 class="fw-semibold">Assign Roles</h5>
+                                    <h5 class="fw-semibold">Assign Roles <span class="text-danger">*</span></h5>
                                     @if ($roles->isNotEmpty())
                                         @foreach ($roles as $role)
                                             <div class="col-lg-2 col-md-2 col-sm-12 mt-3">
@@ -126,6 +166,9 @@
                                         @endforeach
                                     @endif
                                 </div>
+                                @error('role')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="pt-6">
                                 <button type="submit"
@@ -161,11 +204,11 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
-        <!-- Include Flatpickr CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-        <!-- Include Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
 

@@ -33,18 +33,20 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="col-form-label">Category Name <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">Category Name <span
+                                                        class="text-danger">*</span></label>
                                                 <select name="category_id" id="category" class="form-control">
                                                     <option value="">Select Category</option>
                                                     @if ($categories->isNotEmpty())
                                                         @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                            <option value="{{ $category->id }}">{{ $category->name }}
+                                                            </option>
                                                         @endforeach
                                                     @else
                                                         <option value="">No categories available</option>
                                                     @endif
                                                 </select>
-                                                @error('name')
+                                                @error('category_id')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
                                             </div>
@@ -55,12 +57,18 @@
                                                         class="text-danger">*</span></label>
                                                 <select class="form-control" id="company_name" name="company_name">
                                                     <option value="">Select Company</option>
-                                                    <option value="Mahajan Group" data-abn="62 626 607 145">Mahajan Group</option>
-                                                    <option value="EMM Kay Group" data-abn="52 652 574 528">EMM Kay Group</option>
-                                                    <option value="Vaa Transport Pty Ltd" data-abn="">Vaa Transport Pty Ltd
+                                                    <option value="Mahajan Group" data-abn="62 626 607 145">Mahajan Group
+                                                    </option>
+                                                    <option value="EMM Kay Group" data-abn="52 652 574 528">EMM Kay Group
+                                                    </option>
+                                                    <option value="Vaa Transport Pty Ltd" data-abn="">Vaa Transport Pty
+                                                        Ltd
                                                     </option>
                                                 </select>
                                             </div>
+                                            @error('company_name')
+                                            <p class="text-red-400 font-medium">{{ $message }}</p>
+                                        @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -107,7 +115,8 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label" for="battery_size">Battery Size</label>
-                                                <input type="text" name="battery_size" class="form-control" id="battery_size">
+                                                <input type="text" name="battery_size" class="form-control"
+                                                    id="battery_size">
                                                 @error('battery_size')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -240,7 +249,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="col-form-label">Vehicle Inspection Report Expiry Date </label>
+                                                <label class="col-form-label">Vehicle Inspection Report Expiry Date
+                                                </label>
                                                 <input type="date" name="vehicle_inspection_report_expiring_date"
                                                     class="form-control">
                                                 @error('vehicle_inspection_report_expiring_date')
@@ -260,7 +270,8 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Thumbnail Image</label>
-                                                <input type="file" name="thumbnail" class="form-control" accept="image/*">
+                                                <input type="file" name="thumbnail" class="form-control"
+                                                    accept="image/*">
                                                 @error('thumbnail')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -271,10 +282,12 @@
                                                 <label class="col-form-label d-block">Rented </label>
                                                 <div class="form-check form-switch d-flex align-items-center"
                                                     style="min-height: 2.5rem !important; padding-left: 1.5em">
-                                                    <label class="form-check-label me-5" for="rentedToggle">Available</label>
-                                                    <input class="form-check-input" type="checkbox" id="rentedToggle" name="rented"
-                                                        value="1">
-                                                    <label class="form-check-label ms-3" for="rentedToggle">Assigned</label>
+                                                    <label class="form-check-label me-5"
+                                                        for="rentedToggle">Available</label>
+                                                    <input class="form-check-input" type="checkbox" id="rentedToggle"
+                                                        name="rented" value="1">
+                                                    <label class="form-check-label ms-3"
+                                                        for="rentedToggle">Assigned</label>
                                                 </div>
                                                 @error('rented')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -299,11 +312,11 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        {{-- <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label class="col-form-label">Upload Files</label>
-                                                <input type="file" name="files[]" class="form-control" id="fileInputStore"
-                                                    multiple>
+                                                <label class="col-form-label">Upload Files ( mimes:jpg,jpeg,webp,png,pdf,doc,docx )</label>
+                                                <input type="file" name="files[]" class="form-control"
+                                                    id="fileInputStore" multiple>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -311,7 +324,7 @@
                                                 <!-- File Preview Container with Bootstrap Grid -->
                                                 <div id="filePreviewStore" class="row mt-3"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         {{-- <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Rented </label>
@@ -331,7 +344,7 @@
                                 <!-- /Basic Info -->
                             </div>
                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                <a href="#" class="btn btn-light me-2" data-bs-dismiss="offcanvas">Cancel</a>
+
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </form>
@@ -363,16 +376,16 @@
     <script src="{{ asset('backend/js/config.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
-        <!-- Include Flatpickr CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-        <!-- Include Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <style>
-.me-5 {
-    margin-inline-end: 3.25rem !important;
-}
+        .me-5 {
+            margin-inline-end: 3.25rem !important;
+        }
     </style>
 @endsection
 
@@ -414,22 +427,22 @@
             });
         }
     </script>
-        <script>
-            $(document).ready(function() {
-                // Function to handle file previews
-                function handleFilePreview(fileInputId, previewContainerId) {
-                    $(`#${fileInputId}`).on('change', function(e) {
-                        const files = e.target.files;
-                        const previewContainer = $(`#${previewContainerId}`);
-                        previewContainer.empty(); // Clear previous previews
+    <script>
+        $(document).ready(function() {
+            // Function to handle file previews
+            function handleFilePreview(fileInputId, previewContainerId) {
+                $(`#${fileInputId}`).on('change', function(e) {
+                    const files = e.target.files;
+                    const previewContainer = $(`#${previewContainerId}`);
+                    previewContainer.empty(); // Clear previous previews
 
-                        // Loop through selected files
-                        for (let i = 0; i < files.length; i++) {
-                            const file = files[i];
-                            const fileURL = URL.createObjectURL(file);
+                    // Loop through selected files
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const fileURL = URL.createObjectURL(file);
 
-                            // Create preview element
-                            const previewElement = `
+                        // Create preview element
+                        const previewElement = `
                             <div class="col-md-2 mb-3">
                                 <div class="file-preview-item border p-2">
                                     <div class="position-relative">
@@ -446,32 +459,32 @@
                             </div>
                         `;
 
-                            // Append preview to container
-                            previewContainer.append(previewElement);
-                        }
-                    });
+                        // Append preview to container
+                        previewContainer.append(previewElement);
+                    }
+                });
 
-                    // Remove file from preview and input
-                    $(document).on('click', '.remove-file', function() {
-                        const fileName = $(this).data('file-name');
-                        const fileInput = $(`#${fileInputId}`)[0];
+                // Remove file from preview and input
+                $(document).on('click', '.remove-file', function() {
+                    const fileName = $(this).data('file-name');
+                    const fileInput = $(`#${fileInputId}`)[0];
 
-                        // Remove file from input
-                        const files = Array.from(fileInput.files);
-                        const updatedFiles = files.filter(file => file.name !== fileName);
+                    // Remove file from input
+                    const files = Array.from(fileInput.files);
+                    const updatedFiles = files.filter(file => file.name !== fileName);
 
-                        // Update file input
-                        const dataTransfer = new DataTransfer();
-                        updatedFiles.forEach(file => dataTransfer.items.add(file));
-                        fileInput.files = dataTransfer.files;
+                    // Update file input
+                    const dataTransfer = new DataTransfer();
+                    updatedFiles.forEach(file => dataTransfer.items.add(file));
+                    fileInput.files = dataTransfer.files;
 
-                        // Remove preview element
-                        $(this).closest('.col-md-4').remove();
-                    });
-                }
+                    // Remove preview element
+                    $(this).closest('.col-md-4').remove();
+                });
+            }
 
-                // Initialize file preview handler for the store form
-                handleFilePreview('fileInputStore', 'filePreviewStore');
-            });
-        </script>
+            // Initialize file preview handler for the store form
+            handleFilePreview('fileInputStore', 'filePreviewStore');
+        });
+    </script>
 @endsection
