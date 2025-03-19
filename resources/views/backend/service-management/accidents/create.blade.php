@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h5 class="card-header">Create New Booking</h5>
+                        <h5 class="card-header">Create Accident Details</h5>
                     </div>
                     <div class="col-sm-8 card-header">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">

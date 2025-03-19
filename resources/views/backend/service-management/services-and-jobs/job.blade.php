@@ -30,7 +30,7 @@
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                             <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
-                                Service
+                                Job
                             </a>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modaldemo8Label">Create Service</h4>
+                    <h4 class="modal-title" id="modaldemo8Label">Create Job</h4>
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-start">

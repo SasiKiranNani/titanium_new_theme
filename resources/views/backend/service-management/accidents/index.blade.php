@@ -32,7 +32,7 @@
 
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Name or Reg No" value="{{ request('search') }}">
+                                    placeholder="Search Reg No" value="{{ request('search') }}">
                             </div>
                         </form>
                     </div>

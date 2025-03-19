@@ -128,7 +128,7 @@
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modaldemo8Label">Create Category</h4>
+                    <h4 class="modal-title" id="modaldemo8Label">Create TimeSlot</h4>
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-start">
@@ -289,7 +289,7 @@
                 <div class="modal-dialog modal-dialog-centered text-center" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modaldemo8Label">Edit Category</h4>
+                            <h4 class="modal-title" id="modaldemo8Label">Edit TimeSlot</h4>
                             <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body text-start">
