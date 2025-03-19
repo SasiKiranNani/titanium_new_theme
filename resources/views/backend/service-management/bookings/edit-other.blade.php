@@ -418,7 +418,6 @@
                             <div class="d-flex align-items-center justify-content-center mt-3">
                                 <input type="hidden" name="repair_order_no"
                                     value="{{ $serviceBooking->repair_order_no ?? '' }}">
-                                <a href="#" class="btn btn-light me-2" data-bs-dismiss="offcanvas">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>

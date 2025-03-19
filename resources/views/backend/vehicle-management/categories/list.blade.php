@@ -17,7 +17,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -153,7 +153,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="createCategoryForm" class="btn btn-primary">Send</button>
+                    <button type="submit" form="createCategoryForm" class="btn btn-primary">Submit</button>
                     <button class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -185,7 +185,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" form="editCategoryForm_{{ $category->id ?? '' }}"
-                                class="btn btn-primary">Send</button>
+                                class="btn btn-primary">Submit</button>
                             <button class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>

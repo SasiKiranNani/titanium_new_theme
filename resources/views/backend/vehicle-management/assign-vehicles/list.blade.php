@@ -350,7 +350,7 @@
                                 <!-- Form Buttons -->
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Send</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </form>

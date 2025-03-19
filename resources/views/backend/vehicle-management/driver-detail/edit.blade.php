@@ -170,7 +170,6 @@
                             <div class="pt-6">
                                 <button type="submit"
                                     class="btn btn-primary me-4 waves-effect waves-light">Submit</button>
-                                <button type="reset" class="btn btn-label-secondary waves-effect">Cancel</button>
                             </div>
                         </form>
                     </div>

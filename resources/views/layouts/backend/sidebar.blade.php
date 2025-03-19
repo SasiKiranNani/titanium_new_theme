@@ -20,7 +20,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-smart-home"></i>
                 <div data-i18n="Dashboards">Dashboard</div>
@@ -120,18 +120,18 @@
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Services & Jobs</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/services/service') ? 'active' : '' }}">
                     <a href="{{ route('services.service') }}" class="menu-link">
                         <div data-i18n="List">Services</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/services/job') ? 'active' : '' }}">
                     <a href="{{ route('services.job') }}" class="menu-link">
                         <div data-i18n="List">Jobs</div>
                     </a>
@@ -139,18 +139,18 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Users">Service Bookings</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/services/company-vehicle') ? 'active' : '' }}">
                     <a href="{{ route('services.company-vehicle') }}" class="menu-link">
                         <div data-i18n="List">Company Vehicle</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/services/other-vehicle') ? 'active' : '' }}">
                     <a href="{{ route('services.other-vehicle') }}" class="menu-link">
                         <div data-i18n="List">Other Vehicle</div>
                     </a>
@@ -158,7 +158,7 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('admin/services/accident') ? 'active' : '' }}">
             <a href="{{ route('services.accident') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-smart-home"></i>
                 <div data-i18n="Dashboards">Accident</div>
