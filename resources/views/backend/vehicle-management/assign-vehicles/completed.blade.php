@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="row card-header">
                     <div class="col-sm-4">
-                        <form id="searchForm" action="{{ route('assign.vehicle.ongoing') }}" method="GET">
+                        <form id="searchForm" action="{{ route('assign.vehicle.completed') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
@@ -36,7 +36,7 @@
                         </form>
                     </div>
                     <div class="col-sm-4">
-                        <form id="dateFilterForm" action="{{ route('assign.vehicle.ongoing') }}" method="GET">
+                        <form id="dateFilterForm" action="{{ route('assign.vehicle.completed') }}" method="GET">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <form method="GET" action="{{ route('assign.vehicle.ongoing') }}">
+                            <form method="GET" action="{{ route('assign.vehicle.completed') }}">
                                 <!-- Replace with your route -->
                                 <div class="dropdown me-2">
                                     <select id="categoryFilter" name="category_id" class="form-select"
@@ -155,7 +155,7 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('assign.vehicle.ongoing') }}">
+                        <form method="GET" action="{{ route('assign.vehicle.completed') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">

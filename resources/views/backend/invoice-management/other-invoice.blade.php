@@ -2,7 +2,6 @@
 
 
 @section('content')
-
     @if (session('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
             {{ session('success') }}
@@ -18,18 +17,17 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
 
             <div class="card">
-                <form id="filterForm" action="{{ route('services.company-vehicle') }}" method="GET">
+                <form id="filterForm" action="{{ route('services.other-vehicle.invoice') }}" method="GET">
                     <div class="row card-header">
                         <div class="col-sm-4">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Registration Number" value="{{ request('search') }}">
+                                    placeholder="Search Registration Number or Invoice Number" value="{{ request('search') }}">
                             </div>
                         </div>
                         <div class="col-sm-8">
@@ -45,9 +43,6 @@
                                             value="{{ request('end_date') }}">
                                     </div>
                                 </div>
-                                <a href="{{ route('services.company-vehicle.create') }}" class="btn btn-primary"></i>Add
-                                    Servicing Details
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -57,8 +52,7 @@
                         <thead>
                             <tr>
                                 <th class="text-start">#</th>
-                                {{-- <th class="text-start">Invoice No.</th> --}}
-                                <th class="text-start">Schedule Date & Time Slot</th>
+                                <th class="text-start">Invoice Number</th>
                                 <th class="text-start">Registration No.</th>
                                 <th class="text-start">Odometer</th>
                                 <th class="text-start">Next Service Due</th>
@@ -75,46 +69,26 @@
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td> <!-- Serial Number -->
-                                        {{-- <td>{{ $booking->repair_order_no }}</td> --}}
-                                        <td>{{ $booking->date }} / {{ $booking->timeSlot->time_slot }}</td>
-                                        <td>{{ $booking->vehicle->reg_no }}</td>
+                                        <td>{{ $booking->repair_order_no }}</td>
+                                        <td>{{ $booking->reg_no }}</td>
                                         <td>{{ $booking->odometer }}</td>
                                         <td>{{ $booking->next_service_due }}</td>
                                         {{-- <td class="text-wrap">
-                                                @foreach (json_decode($booking->service_job_id) as $jobId)
-                                                    {{ \App\Models\ServiceJob::find($jobId)->name }}@if (!$loop->last)
-                                                        ,
-                                                    @endif
-                                                @endforeach
-                                            </td> --}}
+                                            @foreach (json_decode($booking->service_job_id) as $jobId)
+                                                {{ \App\Models\ServiceJob::find($jobId)->name }}@if (!$loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        </td> --}}
                                         <td>{{ number_format($booking->gst_percentage, 0) }}</td>
                                         <td>{{ number_format($booking->total_paid, 0) }}</td>
                                         <td>{{ number_format($booking->balance_due, 0) }}</td>
                                         <td>{{ number_format($booking->total, 0) }}</td>
                                         <td class="text-center">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" target="_blank"
-                                                        href="{{ route('services.invoice', $booking->id) }}">
+                                            <a class="dropdown-item waves-effect" target="_blank"
+                                                        href="{{ route('services.other-invoice', $booking->id) }}">
                                                         <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
                                                     </a>
-
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('services.company-vehicle.edit', $booking->id) }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
-
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $booking->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -131,7 +105,7 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('services.company-vehicle') }}">
+                        <form method="GET" action="{{ route('services.other-vehicle.invoice') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
                             <!-- Reset page to 1 when changing per_page -->
@@ -161,42 +135,6 @@
 
         </div>
     </div>
-
-    {{-- delete modal --}}
-    @foreach ($serviceBooking as $booking)
-        <!-- Delete User Modal -->
-        <div class="modal fade" id="delete_service_{{ $booking->id }}" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="text-center">
-                            <div class="icon d-flex justify-content-center">
-                                <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3 d-flex align-items-center justify-content-center"
-                                    style="background: #FFEEEC;">
-                                    <i class="icon-base ti tabler-trash fs-36 text-danger"
-                                        style="width: 60% !important; height: 100% !important;"></i>
-                                </div>
-                            </div>
-                            <h4 class="mb-2">Remove Job?</h4>
-                            <p class="mb-0">Are you sure you want to remove this schedule
-                                {{ $booking->date ?? '' }} /
-                                {{ $booking->timeSlot->time_slot ?? '' }} of {{ $booking->vehicle->reg_no }}?</p>
-                            <div class="d-flex align-items-center justify-content-center mt-4">
-                                <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
-                                <form action="{{ route('services.company-vehicle.delete', $booking->id) }}"
-                                    method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Yes, Delete it</button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
 @endsection
 
 
@@ -222,10 +160,6 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
     <style>
-        .modal {
-            --bs-modal-width: 40rem !important;
-        }
-
         .content-wrapper {
             position: relative;
         }
@@ -254,6 +188,10 @@
 
         .alert-danger li {
             list-style-type: none;
+        }
+
+        .modal {
+            --bs-modal-width: 40rem !important;
         }
     </style>
 @endsection

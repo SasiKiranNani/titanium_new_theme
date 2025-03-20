@@ -90,7 +90,7 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('services.service') }}">
+                        <form method="GET" action="{{ route('services.job') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
                             <!-- Reset page to 1 when changing per_page -->

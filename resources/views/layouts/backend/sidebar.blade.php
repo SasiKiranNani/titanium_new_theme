@@ -1,7 +1,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
 
     <div class="app-brand demo d-flex justify-content-between align-items-center">
-        <a href="index.html" class="app-brand-link mx-auto">
+        <a href="{{ route('dashboard') }}" class="app-brand-link mx-auto">
             <span class="app-brand-logo demo">
                 <span class="text-primary">
                     <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="">
@@ -56,8 +56,8 @@
         {{-- category --}}
         <li class="menu-item {{ request()->is('admin/category') ? 'active' : '' }}">
             <a href="{{ route('category') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                <div data-i18n="Dashboards">Categories</div>
+            <i class="menu-icon icon-base ti tabler-category"></i>
+            <div data-i18n="Dashboards">Categories</div>
             </a>
         </li>
 
@@ -65,7 +65,7 @@
         <li
             class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
+                <i class="menu-icon icon-base ti tabler-car"></i>
                 <div data-i18n="Users">Vehicle Details</div>
             </a>
             <ul class="menu-sub">
@@ -86,7 +86,7 @@
         <li
             class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
+                <i class="menu-icon icon-base ti tabler-truck"></i>
                 <div data-i18n="Users">Vehicle Allotment</div>
             </a>
             <ul class="menu-sub">
@@ -115,14 +115,15 @@
 
         <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
             <a href="{{ route('time.slots') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                <div data-i18n="Dashboards">Time Slot</div>
+            <i class="menu-icon icon-base ti tabler-clock"></i>
+            <div data-i18n="Dashboards">Time Slot</div>
             </a>
         </li>
 
-        <li class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
+                <i class="menu-icon icon-base ti tabler-briefcase"></i>
                 <div data-i18n="Users">Services & Jobs</div>
             </a>
             <ul class="menu-sub">
@@ -139,9 +140,10 @@
             </ul>
         </li>
 
-        <li class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
+                <i class="menu-icon icon-base ti tabler-calendar"></i>
                 <div data-i18n="Users">Service Bookings</div>
             </a>
             <ul class="menu-sub">
@@ -160,9 +162,34 @@
 
         <li class="menu-item {{ request()->is('admin/services/accident') ? 'active' : '' }}">
             <a href="{{ route('services.accident') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                <div data-i18n="Dashboards">Accident</div>
+            <i class="menu-icon icon-base ti tabler-alert-triangle"></i>
+            <div data-i18n="Dashboards">Accident</div>
             </a>
+        </li>
+
+        {{-- Invoice Management --}}
+        <li class="menu-header small">
+            <span class="menu-header-text" data-i18n="Apps & Pages">Invoice Management</span>
+        </li>
+
+        <li
+            class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') || request()->is('admin/services/other-vehicle/invoice') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-file-invoice"></i>
+                <div data-i18n="Users">Invoice</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') ? 'active' : '' }}">
+                    <a href="{{ route('services.company-vehicle.invoice') }}" class="menu-link">
+                        <div data-i18n="List">Company Invoice</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->is('admin/services/other-vehicle/invoice') ? 'active' : '' }}">
+                    <a href="{{ route('services.other-vehicle.invoice') }}" class="menu-link">
+                        <div data-i18n="List">Other Invoice</div>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 

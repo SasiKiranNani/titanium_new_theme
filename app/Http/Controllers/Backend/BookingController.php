@@ -826,4 +826,94 @@ class BookingController extends Controller
 
         return response()->json($timeSlots);
     }
+
+    public function companyInvoicePage(Request $request)
+    {
+        // Get the per_page value from the request or set a default
+        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+
+        // Start Query with Relationships
+        $query = ServiceBooking::with(['vehicle']);
+
+        // Check if any filter is applied
+        $hasSearch    = $request->has('search') && ! empty($request->search);
+        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+
+        // Apply search filter if search term is provided
+        if ($hasSearch) {
+            $query->where(function ($q) use ($request) {
+                $q->where('repair_order_no', 'LIKE', "%{$request->search}%")
+                    ->orWhereHas('vehicle', function ($q) use ($request) {
+                        $q->where('reg_no', 'LIKE', "%{$request->search}%");
+                    });
+            });
+        }
+
+        // Apply date range filter if both start_date and end_date are provided
+        if ($hasStartDate && $hasEndDate) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+
+        // Fetch the service bookings with pagination
+        $serviceBooking = $query->paginate($perPage);
+
+        // Fetch other necessary data
+        $vehicle     = VehicleDetail::all();
+        $timeslots   = TimeSlot::all();
+        $services    = Service::all();
+        $serviceJobs = ServiceJob::all();
+
+        // Prepare an array to hold miscellaneous items for each booking
+        $miscellaneousItems = [];
+        foreach ($serviceBooking as $booking) {
+            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
+            $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+        }
+
+        return view('backend.invoice-management.company-invoice', compact('serviceBooking', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+    }
+
+    public function otherInvoicePage(Request $request)
+    {
+        // Get the per_page value from the request or set a default
+        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+
+        // Start Query with Relationships
+        $query = OtherServiceBooking::query();
+        // Check if any filter is applied
+        $hasSearch    = $request->has('search') && ! empty($request->search);
+        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+
+        // Apply search filter if search term is provided
+        if ($hasSearch) {
+            $query->where(function ($q) use ($request) {
+                $q->where('reg_no', 'LIKE', "%{$request->search}%")
+                  ->orWhere('repair_order_no', 'LIKE', "%{$request->search}%");
+            });
+        }
+
+        // Apply date range filter if both start_date and end_date are provided
+        if ($hasStartDate && $hasEndDate) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        // Fetch the service bookings with pagination
+        $serviceBooking = $query->paginate($perPage);
+
+        $timeslots   = TimeSlot::all();
+        $services    = Service::all();
+        $serviceJobs = ServiceJob::all();
+
+        // Prepare an array to hold miscellaneous items for each booking
+        $miscellaneousItems = [];
+        foreach ($serviceBooking as $booking) {
+            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
+            $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+        }
+
+        return view('backend.invoice-management.other-invoice', compact('serviceBooking', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+    }
 }

@@ -31416,7 +31416,7 @@ body:not(.modal-open) .layout-navbar-full .layout-navbar {
 }
 
 body:not(.modal-open) .layout-content-navbar .layout-navbar {
-    /* z-index: 1075 */
+    z-index: 1075
 }
 
 .layout-menu-horizontal {

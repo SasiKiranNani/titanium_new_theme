@@ -134,6 +134,11 @@ Route::middleware([
         Route::put('/services/accident/update/{id}', [AccidentController::class, 'update'])->name('services.accident.update');
         Route::delete('/services/accident/delete/{id}', [AccidentController::class, 'destroy'])->name('services.accident.delete');
         Route::delete('/services/accident/file/{id}', [AccidentController::class, 'deleteFile'])->name('services.accident.file.delete');
+
+        // invoice management
+        Route::get('/services/company-vehicle/invoice', [BookingController::class, 'companyInvoicePage'])->name('services.company-vehicle.invoice');
+        Route::get('/services/other-vehicle/invoice', [BookingController::class, 'otherInvoicePage'])->name('services.other-vehicle.invoice');
+
         // Service Management Ended
     });
 });

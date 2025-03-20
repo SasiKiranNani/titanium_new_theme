@@ -22,17 +22,34 @@
 
 
             <div class="card">
-                <div class="row card-header">
-                    <div class="col-sm-4">
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="{{ route('services.other-vehicle.create') }}" class="btn btn-primary"></i>Add
-                                Servicing Details
-                            </a>
+                <form id="filterForm" action="{{ route('services.other-vehicle') }}" method="GET">
+                    <div class="row card-header">
+                        <div class="col-sm-4">
+                            <div class="icon-form mb-3 mb-sm-0">
+                                <input type="text" id="searchInput" name="search" class="form-control"
+                                    placeholder="Search Registration Number" value="{{ request('search') }}">
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                                <div class="col-sm-4">
+                                    <!-- Search Form -->
+                                    <div class="icon-form d-flex">
+                                        <input type="text" id="dateRangePicker" class="form-control mx-2"
+                                            placeholder="Select Date Range">
+                                        <input type="hidden" id="startDate" name="start_date"
+                                            value="{{ request('start_date') }}">
+                                        <input type="hidden" id="endDate" name="end_date"
+                                            value="{{ request('end_date') }}">
+                                    </div>
+                                </div>
+                                <a href="{{ route('services.other-vehicle.create') }}" class="btn btn-primary"></i>Add
+                                    Servicing Details
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead>
@@ -109,7 +126,7 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('services.service') }}">
+                        <form method="GET" action="{{ route('services.other-vehicle') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
                             <!-- Reset page to 1 when changing per_page -->
@@ -161,8 +178,8 @@
                                 {{ $booking->timeSlot->time_slot ?? '' }} of {{ $booking->reg_no }}?</p>
                             <div class="d-flex align-items-center justify-content-center mt-4">
                                 <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</button>
-                                <form action="{{ route('services.company-vehicle.delete', $booking->id) }}" method="POST"
-                                    style="display: inline;">
+                                <form action="{{ route('services.company-vehicle.delete', $booking->id) }}"
+                                    method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Yes, Delete it</button>
@@ -261,4 +278,47 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+
+    <script>
+        //  for filtering date range
+        $(document).ready(function() {
+            // Initialize daterangepicker
+            $('#dateRangePicker').daterangepicker({
+                autoUpdateInput: false, // Prevents automatic input update
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+            // Event handler for when the date range is applied
+            $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format(
+                    'YYYY-MM-DD')); // Update input display
+                $('#startDate').val(picker.startDate.format('YYYY-MM-DD')); // Set hidden start date
+                $('#endDate').val(picker.endDate.format('YYYY-MM-DD')); // Set hidden end date
+                $('#filterForm').submit(); // Submit the form
+            });
+
+            // Event handler for when the date range is cleared
+            $('#dateRangePicker').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val(''); // Clear input display
+                $('#startDate').val(''); // Clear hidden start date
+                $('#endDate').val(''); // Clear hidden end date
+                $('#filterForm').submit(); // Submit the form
+            });
+
+            // Automatically submit the form when user presses Enter in the search field
+            $('#searchInput').on('keypress', function(e) {
+                if (e.which == 13) { // Enter key
+                    e.preventDefault(); // Prevent default form submission behavior
+                    $('#filterForm').submit(); // Submit the form
+                }
+            });
+
+            // Automatically submit the form when the user clicks outside the search input field
+            $('#searchInput').on('blur', function() {
+                $('#filterForm').submit();
+            });
+        });
+    </script>
 @endsection
