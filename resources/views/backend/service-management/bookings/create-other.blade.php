@@ -207,7 +207,8 @@
                                                 <select name="payment" id="payment" class="form-control">
                                                     <option value="cash">Cash</option>
                                                     <option value="efpos">EFPOS</option>
-                                                    <option value="cc">CC</option>
+                                                    <option value="cc">Credit Card</option>
+                                                    <option value="bank_transfer">Bank Transfer</option>
                                                 </select>
                                                 @error('payment')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>

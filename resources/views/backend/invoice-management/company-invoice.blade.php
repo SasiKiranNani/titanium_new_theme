@@ -29,11 +29,18 @@
                         <div class="col-sm-4">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Registration Number or Invoice number" value="{{ request('search') }}">
+                                    placeholder="Search Registration Number or Invoice number"
+                                    value="{{ request('search') }}">
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                                <div class="dropdown me-2">
+                                    <select name="sort_order" id="sortOrder" class="form-select" onchange="this.form.submit()">
+                                        <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                        <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                    </select>
+                                </div>
                                 <div class="col-sm-4">
                                     <!-- Search Form -->
                                     <div class="icon-form d-flex">
@@ -71,7 +78,7 @@
                             @if ($serviceBooking->isNotEmpty())
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td> <!-- Serial Number -->
+                                        <td>{{ request('sort_order') == 'desc' ? $serviceBooking->total() - (($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration - 1) : ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}</td> <!-- Serial Number -->
                                         {{-- <td>{{ $booking->repair_order_no }}</td> --}}
                                         <td>{{ $booking->repair_order_no }} </td>
                                         <td>{{ $booking->vehicle->reg_no }}</td>
@@ -90,9 +97,9 @@
                                         <td>{{ number_format($booking->total, 0) }}</td>
                                         <td class="text-center">
                                             <a class="dropdown-item waves-effect" target="_blank"
-                                                        href="{{ route('services.invoice', $booking->id) }}">
-                                                        <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
-                                                    </a>
+                                                href="{{ route('services.invoice', $booking->id) }}">
+                                                <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

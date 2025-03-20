@@ -3925,11 +3925,11 @@ fieldset:disabled .btn {
 
 .btn-primary {
     --bs-btn-color: #fff;
-    --bs-btn-bg: #7367f0;
-    --bs-btn-border-color: #7367f0;
+    --bs-btn-bg: #be623f !important;
+    --bs-btn-border-color: #be623f !important;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #685dd8;
-    --bs-btn-hover-border-color: #5c52c0;
+    --bs-btn-hover-bg: #be623f !important;
+    --bs-btn-hover-border-color: #be623f !important;
     --bs-btn-focus-shadow-rgb: 136, 126, 242;
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: #685dd8;
@@ -29969,7 +29969,8 @@ li:not(:first-child) .dropdown-item,
 }
 
 .menu-item.active>.menu-link:not(.menu-toggle) {
-    background: linear-gradient(270deg, rgba(var(--bs-primary-rgb), 0.7) 0%, var(--bs-primary) 100%);
+    background: #be623f !important;
+    /* background: linear-gradient(270deg, rgba(var(--bs-primary-rgb), 0.7) 0%, var(--bs-primary) 100%); */
     box-shadow: 0 .125rem .375rem 0 rgba(var(--bs-primary-rgb), 0.3);
     color: var(--bs-menu-active-color)
 }

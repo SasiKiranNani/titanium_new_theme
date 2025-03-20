@@ -279,7 +279,10 @@
                                                         EFPOS</option>
                                                     <option value="cc"
                                                         {{ old('payment', $serviceBooking->payment) == 'cc' ? 'selected' : '' }}>
-                                                        CC</option>
+                                                        Credit Card</option>
+                                                    <option value="bank_transfer"
+                                                        {{ old('payment', $serviceBooking->payment) == 'bank_transfer' ? 'selected' : '' }}>
+                                                        Bank Transfer</option>
                                                 </select>
                                                 @error('payment')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -450,7 +453,7 @@
                             <div class="d-flex align-items-center justify-content-center mt-3">
                                 <input type="hidden" name="repair_order_no"
                                     value="{{ $serviceBooking->repair_order_no ?? '' }}">
-                                
+
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>

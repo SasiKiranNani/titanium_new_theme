@@ -176,7 +176,7 @@
             class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') || request()->is('admin/services/other-vehicle/invoice') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-file-invoice"></i>
-                <div data-i18n="Users">Invoice</div>
+                <div data-i18n="Users">Service Invoices</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') ? 'active' : '' }}">

@@ -264,7 +264,7 @@
                             <td style="width: 10%;">
                                 <p style="font-size: 12px;"><b>Payment</b></p>
                             </td>
-                            <td style="width: 30%; text-align: center;">
+                            <td style="width: 20%; text-align: center;">
                                 <p class="check" style="margin: 0;">
                                     <input type="checkbox" id="cash"
                                         style="vertical-align: middle; margin-right: 3px;"
@@ -272,7 +272,7 @@
                                     <label for="cash" style="vertical-align: middle; font-size:11px;">Cash</label>
                                 </p>
                             </td>
-                            <td style="width: 30%; text-align: center;">
+                            <td style="width: 20%; text-align: center;">
                                 <p class="check" style="margin: 0;">
                                     <input type="checkbox" id="efpos"
                                         style="vertical-align: middle; margin-right: 3px;"
@@ -280,13 +280,21 @@
                                     <label for="efpos" style="vertical-align: middle; font-size:11px;">EFPOS</label>
                                 </p>
                             </td>
-                            <td style="width: 30%; text-align: center;">
+                            <td style="width: 20%; text-align: center;">
                                 <p class="check" style="margin: 0;">
                                     <input type="checkbox" id="credit_card"
                                         style="vertical-align: middle; margin-right: 3px;"
                                         {{ $serviceBooking->payment == 'cc' ? 'checked' : '' }}>
                                     <label for="credit_card" style="vertical-align: middle; font-size:11px;">Credit
                                         Card</label>
+                                </p>
+                            </td>
+                            <td style="width: 20%; text-align: center;">
+                                <p class="check" style="margin: 0;">
+                                    <input type="checkbox" id="bank_transfer"
+                                        style="vertical-align: middle; margin-right: 3px;"
+                                        {{ $serviceBooking->payment == 'bank_transfer' ? 'checked' : '' }}>
+                                    <label for="bank_transfer" style="vertical-align: middle; font-size:11px;">Bank Transfer</label>
                                 </p>
                             </td>
                         </tr>

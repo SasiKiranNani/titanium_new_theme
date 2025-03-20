@@ -253,7 +253,10 @@
                                                         EFPOS</option>
                                                     <option value="cc"
                                                         {{ old('payment', $serviceBooking->payment) == 'cc' ? 'selected' : '' }}>
-                                                        CC</option>
+                                                        Credit Card</option>
+                                                        <option value="bank_transfer"
+                                                        {{ old('payment', $serviceBooking->payment) == 'bank_transfer' ? 'selected' : '' }}>
+                                                        Bank Transfer</option>
                                                 </select>
                                                 @error('payment')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>

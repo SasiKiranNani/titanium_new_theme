@@ -170,8 +170,8 @@ class BookingController extends Controller
 
             // Auto-generate repair_order_no
             $lastBooking              = ServiceBooking::orderBy('repair_order_no', 'desc')->first();
-            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('RON-', '', $lastBooking->repair_order_no)) : 0;
-            $booking->repair_order_no = 'RON-' . ($lastRepairOrderNo + 1);
+            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
+            $booking->repair_order_no = 'TEA-' . ($lastRepairOrderNo + 1);
 
             $booking->color         = $validatedData['color'];
             $booking->mobile        = $validatedData['mobile'];
@@ -586,8 +586,8 @@ class BookingController extends Controller
 
             // Auto-generate repair_order_no
             $lastBooking              = OtherServiceBooking::orderBy('repair_order_no', 'desc')->first();
-            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('RON-', '', $lastBooking->repair_order_no)) : 0;
-            $booking->repair_order_no = 'RON-' . ($lastRepairOrderNo + 1);
+            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
+            $booking->repair_order_no = 'TEA-' . ($lastRepairOrderNo + 1);
 
             $booking->color         = $validatedData['color'];
             $booking->mobile        = $validatedData['mobile'];
@@ -831,6 +831,7 @@ class BookingController extends Controller
     {
         // Get the per_page value from the request or set a default
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $sortOrder = $request->input('sort_order', 'asc');
 
         // Start Query with Relationships
         $query = ServiceBooking::with(['vehicle']);
@@ -848,6 +849,12 @@ class BookingController extends Controller
                         $q->where('reg_no', 'LIKE', "%{$request->search}%");
                     });
             });
+        }
+        // Apply sorting separately
+        if ($sortOrder === 'asc') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
 
         // Apply date range filter if both start_date and end_date are provided
@@ -872,13 +879,14 @@ class BookingController extends Controller
             $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
         }
 
-        return view('backend.invoice-management.company-invoice', compact('serviceBooking', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.invoice-management.company-invoice', compact('serviceBooking', 'sortOrder', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
     }
 
     public function otherInvoicePage(Request $request)
     {
         // Get the per_page value from the request or set a default
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $sortOrder = $request->input('sort_order', 'asc');
 
         // Start Query with Relationships
         $query = OtherServiceBooking::query();
@@ -899,7 +907,12 @@ class BookingController extends Controller
         if ($hasStartDate && $hasEndDate) {
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
-
+       // Apply sorting separately
+        if ($sortOrder === 'asc') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
         // Fetch the service bookings with pagination
         $serviceBooking = $query->paginate($perPage);
 
@@ -914,6 +927,6 @@ class BookingController extends Controller
             $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
         }
 
-        return view('backend.invoice-management.other-invoice', compact('serviceBooking', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.invoice-management.other-invoice', compact('serviceBooking', 'sortOrder', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
     }
 }
