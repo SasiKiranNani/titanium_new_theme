@@ -20,125 +20,162 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-            <a href="{{ route('dashboard') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                <div data-i18n="Dashboards">Dashboard</div>
-            </a>
-        </li>
+        @can('View Dashboard')
+            <li class="menu-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}" class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-smart-home"></i>
+                    <div data-i18n="Dashboards">Dashboard</div>
+                </a>
+            </li>
+        @endcan
 
-        <!-- Vehicle Management -->
-        <li class="menu-header small">
-            <span class="menu-header-text" data-i18n="Apps & Pages">Vehicle Management</span>
-        </li>
+        @canany(['View Drivers', 'View Categories', 'View Vehicles', 'Upcoming Allotment', 'Ongoing Allotment',
+            'Completed Allotment'])
+            <!-- Vehicle Management -->
+            <li class="menu-header small">
+                <span class="menu-header-text" data-i18n="Apps & Pages">Vehicle Management</span>
+            </li>
 
-        {{-- driver --}}
-        <li
-            class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-users"></i>
-                <div data-i18n="Users">Driver Details</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/drivers/list') ? 'active' : '' }}">
-                    <a href="{{ route('drivers.list') }}" class="menu-link">
-                        <div data-i18n="List">List</div>
+            {{-- driver --}}
+            @can('View Drivers')
+                <li
+                    class="menu-item {{ request()->is('admin/drivers/list') || request()->is('admin/driver/details') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon icon-base ti tabler-users"></i>
+                        <div data-i18n="Users">Driver Details</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ request()->is('admin/drivers/list') ? 'active' : '' }}">
+                            <a href="{{ route('drivers.list') }}" class="menu-link">
+                                <div data-i18n="List">List</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ request()->is('admin/driver/details') ? 'active' : '' }}">
+                            <a href="{{ route('driver.details') }}" class="menu-link">
+                                <div data-i18n="List">Details</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="menu-item {{ request()->is('admin/driver/details') ? 'active' : '' }}">
-                    <a href="{{ route('driver.details') }}" class="menu-link">
-                        <div data-i18n="List">Details</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            @endcan
 
-        {{-- category --}}
-        <li class="menu-item {{ request()->is('admin/category') ? 'active' : '' }}">
-            <a href="{{ route('category') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-category"></i>
-                <div data-i18n="Dashboards">Categories</div>
-            </a>
-        </li>
+            @can('View Categories')
+                {{-- category --}}
+                <li class="menu-item {{ request()->is('admin/category') ? 'active' : '' }}">
+                    <a href="{{ route('category') }}" class="menu-link">
+                        <i class="menu-icon icon-base ti tabler-category"></i>
+                        <div data-i18n="Dashboards">Categories</div>
+                    </a>
+                </li>
+            @endcan
 
-        {{-- vehicle --}}
-        <li
-            class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-car"></i>
-                <div data-i18n="Users">Vehicle Details</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/vehicles') ? 'active' : '' }}">
-                    <a href="{{ route('vehicle') }}" class="menu-link">
-                        <div data-i18n="List">List</div>
+            @can('View Vehicles')
+                {{-- vehicle --}}
+                <li
+                    class="menu-item {{ request()->is('admin/vehicles') || request()->is('admin/vehicle/details') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon icon-base ti tabler-car"></i>
+                        <div data-i18n="Users">Vehicle Details</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item {{ request()->is('admin/vehicles') ? 'active' : '' }}">
+                            <a href="{{ route('vehicle') }}" class="menu-link">
+                                <div data-i18n="List">List</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ request()->is('admin/vehicle/details') ? 'active' : '' }}">
+                            <a href="{{ route('vehicle.details') }}" class="menu-link">
+                                <div data-i18n="List">Details</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="menu-item {{ request()->is('admin/vehicle/details') ? 'active' : '' }}">
-                    <a href="{{ route('vehicle.details') }}" class="menu-link">
-                        <div data-i18n="List">Details</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            @endcan
 
-        {{-- vehicle allotment --}}
-        <li
-            class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-truck"></i>
-                <div data-i18n="Users">Vehicle Allotment</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') ? 'active' : '' }}">
-                    <a href="{{ route('assign.vehicle.list') }}" class="menu-link">
-                        <div data-i18n="List">Up Coming</div>
+            @canany(['Upcoming Allotment', 'Ongoing Allotment', 'Completed Allotment'])
+                {{-- vehicle allotment --}}
+                <li
+                    class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') || request()->is('admin/assign/vehicle/ongoing') || request()->is('admin/assign/vehicle/completed') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon icon-base ti tabler-truck"></i>
+                        <div data-i18n="Users">Vehicle Allotment</div>
                     </a>
+                    <ul class="menu-sub">
+                        @can('Upcoming Allotment')
+                            <li class="menu-item {{ request()->is('admin/assign-vehicle/upcoming') ? 'active' : '' }}">
+                                <a href="{{ route('assign.vehicle.list') }}" class="menu-link">
+                                    <div data-i18n="List">Up Coming</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('Ongoing Allotment')
+                            <li class="menu-item {{ request()->is('admin/assign/vehicle/ongoing') ? 'active' : '' }}">
+                                <a href="{{ route('assign.vehicle.ongoing') }}" class="menu-link">
+                                    <div data-i18n="List">On Going</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('Completed Allotment')
+                            <li class="menu-item {{ request()->is('admin/assign/vehicle/completed') ? 'active' : '' }}">
+                                <a href="{{ route('assign.vehicle.completed') }}" class="menu-link">
+                                    <div data-i18n="List">Completed</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                    </ul>
                 </li>
-                <li class="menu-item {{ request()->is('admin/assign/vehicle/ongoing') ? 'active' : '' }}">
-                    <a href="{{ route('assign.vehicle.ongoing') }}" class="menu-link">
-                        <div data-i18n="List">On Going</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/assign/vehicle/completed') ? 'active' : '' }}">
-                    <a href="{{ route('assign.vehicle.completed') }}" class="menu-link">
-                        <div data-i18n="List">Completed</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            @endcanany
+
+        @endcanany
+
+
 
         {{-- Service Management --}}
         <li class="menu-header small">
             <span class="menu-header-text" data-i18n="Apps & Pages">Service Management</span>
         </li>
 
-        <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
-            <a href="{{ route('time.slots') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-clock"></i>
-                <div data-i18n="Dashboards">Time Slot</div>
-            </a>
-        </li>
+        @can('View Timeslot')
+            <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
+                <a href="{{ route('time.slots') }}" class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-clock"></i>
+                    <div data-i18n="Dashboards">Time Slot</div>
+                </a>
+            </li>
+        @endcan
 
-        <li
-            class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-briefcase"></i>
-                <div data-i18n="Users">Services & Jobs</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/services/service') ? 'active' : '' }}">
-                    <a href="{{ route('services.service') }}" class="menu-link">
-                        <div data-i18n="List">Services</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/services/job') ? 'active' : '' }}">
-                    <a href="{{ route('services.job') }}" class="menu-link">
-                        <div data-i18n="List">Jobs</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+
+        @canany(['View Services', 'View Jobs'])
+            <li
+                class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon icon-base ti tabler-briefcase"></i>
+                    <div data-i18n="Users">Services & Jobs</div>
+                </a>
+                <ul class="menu-sub">
+                    @can('View Services')
+                        <li class="menu-item {{ request()->is('admin/services/service') ? 'active' : '' }}">
+                            <a href="{{ route('services.service') }}" class="menu-link">
+                                <div data-i18n="List">Services</div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('View Jobs')
+                        <li class="menu-item {{ request()->is('admin/services/job') ? 'active' : '' }}">
+                            <a href="{{ route('services.job') }}" class="menu-link">
+                                <div data-i18n="List">Jobs</div>
+                            </a>
+                        </li>
+                    @endcan
+
+                </ul>
+            </li>
+        @endcanany
+
 
         <li
             class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">

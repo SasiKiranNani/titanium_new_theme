@@ -15,8 +15,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
-class DriverController extends Controller
+class DriverController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Drivers', only: ['index']),
+            new Middleware('permission:Create Drivers', only: ['create']),
+            new Middleware('permission:Edit Drivers', only: ['edit']),
+            new Middleware('permission:Delete Drivers', only: ['destroy']),
+            new Middleware('permission:Driver Details', only: ['getDriverDetail']),
+        ];
+    }
 
     // public function index(Request $request)
     // {
@@ -58,38 +68,38 @@ class DriverController extends Controller
 
 
     public function index(Request $request)
-{
-    $roles   = Role::get();
-    $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
-    $search  = $request->input('search'); // Capture the search input
-    $vehicles = VehicleDetail::get();
+    {
+        $roles   = Role::get();
+        $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
+        $search  = $request->input('search'); // Capture the search input
+        $vehicles = VehicleDetail::get();
 
-    // If 'all' is selected, set a very high value for $perPage
-    if ($perPage === 'all') {
-        $perPage = User::count(); // Fetch all users by setting $perPage to the total count
+        // If 'all' is selected, set a very high value for $perPage
+        if ($perPage === 'all') {
+            $perPage = User::count(); // Fetch all users by setting $perPage to the total count
+        }
+
+        // Fetch users with the role of 'driver' and apply search functionality
+        $users = User::with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'driver');
+            })
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('email', 'LIKE', "%{$search}%")
+                        ->orWhere('contact', 'LIKE', "%{$search}%")
+                        ->orWhere('licence_no', 'LIKE', "%{$search}%");
+                });
+            })
+            ->paginate((int) $perPage); // Always paginate, even if $perPage is set to 'all'
+
+        foreach ($users as $user) {
+            $user->files = DriverFile::where('user_id', $user->id)->get();
+        }
+
+        return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
     }
-
-    // Fetch users with the role of 'driver' and apply search functionality
-    $users = User::with('roles')
-        ->whereHas('roles', function ($query) {
-            $query->where('name', 'driver');
-        })
-        ->when($search, function ($query, $search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%")
-                    ->orWhere('contact', 'LIKE', "%{$search}%")
-                    ->orWhere('licence_no', 'LIKE', "%{$search}%");
-            });
-        })
-        ->paginate((int) $perPage); // Always paginate, even if $perPage is set to 'all'
-
-    foreach ($users as $user) {
-        $user->files = DriverFile::where('user_id', $user->id)->get();
-    }
-
-    return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
-}
 
     public function edit($id)
     {

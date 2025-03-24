@@ -12,8 +12,22 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use App\Models\Category;
 
-class AssignVehicleController extends Controller
+class AssignVehicleController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:Upcoming Allotment', only: ['index']),
+            new Middleware('permission:Ongoing Allotment', only: ['onGoing']),
+            new Middleware('permission:Completed Allotment', only: ['completed']),
+            new Middleware('permission:Edit Allotment', only: ['update']),
+            new Middleware('permission:Delete Allotment', only: ['destroy']),
+            new Middleware('permission:View Signed Agreement', only: ['getagreement1']),
+        ];
+    }
+
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);

@@ -5,9 +5,23 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SchedulesController extends Controller
+class SchedulesController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Timeslot', only: ['timeSlots']),
+            new Middleware('permission:Create Timeslot', only: ['storeTimeSlots']),
+            new Middleware('permission:Edit Timeslot', only: ['updateTimeSlots']),
+            new Middleware('permission:Delete Timeslot', only: ['destroyTimeSlots']),
+        ];
+    }
+
+
     public function timeSlots(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided

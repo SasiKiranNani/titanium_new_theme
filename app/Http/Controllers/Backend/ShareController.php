@@ -24,8 +24,17 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class ShareController extends Controller
+class ShareController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:Share From Driver', only: ['sendUserVehicleEmail']),
+            new Middleware('permission:Share From Vehicle', only: ['shareVehicle']),
+        ];
+    }
+
     public function shareVehicle(Request $request)
     {
         // Validate the request
@@ -109,7 +118,8 @@ class ShareController extends Controller
 
         // Pass the token to the view
         return view('backend.vehicle-management.vehicle-agreement.vehicle-details', compact(
-            'vehicle', 'tokenData'
+            'vehicle',
+            'tokenData'
         ));
     }
 

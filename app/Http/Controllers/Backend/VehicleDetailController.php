@@ -12,8 +12,21 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class VehicleDetailController extends Controller
+class VehicleDetailController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Vehicles', only: ['index']),
+            new Middleware('permission:Create Vehicles', only: ['create']),
+            new Middleware('permission:Edit Vehicles', only: ['edit']),
+            new Middleware('permission:Delete Vehicles', only: ['destroy']),
+            new Middleware('permission:Vehicles Details', only: ['getVehicleDetail']),
+        ];
+    }
+
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);

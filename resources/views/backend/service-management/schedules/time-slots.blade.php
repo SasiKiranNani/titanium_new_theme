@@ -12,10 +12,13 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
-                                Time Slot
-                            </a>
+                            @can('Create Timeslot')
+                                <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
+                                    Time Slot
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -26,14 +29,18 @@
                                 <th>#</th>
                                 <th>Time Slots</th>
                                 <th>Days</th>
-                                <th>Action</th>
+                                @canany(['Edit Timeslot', 'Delete Timeslot'])
+                                    <th>Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($timeslots->isNotEmpty())
                                 @foreach ($timeslots as $timeslot)
                                     <tr>
-                                        <td>{{ ($timeslots->currentPage() - 1) * $timeslots->perPage() + $loop->iteration }}</td>
+                                        <td>{{ ($timeslots->currentPage() - 1) * $timeslots->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $timeslot->time_slot }}</td>
                                         <td>
                                             @if ($timeslot->days == 'Both')
@@ -42,27 +49,35 @@
                                                 {{ $timeslot->days }}
                                             @endif
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $timeslot->id ?? '' }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
+                                        @canany(['Edit Timeslot', 'Delete Timeslot'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Timeslot')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $timeslot->id ?? '' }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_timeslot_{{ $timeslot->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                                        @can('Delete Timeslot')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_timeslot_{{ $timeslot->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -396,6 +411,7 @@
         .content-wrapper {
             position: relative;
         }
+
         .schedule-card-body label {
             font-size: 17px;
             margin: 5px 5px;

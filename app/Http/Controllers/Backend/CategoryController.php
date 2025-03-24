@@ -6,11 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Categories', only: ['index']),
+            new Middleware('permission:Create Categories', only: ['store']),
+            new Middleware('permission:Edit Categories', only: ['update']),
+            new Middleware('permission:Delete Categories', only: ['delete']),
+        ];
+    }
+
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 items per page

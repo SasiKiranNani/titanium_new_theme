@@ -12,10 +12,13 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
-                                Service
-                            </a>
+                            @can('Create Services')
+                                <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
+                                    Service
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -25,36 +28,50 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Action</th>
+                                @canany(['Edit Services', 'Delete Services'])
+                                    <th class="text-center">Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($services->isNotEmpty())
                                 @foreach ($services as $service)
                                     <tr>
-                                        <td class="text-center">{{ ($services->currentPage() - 1) * $services->perPage() + $loop->iteration }}</td>
-                                        <td class="text-center">{{ $service->name }}</td>
                                         <td class="text-center">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $service->id ?? '' }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
-
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $service->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            {{ ($services->currentPage() - 1) * $services->perPage() + $loop->iteration }}
                                         </td>
+                                        <td class="text-center">{{ $service->name }}</td>
+
+                                        @canany(['Edit Services', 'Delete Services'])
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Services')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $service->id ?? '' }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Services')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_service_{{ $service->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -269,6 +286,7 @@
         .content-wrapper {
             position: relative;
         }
+
         .modal {
             --bs-modal-width: 40rem !important;
         }

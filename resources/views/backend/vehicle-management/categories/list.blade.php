@@ -22,15 +22,17 @@
 
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modaldemo8">
-                                <span>
-                                    <span class="d-flex align-items-center gap-2">
-                                        <i class="icon-base ti tabler-plus icon-sm"></i>
-                                        <span class="d-none d-sm-inline-block">Create Category</span>
+                            @can('Create Categories')
+                                <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modaldemo8">
+                                    <span>
+                                        <span class="d-flex align-items-center gap-2">
+                                            <i class="icon-base ti tabler-plus icon-sm"></i>
+                                            <span class="d-none d-sm-inline-block">Create Category</span>
+                                        </span>
                                     </span>
-                                </span>
-                            </a>
+                                </a>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -41,7 +43,10 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th>Actions</th>
+                                @canany(['Edit Categories', 'Delete Categories'])
+                                    <th>Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -52,27 +57,37 @@
                                         </td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $category->id }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_driver_{{ $category->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                        @canany(['Edit Categories', 'Delete Categories'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+
+                                                        @can('Edit Categories')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $category->id }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Categories')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_driver_{{ $category->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else

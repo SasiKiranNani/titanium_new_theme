@@ -53,14 +53,17 @@
                                 </select>
                             </div>
 
-                            <a href="{{ route('vehicle.create') }}" class="btn create-new btn-primary">
-                                <span>
-                                    <span class="d-flex align-items-center gap-2">
-                                        <i class="icon-base ti tabler-plus icon-sm"></i>
-                                        <span class="d-none d-sm-inline-block">Add Vehicle</span>
+                            @can('Create Vehicles')
+                                <a href="{{ route('vehicle.create') }}" class="btn create-new btn-primary">
+                                    <span>
+                                        <span class="d-flex align-items-center gap-2">
+                                            <i class="icon-base ti tabler-plus icon-sm"></i>
+                                            <span class="d-none d-sm-inline-block">Add Vehicle</span>
+                                        </span>
                                     </span>
-                                </span>
-                            </a>
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -76,7 +79,10 @@
                                 <th>Fuel Type</th>
                                 <th>VIN</th>
                                 <th>Rented</th>
-                                <th>Actions</th>
+                                @canany(['Vehicles Details', 'Edit Vehicles', 'Delete Vehicles', 'Share From Vehicle'])
+                                    <th>Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -115,35 +121,53 @@
                                                     {{ $vehicle->rented ? 'checked' : '' }}>
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('vehicle.details.id', ['id' => $vehicle->id]) }}"><i
-                                                            class="icon-base ti tabler-info-circle me-1 text-blue"></i>
-                                                        Details</a>
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('vehicle.edit', $vehicle->id) }}"><i
-                                                            class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit</a>
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_vehicle_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-mail me-1 text-blue"></i> Share Via
-                                                        Mail
-                                                    </a>
+                                        @canany(['Vehicles Details', 'Edit Vehicles', 'Delete Vehicles',
+                                        'Share From Vehicle'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
 
+                                                        @can('Vehicles Details')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('vehicle.details.id', ['id' => $vehicle->id]) }}"><i
+                                                                    class="icon-base ti tabler-info-circle me-1 text-blue"></i>
+                                                                Details</a>
+                                                        @endcan
+
+
+                                                        @can('Edit Vehicles')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('vehicle.edit', $vehicle->id) }}"><i
+                                                                    class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Vehicles')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_vehicle_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Share From Vehicle')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-mail me-1 text-blue"></i> Share Via
+                                                                Mail
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else

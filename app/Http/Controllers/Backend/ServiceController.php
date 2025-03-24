@@ -7,9 +7,28 @@ use App\Models\TimeSlot;
 use App\Models\Service;
 use App\Models\ServiceJob;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ServiceController extends Controller
+class ServiceController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Services', only: ['index']),
+            new Middleware('permission:Create Services', only: ['store']),
+            new Middleware('permission:Edit Services', only: ['update']),
+            new Middleware('permission:Delete Services', only: ['destroy']),
+
+            new Middleware('permission:View Jobs', only: ['job']),
+            new Middleware('permission:Create Jobs', only: ['jobStore']),
+            new Middleware('permission:Edit Jobs', only: ['jobUpdate']),
+            new Middleware('permission:Delete Jobs', only: ['jobDestroy']),
+        ];
+    }
+
+
     // public function index(Request $request)
     // {
     //     // Get the search query and per_page value from the request

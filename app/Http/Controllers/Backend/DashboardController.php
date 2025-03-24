@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AssignVehicle;
 use App\Models\VehicleDetail;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DashboardController extends Controller
+class DashboardController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Dashboard', only: ['index']),
+        ];
+    }
+
+
     public function index()
     {
         // Get the count of users with the 'driver' role
@@ -50,8 +60,8 @@ class DashboardController extends Controller
         if ($startDate && $endDate) {
             // Only include vehicles that have rent periods overlapping with the selected range
             $rentReceived = AssignVehicle::whereBetween('rent_start_date', [$startDate, $endDate])
-            ->orWhereBetween('rent_end_date', [$startDate, $endDate])
-            ->sum('total_price');;
+                ->orWhereBetween('rent_end_date', [$startDate, $endDate])
+                ->sum('total_price');;
         } else {
             // If no date range is selected, return the total rent amount
             $rentReceived = AssignVehicle::sum('total_price');
@@ -61,5 +71,4 @@ class DashboardController extends Controller
             'totalEarnings' => $rentReceived
         ]);
     }
-
 }

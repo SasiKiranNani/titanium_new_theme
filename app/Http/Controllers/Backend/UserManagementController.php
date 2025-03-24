@@ -44,9 +44,9 @@ class UserManagementController extends Controller
             Permission::create([
                 'name' => $request->name
             ]);
-            return redirect()->route('permissions')->with('success', 'Permission created successfully');
+            return redirect()->back()->with('success', 'Permission created successfully');
         } else {
-            return redirect()->route('permissions.create')->withInput()->withErrors($validator);
+            return redirect()->back()->withInput()->withErrors($validator);
         }
     }
 
@@ -62,9 +62,9 @@ class UserManagementController extends Controller
             $permission->name = $request->name;
             $permission->save();
 
-            return redirect()->route('permissions')->with('success', 'Permission updated successfully');
+            return redirect()->back()->with('success', 'Permission updated successfully');
         } else {
-            return redirect()->route('permissions')->withInput()->withErrors($validator);
+            return redirect()->back()->withInput()->withErrors($validator);
         }
     }
 

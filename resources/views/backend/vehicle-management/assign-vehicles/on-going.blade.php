@@ -76,7 +76,10 @@
                                 <th>Outstanding</th>
                                 <th>Payment Method</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                @canany(['Edit Allotment', 'Delete Allotment', 'View Signed Agreement'])
+                                    <th>Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
@@ -104,34 +107,44 @@
                                                 <input class="form-check-input" type="checkbox" id="customSwitch" checked>
                                             </div>
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
+                                        @canany(['Edit Allotment', 'Delete Allotment', 'View Signed Agreement'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Allotment')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                                        @can('Delete Allotment')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('assign.vehicle.agreement', $vehicle->id) }}"
-                                                        target="_blank" title="Agreement">
-                                                        <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
-                                                        Agreement
-                                                    </a>
+                                                        @can('View Signed Agreement')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('assign.vehicle.agreement', $vehicle->id) }}"
+                                                                target="_blank" title="Agreement">
+                                                                <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
+                                                                Agreement
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else

@@ -76,14 +76,18 @@
                                 <th>Outstanding</th>
                                 <th>Payment Method</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                @canany(['Edit Allotment', 'Delete Allotment', 'View Signed Agreement'])
+                                    <th>Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($pastVehicles->isNotEmpty())
                                 @foreach ($pastVehicles as $vehicle)
                                     <tr>
-                                        <td>{{ ($pastVehicles->currentPage() - 1) * $pastVehicles->perPage() + $loop->iteration }}</td>
+                                        <td>{{ ($pastVehicles->currentPage() - 1) * $pastVehicles->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $vehicle->user->name ?? '' }}</td>
                                         <td>{{ $vehicle->reg_no ?? '' }}</td>
                                         <td>{{ \Carbon\Carbon::parse($vehicle->rent_start_date)->format('d M Y') ?? '' }}
@@ -97,34 +101,45 @@
                                         <td>
                                             <span class="badge bg-success p-2">Completed</span>
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
+                                        @canany(['Edit Allotment', 'Delete Allotment', 'View Signed Agreement'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                                        @can('Edit Allotment')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('assign.vehicle.agreement', $vehicle->id) }}"
-                                                        target="_blank" title="Agreement">
-                                                        <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
-                                                        Agreement
-                                                    </a>
+                                                        @can('Delete Allotment')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_assign_vehicle_{{ $vehicle->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('View Signed Agreement')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('assign.vehicle.agreement', $vehicle->id) }}"
+                                                                target="_blank" title="Agreement">
+                                                                <i class="icon-base ti tabler-file-text me-1 text-danger"></i>
+                                                                Agreement
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -404,6 +419,7 @@
         .content-wrapper {
             position: relative;
         }
+
         #dateInput {
             width: 100%;
             padding: 10px;

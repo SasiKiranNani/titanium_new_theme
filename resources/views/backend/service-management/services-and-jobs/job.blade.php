@@ -13,10 +13,13 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
-                                Job
-                            </a>
+                            @can('Create Jobs')
+                                <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
+                                    Job
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -28,38 +31,50 @@
                                 <th class="text-start">Service</th>
                                 <th class="text-start">Job Name</th>
                                 <th class="text-start">Price</th>
-                                <th class="text-center">Action</th>
+                                @canany(['Edit Jobs', 'Delete Jobs'])
+                                    <th class="text-center">Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($serviceJobs->isNotEmpty())
                                 @foreach ($serviceJobs as $serviceJob)
                                     <tr>
-                                        <td>{{ ($serviceJobs->currentPage() - 1) * $serviceJobs->perPage() + $loop->iteration }}</td>
+                                        <td>{{ ($serviceJobs->currentPage() - 1) * $serviceJobs->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $serviceJob->service->name }}</td>
                                         <td>{{ $serviceJob->name }}</td>
                                         <td>{{ $serviceJob->price }}</td>
-                                        <td class="text-center">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modaldemo8_{{ $serviceJob->id ?? '' }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
+                                        @canany(['Edit Jobs', 'Delete Jobs'])
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Jobs')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modaldemo8_{{ $serviceJob->id ?? '' }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $serviceJob->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                                        @can('Delete Jobs')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_service_{{ $serviceJob->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -323,6 +338,7 @@
         .content-wrapper {
             position: relative;
         }
+
         .modal {
             --bs-modal-width: 40rem !important;
         }
