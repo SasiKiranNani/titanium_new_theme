@@ -6851,8 +6851,10 @@ fieldset:disabled .btn {
 
 @media(min-width: 992px) {
 
-    .modal-lg,
-    .modal-xl {
+    .modal-lg {
+        --bs-modal-width: 60rem
+    }
+   .modal-xl {
         --bs-modal-width: 50rem
     }
 }
@@ -29969,7 +29971,7 @@ li:not(:first-child) .dropdown-item,
 }
 
 .menu-item.active>.menu-link:not(.menu-toggle) {
-    background: #be623f !important;
+    background: #fe6d00 !important;
     /* background: linear-gradient(270deg, rgba(var(--bs-primary-rgb), 0.7) 0%, var(--bs-primary) 100%); */
     box-shadow: 0 .125rem .375rem 0 rgba(var(--bs-primary-rgb), 0.3);
     color: var(--bs-menu-active-color)

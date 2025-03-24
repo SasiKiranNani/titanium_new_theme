@@ -2,21 +2,6 @@
 
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
@@ -204,7 +189,7 @@
                         <div class="text-center">
                             <div class="icon d-flex justify-content-center">
                                 <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3">
-                                    <i class="icon-base ti tabler-trash me-1 fs-36 text-danger"></i>
+                                    <i class="icon-base ti tabler-trash fs-36 text-danger"></i>
                                 </div>
                             </div>
                             <h4 class="mb-2">Remove Category?</h4>
@@ -253,30 +238,23 @@
             position: relative;
         }
 
-        .alert-success {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #17a917;
-            color: white;
+        .avatar.avatar-xl {
+            width: 4rem;
+            height: 4rem;
+            line-height: 4rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .alert-danger {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #cd1616;
-            color: white;
+        .bg-danger-light {
+            background: #FFEEEC;
         }
 
-        .alert-danger li {
-            list-style-type: none;
+        .avatar.avatar-xl i {
+            width: 100%;
+            height: 30px;
         }
     </style>
 @endsection

@@ -120,3 +120,31 @@
   width: 100px;
   height: 130px;
 }
+
+.alert-success {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    padding: 11px !important;
+    width: 30%;
+    z-index: 1;
+    background: #17a917;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert-danger {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    padding: 11px !important;
+    width: 30%;
+    z-index: 1;
+    background: #cd1616;
+    color: white;
+}
+
+.alert-danger li {
+    list-style-type: none;
+}

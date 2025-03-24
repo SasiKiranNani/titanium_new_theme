@@ -12,7 +12,7 @@ class AccidentController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 10);
+        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
         $query = VehicleAccident::with(['vehicle', 'files']);
 
         // Apply search filter if search term is provided
@@ -27,10 +27,17 @@ class AccidentController extends Controller
             $query->whereBetween('accident_date', [$request->start_date, $request->end_date]);
         }
 
-        $accidents = $query->paginate($perPage);
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $accidents = $query->get(); // Fetch all records as a collection
+        } else {
+            $perPage = (int) $perPage; // Ensure $perPage is an integer
+            $accidents = $query->paginate($perPage); // Paginate with the provided per_page value
+        }
+
         $vehicles = VehicleDetail::all();
 
-        return view('backend.service-management.accidents.index', compact('accidents', 'vehicles'));
+        return view('backend.service-management.accidents.index', compact('accidents', 'vehicles', 'perPage'));
     }
 
 

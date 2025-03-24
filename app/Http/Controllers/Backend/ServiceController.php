@@ -10,6 +10,20 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     // Get the search query and per_page value from the request
+    //     $search = $request->input('search');
+    //     $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+
+    //     // Query the services with search functionality
+    //     $services = Service::when($search, function ($query) use ($search) {
+    //         return $query->where('name', 'like', '%' . $search . '%');
+    //     })->paginate($perPage);
+
+    //     return view('backend.service-management.services-and-jobs.services', compact('services', 'search', 'perPage'));
+    // }
+
     public function index(Request $request)
     {
         // Get the search query and per_page value from the request
@@ -17,9 +31,16 @@ class ServiceController extends Controller
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
 
         // Query the services with search functionality
-        $services = Service::when($search, function ($query) use ($search) {
+        $query = Service::when($search, function ($query) use ($search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        })->paginate($perPage);
+        });
+
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $services = $query->get(); // Fetch all records as a collection
+        } else {
+            $services = $query->paginate((int) $perPage); // Paginate with the provided per_page value
+        }
 
         return view('backend.service-management.services-and-jobs.services', compact('services', 'search', 'perPage'));
     }
@@ -54,18 +75,42 @@ class ServiceController extends Controller
         return redirect()->back()->with('success', 'Service deleted successfully');
     }
 
+    // public function job(Request $request)
+    // {
+    //     $search = $request->input('search');
+    //     $perPage = $request->input('per_page', 10);
+
+    //     $services = Service::all();
+    //     $serviceJobs = ServiceJob::when($search, function ($query) use ($search) {
+    //         return $query->where('name', 'like', '%' . $search . '%')
+    //             ->orWhereHas('service', function ($query) use ($search) {
+    //                 $query->where('name', 'like', '%' . $search . '%');
+    //             });
+    //     })->paginate($perPage);
+
+    //     return view('backend.service-management.services-and-jobs.job', compact('serviceJobs', 'services', 'search', 'perPage'));
+    // }
+
+
     public function job(Request $request)
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
 
         $services = Service::all();
-        $serviceJobs = ServiceJob::when($search, function ($query) use ($search) {
+        $query = ServiceJob::when($search, function ($query) use ($search) {
             return $query->where('name', 'like', '%' . $search . '%')
-                         ->orWhereHas('service', function ($query) use ($search) {
-                             $query->where('name', 'like', '%' . $search . '%');
-                         });
-        })->paginate($perPage);
+                ->orWhereHas('service', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        });
+
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $serviceJobs = $query->get(); // Fetch all records as a collection
+        } else {
+            $serviceJobs = $query->paginate((int) $perPage); // Paginate with the provided per_page value
+        }
 
         return view('backend.service-management.services-and-jobs.job', compact('serviceJobs', 'services', 'search', 'perPage'));
     }

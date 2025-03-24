@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\SchedulesController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\AccidentController;
+use App\Http\Controllers\Backend\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -143,6 +144,31 @@ Route::middleware([
     });
 });
 
+
+
+Route::middleware([
+    'auth:web',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/permissions', [UserManagementController::class, 'permission'])->name('permissions');
+        Route::post('/permissions/store', [UserManagementController::class, 'permissionStore'])->name('permissions.store');
+        Route::put('/permissions/update/{id}', [UserManagementController::class, 'permissionUpdate'])->name('permissions.update');
+        Route::delete('/permissions/delete/{id}', [UserManagementController::class, 'permissionDestroy'])->name('permissions.delete');
+
+        Route::get('/roles', [UserManagementController::class, 'role'])->name('roles');
+        Route::post('/roles/store', [UserManagementController::class, 'roleStore'])->name('roles.store');
+        Route::put('/roles/update/{id}', [UserManagementController::class, 'roleUpdate'])->name('roles.update');
+        Route::delete('/roles/delete/{id}', [UserManagementController::class, 'roleDestroy'])->name('roles.delete');
+
+        Route::get('/users', [UserManagementController::class, 'user'])->name('users');
+        Route::post('/users/store', [UserManagementController::class, 'userStore'])->name('users.store');
+        Route::put('/users/update/{id}', [UserManagementController::class, 'userUpdate'])->name('users.update');
+        Route::delete('/users/{id}', [UserManagementController::class, 'userDestroy'])->name('users.delete');
+    });
+});
 Route::get('/link-expired', function () {
     return view('backend.vehicle-management.pages.link-expired');
 })->name('link.expired');

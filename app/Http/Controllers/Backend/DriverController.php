@@ -18,43 +18,78 @@ use Spatie\Permission\Models\Role;
 class DriverController extends Controller
 {
 
+    // public function index(Request $request)
+    // {
+    //     $roles   = Role::get();
+    //     $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
+    //     $search  = $request->input('search'); // Capture the search input
+    //     $vehicles = VehicleDetail::get();
+
+    //     // Fetch users with the role of 'driver' and apply search functionality
+    //     $users = $perPage === 'all'
+    //         ? User::with('roles')->whereHas('roles', function ($query) {
+    //             $query->where('name', 'driver');
+    //         })
+    //         ->when($search, function ($query, $search) {
+    //             $query->where(function ($query) use ($search) {
+    //                 $query->where('name', 'LIKE', "%{$search}%")
+    //                     ->orWhere('email', 'LIKE', "%{$search}%")
+    //                     ->orWhere('contact', 'LIKE', "%{$search}%")
+    //                     ->orWhere('licence_no', 'LIKE', "%{$search}%");
+    //             });
+    //         })->get() // Fetch all users if "all" is selected
+    //         : User::with('roles')->whereHas('roles', function ($query) {
+    //             $query->where('name', 'driver');
+    //         })
+    //         ->when($search, function ($query, $search) {
+    //             $query->where(function ($query) use ($search) {
+    //                 $query->where('name', 'LIKE', "%{$search}%")
+    //                     ->orWhere('email', 'LIKE', "%{$search}%")
+    //                     ->orWhere('contact', 'LIKE', "%{$search}%")
+    //                     ->orWhere('licence_no', 'LIKE', "%{$search}%");
+    //             });
+    //         })->paginate((int) $perPage); // Paginate users if needed
+    //     foreach ($users as $user) {
+    //         $user->files = DriverFile::where('user_id', $user->id)->get();
+    //     }
+
+    //     return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
+    // }
+
+
     public function index(Request $request)
-    {
-        $roles   = Role::get();
-        $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
-        $search  = $request->input('search'); // Capture the search input
-        $vehicles = VehicleDetail::get();
+{
+    $roles   = Role::get();
+    $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
+    $search  = $request->input('search'); // Capture the search input
+    $vehicles = VehicleDetail::get();
 
-        // Fetch users with the role of 'driver' and apply search functionality
-        $users = $perPage === 'all'
-            ? User::with('roles')->whereHas('roles', function ($query) {
-                $query->where('name', 'driver');
-            })
-            ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('email', 'LIKE', "%{$search}%")
-                        ->orWhere('contact', 'LIKE', "%{$search}%")
-                        ->orWhere('licence_no', 'LIKE', "%{$search}%");
-                });
-            })->get() // Fetch all users if "all" is selected
-            : User::with('roles')->whereHas('roles', function ($query) {
-                $query->where('name', 'driver');
-            })
-            ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('email', 'LIKE', "%{$search}%")
-                        ->orWhere('contact', 'LIKE', "%{$search}%")
-                        ->orWhere('licence_no', 'LIKE', "%{$search}%");
-                });
-            })->paginate((int) $perPage); // Paginate users if needed
-        foreach ($users as $user) {
-            $user->files = DriverFile::where('user_id', $user->id)->get();
-        }
-
-        return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
+    // If 'all' is selected, set a very high value for $perPage
+    if ($perPage === 'all') {
+        $perPage = User::count(); // Fetch all users by setting $perPage to the total count
     }
+
+    // Fetch users with the role of 'driver' and apply search functionality
+    $users = User::with('roles')
+        ->whereHas('roles', function ($query) {
+            $query->where('name', 'driver');
+        })
+        ->when($search, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('contact', 'LIKE', "%{$search}%")
+                    ->orWhere('licence_no', 'LIKE', "%{$search}%");
+            });
+        })
+        ->paginate((int) $perPage); // Always paginate, even if $perPage is set to 'all'
+
+    foreach ($users as $user) {
+        $user->files = DriverFile::where('user_id', $user->id)->get();
+    }
+
+    return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
+}
 
     public function edit($id)
     {

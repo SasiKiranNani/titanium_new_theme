@@ -17,7 +17,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookingController extends Controller
 {
-        // public function companyVehicle(Request $request)
+    // public function companyVehicle(Request $request)
     // {
     //     // Get the per_page value from the request or set a default
     //     $perPage = $request->input('per_page', 10); // Default to 10 if not provided
@@ -60,9 +60,9 @@ class BookingController extends Controller
         $query = ServiceBooking::with(['vehicle']);
 
         // Check if any filter is applied
-        $hasSearch    = $request->has('search') && ! empty($request->search);
-        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+        $hasSearch    = $request->has('search') && !empty($request->search);
+        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
 
         // Apply search filter if search term is provided
         if ($hasSearch) {
@@ -76,8 +76,13 @@ class BookingController extends Controller
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
 
-        // Fetch the service bookings with pagination
-        $serviceBooking = $query->paginate($perPage);
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $serviceBooking = $query->get(); // Fetch all records as a collection
+        } else {
+            $perPage = (int) $perPage; // Ensure $perPage is an integer
+            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
+        }
 
         // Fetch other necessary data
         $vehicle     = VehicleDetail::all();
@@ -478,10 +483,11 @@ class BookingController extends Controller
 
         // Start Query with Relationships
         $query = OtherServiceBooking::query();
+
         // Check if any filter is applied
-        $hasSearch    = $request->has('search') && ! empty($request->search);
-        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+        $hasSearch    = $request->has('search') && !empty($request->search);
+        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
 
         // Apply search filter if search term is provided
         if ($hasSearch) {
@@ -493,9 +499,15 @@ class BookingController extends Controller
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
 
-        // Fetch the service bookings with pagination
-        $serviceBooking = $query->paginate($perPage);
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $serviceBooking = $query->get(); // Fetch all records as a collection
+        } else {
+            $perPage = (int) $perPage; // Ensure $perPage is an integer
+            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
+        }
 
+        // Fetch other necessary data
         $timeslots   = TimeSlot::all();
         $services    = Service::all();
         $serviceJobs = ServiceJob::all();
@@ -837,9 +849,9 @@ class BookingController extends Controller
         $query = ServiceBooking::with(['vehicle']);
 
         // Check if any filter is applied
-        $hasSearch    = $request->has('search') && ! empty($request->search);
-        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+        $hasSearch    = $request->has('search') && !empty($request->search);
+        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
 
         // Apply search filter if search term is provided
         if ($hasSearch) {
@@ -850,6 +862,7 @@ class BookingController extends Controller
                     });
             });
         }
+
         // Apply sorting separately
         if ($sortOrder === 'asc') {
             $query->orderBy('created_at', 'asc');
@@ -862,9 +875,13 @@ class BookingController extends Controller
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
 
-
-        // Fetch the service bookings with pagination
-        $serviceBooking = $query->paginate($perPage);
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $serviceBooking = $query->get(); // Fetch all records as a collection
+        } else {
+            $perPage = (int) $perPage; // Ensure $perPage is an integer
+            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
+        }
 
         // Fetch other necessary data
         $vehicle     = VehicleDetail::all();
@@ -899,7 +916,7 @@ class BookingController extends Controller
         if ($hasSearch) {
             $query->where(function ($q) use ($request) {
                 $q->where('reg_no', 'LIKE', "%{$request->search}%")
-                  ->orWhere('repair_order_no', 'LIKE', "%{$request->search}%");
+                    ->orWhere('repair_order_no', 'LIKE', "%{$request->search}%");
             });
         }
 
@@ -907,14 +924,19 @@ class BookingController extends Controller
         if ($hasStartDate && $hasEndDate) {
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
-       // Apply sorting separately
+        // Apply sorting separately
         if ($sortOrder === 'asc') {
             $query->orderBy('created_at', 'asc');
         } else {
             $query->orderBy('created_at', 'desc');
         }
-        // Fetch the service bookings with pagination
-        $serviceBooking = $query->paginate($perPage);
+        // Fetch all records if 'all' is selected, otherwise paginate
+        if ($perPage === 'all') {
+            $serviceBooking = $query->get(); // Fetch all records as a collection
+        } else {
+            $perPage = (int) $perPage; // Ensure $perPage is an integer
+            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
+        }
 
         $timeslots   = TimeSlot::all();
         $services    = Service::all();

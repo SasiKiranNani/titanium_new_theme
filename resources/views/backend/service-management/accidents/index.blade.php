@@ -2,21 +2,6 @@
 
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -76,7 +61,7 @@
                             @if ($accidents->isNotEmpty())
                                 @foreach ($accidents as $accident)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ ($accidents->currentPage() - 1) * $accidents->perPage() + $loop->iteration }}</td>
                                         <td>{{ $accident->accident_date }}</td>
                                         <td>{{ $accident->vehicle->reg_no }}</td>
                                         <td>{{ $accident->insurance_ref }}</td>
@@ -111,36 +96,34 @@
                     </table>
                 </div>
                 <div class="row m-3 justify-content-between">
-                    <!-- Left Side: Per Page Selection -->
-                    <div
-                        class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
-                        <!-- Dropdown for Per Page Selection -->
-                        <form method="GET" action="{{ route('services.accident') }}" class="">
-                            <input type="hidden" name="search" value="{{ request('search') }}">
-                            <input type="hidden" name="start_date" value="{{ request('start_date') }}">
-                            <input type="hidden" name="end_date" value="{{ request('end_date') }}">
-                            <input type="hidden" name="page" value="{{ request('page') }}">
-                            <label for="per_page" class="form-label me-2">Show:</label>
-                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
-                                onchange="this.form.submit()">
-                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                                <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
-                            </select>
-                        </form>
-                    </div>
+                 <!-- Left Side: Per Page Selection -->
+<div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
+    <!-- Dropdown for Per Page Selection -->
+    <form method="GET" action="{{ route('services.accident') }}" class="">
+        <input type="hidden" name="search" value="{{ request('search') }}">
+        <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+        <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+        <input type="hidden" name="page" value="{{ request('page') }}">
+        <label for="per_page" class="form-label me-2">Show:</label>
+        <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
+            onchange="this.form.submit()">
+            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+            <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
+        </select>
+    </form>
+</div>
 
-                    <!-- Right Side: Pagination -->
-                    <div
-                        class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
-                        <div class="dt-paging">
-                            @if ($perPage ?? '' !== 'all')
-                                {{ $accidents->appends(request()->query())->links('pagination::bootstrap-4') }}
-                            @endif
-                        </div>
-                    </div>
+<!-- Right Side: Pagination -->
+<div class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
+    <div class="dt-paging">
+        @if ($perPage !== 'all' && $accidents instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            {{ $accidents->appends(request()->query())->links('pagination::bootstrap-4') }}
+        @endif
+    </div>
+</div>
                 </div>
             </div>
 
@@ -211,31 +194,6 @@
             position: relative;
         }
 
-        .alert-success {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #17a917;
-            color: white;
-        }
-
-        .alert-danger {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #cd1616;
-            color: white;
-        }
-
-        .alert-danger li {
-            list-style-type: none;
-        }
     </style>
 @endsection
 

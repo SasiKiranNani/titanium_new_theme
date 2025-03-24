@@ -2,21 +2,6 @@
 
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-6">
 
@@ -425,32 +410,6 @@
     <style>
         .content-wrapper {
             position: relative;
-        }
-
-        .alert-success {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #17a917;
-            color: white;
-        }
-
-        .alert-danger {
-            position: absolute;
-            top: 0px;
-            right: 20px;
-            padding: 11px !important;
-            width: 30%;
-            z-index: 1;
-            background: #cd1616;
-            color: white;
-        }
-
-        .alert-danger li {
-            list-style-type: none;
         }
 
         #dateInput {

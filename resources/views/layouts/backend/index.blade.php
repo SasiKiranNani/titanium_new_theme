@@ -62,6 +62,23 @@
                 <div class="content-wrapper">
 
 
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <span class="countdown"></span> <!-- Countdown Timer -->
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <span class="countdown"></span> <!-- Countdown Timer -->
+                    </div>
+                @endif
                     <!-- Content -->
                     @yield('content')
                     <!-- / Content -->
