@@ -11,7 +11,8 @@
                     <div class="col-sm-4">
                         <form id="searchForm" action="{{ route('drivers.list') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
-                            <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
+                            <input type="hidden" id="pageInput" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort" value="{{ request('sort') }}">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
                                     placeholder="Search Name / Email / Contact / Licence Number"
@@ -22,7 +23,15 @@
 
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-
+                            <!-- Sorting Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
+                                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                        Descending</option>
+                                </select>
+                            </div>
                             @can('Create Drivers')
                                 <a href="{{ route('drivers.create') }}" class="btn create-new btn-primary">
                                     <span>
@@ -56,7 +65,8 @@
                             @if ($users->isNotEmpty())
                                 @foreach ($users as $user)
                                     <tr class="table-default">
-                                        <td>{{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}</td>
+                                        <td>{{ request('sort_order') == 'desc' ? $users->total() - (($users->currentPage() - 1) * $users->perPage() + $loop->iteration - 1) : ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>
                                             {{ \Illuminate\Support\Str::limit($user->name, 10, '...') }}
                                             <!-- Limit name to 10 characters -->
@@ -154,6 +164,7 @@
                         <form method="GET" action="{{ route('drivers.list') }}" class="ms-3">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort" value="{{ request('sort') }}">
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
                                 onchange="this.form.submit()">
@@ -463,6 +474,19 @@
                 document.getElementById("pageInput").value = 1; // Reset to page 1 on new search
                 document.getElementById("searchForm").submit();
             }
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('per_page', "{{ request('per_page') }}");
+            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            window.location.href = url.toString();
         });
     </script>
 

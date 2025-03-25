@@ -12,6 +12,16 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                            <!-- Sorting Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
+                                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                        Descending</option>
+                                </select>
+                            </div>
+
                             @can('Create Services')
                                 <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
@@ -39,7 +49,7 @@
                                 @foreach ($services as $service)
                                     <tr>
                                         <td class="text-center">
-                                            {{ ($services->currentPage() - 1) * $services->perPage() + $loop->iteration }}
+                                            {{ request('sort_order') == 'desc' ? $services->total() - (($services->currentPage() - 1) * $services->perPage() + $loop->iteration - 1) : ($services->currentPage() - 1) * $services->perPage() + $loop->iteration }}
                                         </td>
                                         <td class="text-center">{{ $service->name }}</td>
 
@@ -88,7 +98,7 @@
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
                         <!-- Dropdown for Per Page Selection -->
                         <form method="GET" action="{{ route('services.service') }}">
-                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
                             <input type="hidden" name="page" value="1">
                             <!-- Reset page to 1 when changing per_page -->
                             <label for="per_page" class="form-label me-2">Show:</label>
@@ -336,5 +346,17 @@
                 format_tags: 'p;h1;h2;h3;h4;h5;h6', // Allow heading tags from h1-h6
             });
         }
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            window.location.href = url.toString();
+        });
     </script>
 @endsection

@@ -27,7 +27,11 @@ class AccidentController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
-        $query = VehicleAccident::with(['vehicle', 'files']);
+        $sortOrder = in_array($request->input('sort_order'), ['asc', 'desc']) ? $request->input('sort_order') : 'asc';
+        $search = $request->input('search', '');
+        $startDate = $request->input('start_date', '');
+        $endDate = $request->input('end_date', '');
+        $query = VehicleAccident::with(['vehicle', 'files'])->orderBy('accident_date', $sortOrder);
 
         // Apply search filter if search term is provided
         if ($request->filled('search')) {
@@ -51,7 +55,7 @@ class AccidentController extends Controller implements HasMiddleware
 
         $vehicles = VehicleDetail::all();
 
-        return view('backend.service-management.accidents.index', compact('accidents', 'vehicles', 'perPage'));
+        return view('backend.service-management.accidents.index', compact('accidents', 'vehicles', 'perPage', 'sortOrder'));
     }
 
 

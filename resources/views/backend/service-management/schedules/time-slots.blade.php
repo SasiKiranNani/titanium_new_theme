@@ -12,6 +12,15 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                            {{-- <!-- Sorting Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
+                                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                        Descending</option>
+                                </select>
+                            </div> --}}
                             @can('Create Timeslot')
                                 <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#modaldemo8"><i class="icon-base ti tabler-plus icon-sm"></i>Add
@@ -39,7 +48,7 @@
                             @if ($timeslots->isNotEmpty())
                                 @foreach ($timeslots as $timeslot)
                                     <tr>
-                                        <td>{{ ($timeslots->currentPage() - 1) * $timeslots->perPage() + $loop->iteration }}
+                                        <td>{{ request('sort_order') == 'desc' ? $timeslots->total() - (($timeslots->currentPage() - 1) * $timeslots->perPage() + $loop->iteration - 1) : ($timeslots->currentPage() - 1) * $timeslots->perPage() + $loop->iteration }}
                                         </td>
                                         <td>{{ $timeslot->time_slot }}</td>
                                         <td>
@@ -443,4 +452,18 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    {{-- <script>
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            window.location.href = url.toString();
+        });
+    </script> --}}
 @endsection

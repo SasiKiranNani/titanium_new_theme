@@ -12,12 +12,15 @@
                     <div class="col-sm-4">
                         <form id="searchForm" action="{{ route('users') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
-                            <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" name="role" value="{{ request('role') }}">
+                            <input type="hidden" id="pageInput" name="page" value="1">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
                                     placeholder="Search Name or Email" value="{{ request('search') }}">
                             </div>
                         </form>
+
                     </div>
 
                     <div class="col-sm-8">
@@ -142,9 +145,10 @@
                         <form method="GET" action="{{ route('users') }}" class="ms-3">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" name="role" value="{{ request('role') }}">
                             <label for="per_page" class="form-label me-2">Show:</label>
-                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
-                                onchange="this.form.submit()">
+                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto">
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -152,6 +156,7 @@
                                 <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
                             </select>
                         </form>
+
                     </div>
 
                     <!-- Right Side: Pagination -->

@@ -69,17 +69,18 @@ class DriverController extends Controller implements HasMiddleware
 
     public function index(Request $request)
     {
-        $roles   = Role::get();
-        $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
-        $search  = $request->input('search'); // Capture the search input
+        $roles = Role::get();
+        $perPage = $request->input('per_page', 10); // Default to 10 items per page
+        $search = $request->input('search'); // Capture search input
+        $sortOrder = $request->input('sort_order', 'asc'); // Default sorting order is ascending
         $vehicles = VehicleDetail::get();
 
-        // If 'all' is selected, set a very high value for $perPage
+        // If 'all' is selected, set $perPage to the total count
         if ($perPage === 'all') {
-            $perPage = User::count(); // Fetch all users by setting $perPage to the total count
+            $perPage = User::count();
         }
 
-        // Fetch users with the role of 'driver' and apply search functionality
+        // Fetch users with role 'driver' and apply search & sorting
         $users = User::with('roles')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'driver');
@@ -92,14 +93,16 @@ class DriverController extends Controller implements HasMiddleware
                         ->orWhere('licence_no', 'LIKE', "%{$search}%");
                 });
             })
-            ->paginate((int) $perPage); // Always paginate, even if $perPage is set to 'all'
+            ->orderBy('name', $sortOrder) // Sorting based on 'name' column
+            ->paginate((int) $perPage);
 
         foreach ($users as $user) {
             $user->files = DriverFile::where('user_id', $user->id)->get();
         }
 
-        return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
+        return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search', 'sortOrder'));
     }
+
 
     public function edit($id)
     {

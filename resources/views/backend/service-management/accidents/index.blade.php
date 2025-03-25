@@ -8,12 +8,13 @@
 
             <div class="card">
                 <div class="row card-header">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <form id="searchForm" action="{{ route('services.accident') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
 
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
@@ -21,11 +22,12 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <form id="dateFilterForm" action="{{ route('services.accident') }}" method="GET">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
 
                             <div class="icon-form mb-3 mb-sm-0 d-flex">
                                 <input type="text" id="dateRangePicker" class="form-control"
@@ -36,9 +38,18 @@
                         </form>
 
                     </div>
-
-
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
+                        <!-- Sorting Dropdown -->
+                        <div class="dropdown me-2">
+                            <select id="sortOrder" class="form-select">
+                                <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                    Ascending</option>
+                                <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                    Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                             @can('Create Accident')
                                 <a href="{{ route('services.accident.create') }}" class="btn btn-primary"></i>Add
@@ -120,6 +131,8 @@
                             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
                                 onchange="this.form.submit()">
@@ -275,6 +288,19 @@
                 $('#searchForm').submit(); // Ensure correct form submission
             });
 
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('start_date', "{{ request('start_date') }}");
+            url.searchParams.set('end_date', "{{ request('end_date') }}");
+
+            window.location.href = url.toString();
         });
     </script>
 @endsection

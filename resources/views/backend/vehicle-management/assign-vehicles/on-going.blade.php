@@ -7,12 +7,14 @@
 
             <div class="card">
                 <div class="row card-header">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <form id="searchForm" action="{{ route('assign.vehicle.ongoing') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" name="category_id" value="{{ request('category_id') }}">
 
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
@@ -25,6 +27,10 @@
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="page" value="{{ request('page') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                            <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" name="end_date" value="{{ request('end_date') }}">
 
                             <div class="icon-form mb-3 mb-sm-0 d-flex">
                                 <input type="text" id="dateRangePicker" class="form-control"
@@ -37,8 +43,19 @@
                         </form>
 
                     </div>
-                    <div class="col-sm-4">
-                        <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                    <div class="col-sm-2">
+                        <!-- Sorting Dropdown -->
+                        <div class="dropdown me-2">
+                            <select id="sortOrder" class="form-select">
+                                <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                    Ascending</option>
+                                <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                    Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                             <form method="GET" action="{{ route('assign.vehicle.ongoing') }}">
                                 <!-- Replace with your route -->
                                 <div class="dropdown me-2">
@@ -58,6 +75,8 @@
                                 <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                                 <input type="hidden" name="page" value="{{ request('page') }}">
                                 <input type="hidden" name="search" value="{{ request('search') }}">
+                                <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+
                             </form>
                         </div>
                     </div>
@@ -86,25 +105,26 @@
                             @if ($ongoingVehicles->isNotEmpty())
                                 @foreach ($ongoingVehicles as $vehicle)
                                     <tr>
-                                        <td>{{ ($ongoingVehicles->currentPage() - 1) * $ongoingVehicles->perPage() + $loop->iteration }}
+                                        <td>{{ request('sort_order') == 'desc' ? $ongoingVehicles->total() - (($ongoingVehicles->currentPage() - 1) * $ongoingVehicles->perPage() + $loop->iteration - 1) : ($ongoingVehicles->currentPage() - 1) * $ongoingVehicles->perPage() + $loop->iteration }}
                                         </td>
                                         <td>{{ $vehicle->user->name ?? '' }}</td>
                                         <td>{{ $vehicle->reg_no ?? '' }}</td>
-                                        <td>{{ $vehicle->rent_start_date ?? '' }}
+                                        {{-- <td>{{ $vehicle->rent_start_date ?? '' }}
                                         </td>
                                         <td>{{ $vehicle->rent_end_date ?? '' }}
-                                        </td>
-                                        {{-- <td>{{ \Carbon\Carbon::parse($vehicle->rent_start_date)->format('d M Y') ?? '' }}
+                                        </td> --}}
+                                        <td>{{ \Carbon\Carbon::parse($vehicle->rent_start_date)->format('d M Y') ?? '' }}
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($vehicle->rent_end_date)->format('d M Y') ?? '' }}
-                                        </td> --}}
+                                        </td>
                                         <td>{{ $vehicle->total_price ?? '' }}</td>
                                         <td>{{ $vehicle->deposit_amount ?? '' }}</td>
                                         <td>{{ $vehicle->outstanding_amount ?? '' }}</td>
                                         <td>{{ $vehicle->payment_method ?? '' }}</td>
                                         <td>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="customSwitch" checked>
+                                                <input class="form-check-input" type="checkbox" id="customSwitch"
+                                                    checked>
                                             </div>
                                         </td>
                                         @canany(['Edit Allotment', 'Delete Allotment', 'View Signed Agreement'])
@@ -166,6 +186,8 @@
                             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
                                 onchange="this.form.submit()">
@@ -579,6 +601,22 @@
                 url.searchParams.delete("end_date");
                 window.location.href = url.toString(); // Reload with new parameters
             });
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('start_date', "{{ request('start_date') }}");
+            url.searchParams.set('end_date', "{{ request('end_date') }}");
+            url.searchParams.set('category_id', "{{ request('category_id') }}");
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            window.location.href = url.toString();
         });
     </script>
     <script>

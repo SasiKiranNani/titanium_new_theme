@@ -20,13 +20,14 @@
                         <div class="col-sm-8">
                             <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                                 <div class="dropdown me-2">
-                                    <select name="sort_order" id="sortOrder" class="form-select"
-                                        onchange="this.form.submit()">
+                                    <select id="sortOrder" name="sort_order" class="form-select">
                                         <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
                                             Ascending</option>
                                         <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
                                             Descending</option>
                                     </select>
+                                    <input type="hidden" name="per_page" value="{{ request('per_page') }}">
+                                    <input type="hidden" name="page" value="{{ request('page') }}">
                                 </div>
                                 <div class="col-sm-4">
                                     <!-- Search Form -->
@@ -113,6 +114,10 @@
                         <form method="GET" action="{{ route('services.company-vehicle.invoice') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" id="startDate" name="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" id="endDate" name="end_date" value="{{ request('end_date') }}">
+
                             <!-- Reset page to 1 when changing per_page -->
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
@@ -153,7 +158,8 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/apex-charts/apex-charts.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/swiper/swiper.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/fonts/flag-icons.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/css/pages/cards-advance.css') }}" />
     <script src="{{ asset('backend/vendor/js/helpers.js') }}"></script>
@@ -240,6 +246,18 @@
             $('#searchInput').on('blur', function() {
                 $('#filterForm').submit();
             });
+        });
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('start_date', "{{ request('start_date') }}");
+            url.searchParams.set('end_date', "{{ request('end_date') }}");
+
+            window.location.href = url.toString();
         });
     </script>
 @endsection

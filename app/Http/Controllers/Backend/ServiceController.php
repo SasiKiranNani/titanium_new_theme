@@ -48,11 +48,12 @@ class ServiceController extends Controller implements HasMiddleware
         // Get the search query and per_page value from the request
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $sortOrder = $request->input('sort_order', 'asc');
 
         // Query the services with search functionality
         $query = Service::when($search, function ($query) use ($search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        });
+        })->orderBy('name', $sortOrder);
 
         // Fetch all records if 'all' is selected, otherwise paginate
         if ($perPage === 'all') {
@@ -115,6 +116,7 @@ class ServiceController extends Controller implements HasMiddleware
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
+        $sortOrder = $request->input('sort_order', 'asc');
 
         $services = Service::all();
         $query = ServiceJob::when($search, function ($query) use ($search) {
@@ -122,7 +124,7 @@ class ServiceController extends Controller implements HasMiddleware
                 ->orWhereHas('service', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 });
-        });
+        })->orderBy('name', $sortOrder);
 
         // Fetch all records if 'all' is selected, otherwise paginate
         if ($perPage === 'all') {
@@ -131,7 +133,7 @@ class ServiceController extends Controller implements HasMiddleware
             $serviceJobs = $query->paginate((int) $perPage); // Paginate with the provided per_page value
         }
 
-        return view('backend.service-management.services-and-jobs.job', compact('serviceJobs', 'services', 'search', 'perPage'));
+        return view('backend.service-management.services-and-jobs.job', compact('serviceJobs', 'services', 'search', 'perPage', 'sortOrder'));
     }
 
     public function jobStore(Request $request)

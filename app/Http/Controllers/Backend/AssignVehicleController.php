@@ -35,6 +35,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $categoryId = $request->input('category_id');
+        $sortOrder = $request->input('sort_order', 'asc');
 
         // Update rented status dynamically
         AssignVehicle::all()->each->updateRentedStatus();
@@ -55,13 +56,13 @@ class AssignVehicleController extends Controller implements HasMiddleware
             ->with(['user:id,name', 'vehicle:id,rented'])
             ->where('rented', 0)
             ->where('rent_start_date', '>', now())
-            ->orderBy('rent_start_date', 'asc');
+            ->orderBy('rent_start_date', $sortOrder);
 
-            if ($categoryId) {
-                $query->whereHas('vehicle', function ($query) use ($categoryId) {
-                    $query->where('category_id', $categoryId);
-                });
-            }
+        if ($categoryId) {
+            $query->whereHas('vehicle', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
 
         if ($search) {
             $query->where(function ($query) use ($search) {
@@ -83,7 +84,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $users = User::all();
         $categories = Category::all(); // Fetch all categories
 
-        return view('backend.vehicle-management.assign-vehicles.list', compact('upcomingVehicles', 'perPage', 'users', 'search', 'startDate', 'endDate', 'categoryId', 'categories'));
+        return view('backend.vehicle-management.assign-vehicles.list', compact('upcomingVehicles', 'perPage', 'users', 'search', 'startDate', 'endDate', 'categoryId', 'categories', 'sortOrder'));
     }
 
 
@@ -94,6 +95,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $categoryId = $request->input('category_id');
+        $sortOrder = $request->input('sort_order', 'asc'); // Default sorting order
 
         // Update rented status dynamically
         AssignVehicle::all()->each->updateRentedStatus();
@@ -115,7 +117,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
             ->where('rented', 1)
             ->where('rent_start_date', '<=', now())
             ->where('rent_end_date', '>=', now())
-            ->orderBy('rent_start_date', 'asc'); // Order by rent_start_date in ascending order
+            ->orderBy('rent_start_date', $sortOrder); // Order by rent_start_date in ascending order
 
         // Filter by category if selected
         if ($categoryId) {
@@ -144,7 +146,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $users = User::select('id', 'name')->get();
         $categories = Category::all(); // Fetch all categories
 
-        return view('backend.vehicle-management.assign-vehicles.on-going', compact('ongoingVehicles', 'perPage', 'users', 'startDate', 'endDate', 'search', 'categoryId', 'categories'));
+        return view('backend.vehicle-management.assign-vehicles.on-going', compact('ongoingVehicles', 'perPage', 'users', 'startDate', 'endDate', 'search', 'categoryId', 'categories', 'sortOrder'));
     }
 
     public function completed(Request $request)
@@ -155,16 +157,17 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date'); // Start date filter
         $endDate = $request->input('end_date'); // End date filter
         $categoryId = $request->input('category_id');
+        $sortOrder = $request->input('sort_order', 'asc'); // Default sorting order
 
         // Query for completed rentals
         $query = AssignVehicle::where('rent_end_date', '<', now()) // Rent has ended
-            ->orderBy('rent_start_date', 'asc');
+            ->orderBy('rent_start_date', $sortOrder);
 
-            if ($categoryId) {
-                $query->whereHas('vehicle', function ($query) use ($categoryId) {
-                    $query->where('category_id', $categoryId);
-                });
-            }
+        if ($categoryId) {
+            $query->whereHas('vehicle', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            });
+        }
 
         // Apply search filters for username and registration number
         if ($search) {
@@ -191,7 +194,7 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $users = User::all();
         $categories = Category::all(); // Fetch all categories
 
-        return view('backend.vehicle-management.assign-vehicles.completed', compact('pastVehicles', 'perPage', 'users', 'search', 'startDate', 'endDate', 'categoryId', 'categories'));
+        return view('backend.vehicle-management.assign-vehicles.completed', compact('pastVehicles', 'perPage', 'users', 'search', 'startDate', 'endDate', 'categoryId', 'categories', 'sortOrder'));
     }
 
     public function update(Request $request, $id)

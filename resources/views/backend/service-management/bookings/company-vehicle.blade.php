@@ -29,7 +29,18 @@
                                             value="{{ request('end_date') }}">
                                     </div>
                                 </div>
+                                <!-- Sorting Dropdown -->
+                                <div class="dropdown me-2">
+                                    <select id="sortOrder" class="form-select">
+                                        <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                            Ascending</option>
+                                        <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                            Descending</option>
+                                    </select>
 
+                                    <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+
+                                </div>
                                 @can('Create Company Vehicle Bookings')
                                     <a href="{{ route('services.company-vehicle.create') }}" class="btn btn-primary"></i>Add
                                         Servicing Details
@@ -55,8 +66,12 @@
                                 <th class="text-start">Paid Amount</th>
                                 <th class="text-start">Due Amount</th>
                                 <th class="text-start">Total</th>
-                                @canany(['Edit Company Vehicle Bookings', 'Delete Company Vehicle Bookings',
-                                    'Company Vehicle Invoice'])
+                                @canany([
+                                    'Edit Company Vehicle Bookings',
+                                    'Delete Company Vehicle Bookings',
+                                    'Company
+                                    Vehicle Invoice',
+                                    ])
                                     <th class="text-center">Action</th>
                                 @endcanany
 
@@ -66,7 +81,7 @@
                             @if ($serviceBooking->isNotEmpty())
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
-                                        <td>{{ ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}
+                                        <td>{{ request('sort_order') == 'desc' ? $serviceBooking->total() - (($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration - 1) : ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}
                                         </td> <!-- Serial Number -->
                                         {{-- <td>{{ $booking->repair_order_no }}</td> --}}
                                         <td>{{ $booking->date }} / {{ $booking->timeSlot->time_slot }}</td>
@@ -141,6 +156,10 @@
                         <form method="GET" action="{{ route('services.company-vehicle') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                            <input type="hidden" id="startDate" name="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" id="endDate" name="end_date" value="{{ request('end_date') }}">
+
                             <!-- Reset page to 1 when changing per_page -->
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
@@ -305,6 +324,20 @@
             $('#searchInput').on('blur', function() {
                 $('#filterForm').submit();
             });
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('start_date', "{{ request('start_date') }}");
+            url.searchParams.set('end_date', "{{ request('end_date') }}");
+
+            window.location.href = url.toString();
         });
     </script>
 @endsection

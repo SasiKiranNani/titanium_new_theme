@@ -79,36 +79,32 @@ class BookingController extends Controller implements HasMiddleware
 
     public function companyVehicle(Request $request)
     {
-        // Get the per_page value from the request or set a default
-        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        $perPage = $request->input('per_page', 10);
+        $sortOrder = in_array($request->input('sort_order'), ['asc', 'desc']) ? $request->input('sort_order') : 'asc';
+        $search = $request->input('search', '');
+        $startDate = $request->input('start_date', '');
+        $endDate = $request->input('end_date', '');
 
         // Start Query with Relationships
         $query = ServiceBooking::with(['vehicle']);
 
-        // Check if any filter is applied
-        $hasSearch    = $request->has('search') && !empty($request->search);
-        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
-
-        // Apply search filter if search term is provided
-        if ($hasSearch) {
-            $query->whereHas('vehicle', function ($q) use ($request) {
-                $q->where('reg_no', 'LIKE', "%{$request->search}%");
+        // Apply search filter
+        if (!empty($search)) {
+            $query->whereHas('vehicle', function ($q) use ($search) {
+                $q->where('reg_no', 'LIKE', "%$search%");
             });
         }
 
-        // Apply date range filter if both start_date and end_date are provided
-        if ($hasStartDate && $hasEndDate) {
-            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        // Apply date range filter
+        if (!empty($startDate) && !empty($endDate)) {
+            $query->whereBetween('date', [$startDate, $endDate]);
         }
 
+        // Apply sorting
+        $query->orderBy('date', $sortOrder);
+
         // Fetch all records if 'all' is selected, otherwise paginate
-        if ($perPage === 'all') {
-            $serviceBooking = $query->get(); // Fetch all records as a collection
-        } else {
-            $perPage = (int) $perPage; // Ensure $perPage is an integer
-            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
-        }
+        $serviceBooking = ($perPage === 'all') ? $query->get() : $query->paginate((int) $perPage);
 
         // Fetch other necessary data
         $vehicle     = VehicleDetail::all();
@@ -116,14 +112,17 @@ class BookingController extends Controller implements HasMiddleware
         $services    = Service::all();
         $serviceJobs = ServiceJob::all();
 
-        // Prepare an array to hold miscellaneous items for each booking
+        // Prepare miscellaneous items
         $miscellaneousItems = [];
         foreach ($serviceBooking as $booking) {
-            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
+            $miscellaneousIds = explode(',', $booking->miscellaneous);
             $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
         }
 
-        return view('backend.service-management.bookings.company-vehicle', compact('serviceBooking', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.service-management.bookings.company-vehicle', compact(
+            'serviceBooking', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems',
+            'perPage', 'sortOrder', 'search', 'startDate', 'endDate'
+        ));
     }
 
     public function createCompanyVehicle()
@@ -504,49 +503,50 @@ class BookingController extends Controller implements HasMiddleware
 
     public function otherVehicle(Request $request)
     {
-        // Get the per_page value from the request or set a default
-        $perPage = $request->input('per_page', 10); // Default to 10 if not provided
+        // Get pagination value or set a default
+        $perPage = $request->input('per_page', 10);
+        $sortOrder = in_array($request->input('sort_order'), ['asc', 'desc']) ? $request->input('sort_order') : 'asc';
+        $search = $request->input('search', '');
+        $startDate = $request->input('start_date', '');
+        $endDate = $request->input('end_date', '');
 
-        // Start Query with Relationships
+        // Start Query
         $query = OtherServiceBooking::query();
 
-        // Check if any filter is applied
-        $hasSearch    = $request->has('search') && !empty($request->search);
-        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
-
-        // Apply search filter if search term is provided
-        if ($hasSearch) {
-            $query->where('reg_no', 'LIKE', "%{$request->search}%");
+        // Apply search filter
+        if (!empty($search)) {
+            $query->where('reg_no', 'LIKE', "%$search%");
         }
 
-        // Apply date range filter if both start_date and end_date are provided
-        if ($hasStartDate && $hasEndDate) {
-            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        // Apply date range filter
+        if (!empty($startDate) && !empty($endDate)) {
+            $query->whereBetween('date', [$startDate, $endDate]);
         }
+
+        // Apply sorting
+        $query->orderBy('date', $sortOrder);
 
         // Fetch all records if 'all' is selected, otherwise paginate
-        if ($perPage === 'all') {
-            $serviceBooking = $query->get(); // Fetch all records as a collection
-        } else {
-            $perPage = (int) $perPage; // Ensure $perPage is an integer
-            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
-        }
+        $serviceBooking = ($perPage === 'all') ? $query->get() : $query->paginate((int) $perPage);
 
         // Fetch other necessary data
         $timeslots   = TimeSlot::all();
         $services    = Service::all();
         $serviceJobs = ServiceJob::all();
 
-        // Prepare an array to hold miscellaneous items for each booking
+        // Prepare miscellaneous items
         $miscellaneousItems = [];
         foreach ($serviceBooking as $booking) {
-            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
+            $miscellaneousIds = explode(',', $booking->miscellaneous);
             $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
         }
 
-        return view('backend.service-management.bookings.other-vehicle', compact('serviceBooking', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.service-management.bookings.other-vehicle', compact(
+            'serviceBooking', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems',
+            'perPage', 'sortOrder', 'search', 'startDate', 'endDate'
+        ));
     }
+
 
     public function createOtherVehicle()
     {
@@ -871,16 +871,14 @@ class BookingController extends Controller implements HasMiddleware
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
         $sortOrder = $request->input('sort_order', 'asc');
 
-        // Start Query with Relationships
-        $query = ServiceBooking::with(['vehicle']);
+        // Validate and sanitize sort order
+        $sortOrder = in_array(strtolower($sortOrder), ['asc', 'desc']) ? strtolower($sortOrder) : 'asc';
 
-        // Check if any filter is applied
-        $hasSearch    = $request->has('search') && !empty($request->search);
-        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
+        // Start Query with Relationships
+        $query = ServiceBooking::with(['vehicle'])->orderBy('repair_order_no', $sortOrder);
 
         // Apply search filter if search term is provided
-        if ($hasSearch) {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('repair_order_no', 'LIKE', "%{$request->search}%")
                     ->orWhereHas('vehicle', function ($q) use ($request) {
@@ -889,15 +887,8 @@ class BookingController extends Controller implements HasMiddleware
             });
         }
 
-        // Apply sorting separately
-        if ($sortOrder === 'asc') {
-            $query->orderBy('created_at', 'asc');
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
         // Apply date range filter if both start_date and end_date are provided
-        if ($hasStartDate && $hasEndDate) {
+        if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
 
@@ -905,8 +896,8 @@ class BookingController extends Controller implements HasMiddleware
         if ($perPage === 'all') {
             $serviceBooking = $query->get(); // Fetch all records as a collection
         } else {
-            $perPage = (int) $perPage; // Ensure $perPage is an integer
-            $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
+            $perPage = is_numeric($perPage) && $perPage > 0 ? (int) $perPage : 10; // Ensure $perPage is a valid number
+            $serviceBooking = $query->paginate($perPage);
         }
 
         // Fetch other necessary data
@@ -918,12 +909,15 @@ class BookingController extends Controller implements HasMiddleware
         // Prepare an array to hold miscellaneous items for each booking
         $miscellaneousItems = [];
         foreach ($serviceBooking as $booking) {
-            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
-            $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+            $miscellaneousIds = !empty($booking->miscellaneous) ? explode(',', $booking->miscellaneous) : [];
+            $miscellaneousItems[$booking->id] = !empty($miscellaneousIds) ? Miscellaneous::whereIn('id', $miscellaneousIds)->get() : collect();
         }
 
-        return view('backend.invoice-management.company-invoice', compact('serviceBooking', 'sortOrder', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.invoice-management.company-invoice', compact(
+            'serviceBooking', 'sortOrder', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'
+        ));
     }
+
 
     public function otherInvoicePage(Request $request)
     {
@@ -931,12 +925,18 @@ class BookingController extends Controller implements HasMiddleware
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided
         $sortOrder = $request->input('sort_order', 'asc');
 
+        // Ensure sort_order is only 'asc' or 'desc'
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc'; // Default to ascending if an invalid value is passed
+        }
+
         // Start Query with Relationships
         $query = OtherServiceBooking::query();
+
         // Check if any filter is applied
-        $hasSearch    = $request->has('search') && ! empty($request->search);
-        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && ! empty($request->end_date);
+        $hasSearch    = $request->has('search') && !empty($request->search);
+        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
+        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
 
         // Apply search filter if search term is provided
         if ($hasSearch) {
@@ -950,12 +950,10 @@ class BookingController extends Controller implements HasMiddleware
         if ($hasStartDate && $hasEndDate) {
             $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
-        // Apply sorting separately
-        if ($sortOrder === 'asc') {
-            $query->orderBy('created_at', 'asc');
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+
+        // Apply sorting correctly
+        $query->orderBy('repair_order_no', $sortOrder);
+
         // Fetch all records if 'all' is selected, otherwise paginate
         if ($perPage === 'all') {
             $serviceBooking = $query->get(); // Fetch all records as a collection
@@ -971,10 +969,13 @@ class BookingController extends Controller implements HasMiddleware
         // Prepare an array to hold miscellaneous items for each booking
         $miscellaneousItems = [];
         foreach ($serviceBooking as $booking) {
-            $miscellaneousIds                 = explode(',', $booking->miscellaneous);
+            $miscellaneousIds = explode(',', $booking->miscellaneous);
             $miscellaneousItems[$booking->id] = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
         }
 
-        return view('backend.invoice-management.other-invoice', compact('serviceBooking', 'sortOrder', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'));
+        return view('backend.invoice-management.other-invoice', compact(
+            'serviceBooking', 'sortOrder', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'
+        ));
     }
+
 }

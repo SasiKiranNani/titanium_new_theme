@@ -13,6 +13,7 @@
                         <form id="searchForm" action="{{ route('category') }}" method="GET">
                             <input type="hidden" name="per_page" value="{{ request('per_page') }}">
                             <input type="hidden" id="pageInput" name="page" value="{{ request('page', 1) }}">
+                            <input type="hidden" name="sort_by" value="{{ request('sort_by') }}">
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
                                     placeholder="Search Name" value="{{ request('search') }}">
@@ -22,6 +23,16 @@
 
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                            <!-- Sorting Dropdown -->
+                            <div class="dropdown me-2">
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
+                                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                        Descending</option>
+                                </select>
+                            </div>
+
                             @can('Create Categories')
                                 <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#modaldemo8">
@@ -53,7 +64,7 @@
                             @if ($categories->isNotEmpty())
                                 @foreach ($categories as $category)
                                     <tr class="table-default">
-                                        <td>{{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}
+                                        <td>{{ request('sort_order') == 'desc' ? $categories->total() - (($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration - 1) : ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}
                                         </td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
@@ -304,6 +315,19 @@
                 document.getElementById("pageInput").value = 1; // Reset to page 1 on new search
                 document.getElementById("searchForm").submit();
             }
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            // Preserve existing query parameters
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('search', "{{ request('search') }}");
+            url.searchParams.set('per_page', "{{ request('per_page') }}");
+            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            window.location.href = url.toString();
         });
     </script>
 @endsection

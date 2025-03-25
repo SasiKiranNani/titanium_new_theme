@@ -19,13 +19,16 @@
                         <div class="col-sm-8">
                             <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                                 <div class="dropdown me-2">
-                                    <select name="sort_order" id="sortOrder" class="form-select"
-                                        onchange="this.form.submit()">
+                                    <select id="sortOrder" class="form-select">
                                         <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
                                             Ascending</option>
                                         <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
                                             Descending</option>
                                     </select>
+                                    <input type="hidden" name="per_page" value="{{ request('per_page') }}">
+                                    <input type="hidden" name="page" value="{{ request('page') }}">
+                                    <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+
                                 </div>
                                 <div class="col-sm-4">
                                     <!-- Search Form -->
@@ -104,6 +107,9 @@
                         <form method="GET" action="{{ route('services.other-vehicle.invoice') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
                             <input type="hidden" name="page" value="1">
+                            <input type="hidden" id="startDate" name="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" id="endDate" name="end_date" value="{{ request('end_date') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
                             <!-- Reset page to 1 when changing per_page -->
                             <label for="per_page" class="form-label me-2">Show:</label>
                             <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
@@ -232,6 +238,19 @@
             $('#searchInput').on('blur', function() {
                 $('#filterForm').submit();
             });
+        });
+
+        document.getElementById('sortOrder').addEventListener('change', function() {
+            let sortOrder = this.value;
+            let url = new URL(window.location.href);
+
+            url.searchParams.set('sort_order', sortOrder);
+            url.searchParams.set('per_page', document.querySelector("input[name='per_page']").value || "10");
+            url.searchParams.set('search', document.querySelector("input[name='search']").value || "");
+            url.searchParams.set('start_date', document.querySelector("input[name='start_date']").value || "");
+            url.searchParams.set('end_date', document.querySelector("input[name='end_date']").value || "");
+
+            window.location.href = url.toString();
         });
     </script>
 @endsection
