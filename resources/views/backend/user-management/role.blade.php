@@ -148,17 +148,50 @@
                                             </td>
                                         </tr>
                                         @if ($permissions->isNotEmpty())
-                                            @php
-                                                $groupedPermissions = $permissions->groupBy(function ($permission) {
-                                                    return explode(' ', $permission->name)[1];
-                                                });
+                                        @php
+                                        $groupedPermissions = $permissions->groupBy(function ($permission) {
+                                            $parts = explode(' ', $permission->name);
+                                            $type = $parts[1];
 
-                                                $customHeadings = [
-                                                    'permissions' => 'Manage Permissions',
-                                                    'roles' => 'Manage Roles',
-                                                    'vehicle' => 'Vehicle Allotment',
-                                                ];
-                                            @endphp
+                                            // Special case for "Driver Details"
+                                            if (
+                                                str_contains($permission->name, 'Driver Details') ||
+                                                str_contains($permission->name, 'Share From Driver')
+                                            ) {
+                                                return 'Drivers';
+                                            }
+                                            if (
+                                                str_contains($permission->name, 'Vehicles Details') ||
+                                                str_contains($permission->name, 'Share From Vehicle')
+                                            ) {
+                                                return 'Vehicles';
+                                            }
+                                            if (str_contains($permission->name, 'View Signed Agreement')) {
+                                                return 'Allotment';
+                                            }
+                                            if (
+                                                str_contains($permission->name, 'Company Vehicle Invoice')
+                                            ) {
+                                                return 'Company';
+                                            }
+                                            if (str_contains($permission->name, 'Other Vehicle Invoice')) {
+                                                return 'Other';
+                                            }
+
+                                            return $type;
+                                        });
+
+                                        $customHeadings = [
+                                            'Permissions' => 'Manage Permissions',
+                                            'Roles' => 'Manage Roles',
+                                            'Users' => 'Manage Users',
+                                            'Drivers' => 'Driver Details',
+                                            'Vehicles' => 'Vehicle Details',
+                                            'Allotment' => 'Vehicle Allotment',
+                                            'Company' => 'Company Vehicle Bookings',
+                                            'Other' => 'Other Vehicle Bookings',
+                                        ];
+                                    @endphp
 
                                             @foreach ($groupedPermissions as $type => $permissionsGroup)
                                                 <tr>
@@ -256,13 +289,46 @@
                                             @if ($permissions->isNotEmpty())
                                                 @php
                                                     $groupedPermissions = $permissions->groupBy(function ($permission) {
-                                                        return explode(' ', $permission->name)[1];
+                                                        $parts = explode(' ', $permission->name);
+                                                        $type = $parts[1];
+
+                                                        // Special case for "Driver Details"
+                                                        if (
+                                                            str_contains($permission->name, 'Driver Details') ||
+                                                            str_contains($permission->name, 'Share From Driver')
+                                                        ) {
+                                                            return 'Drivers';
+                                                        }
+                                                        if (
+                                                            str_contains($permission->name, 'Vehicles Details') ||
+                                                            str_contains($permission->name, 'Share From Vehicle')
+                                                        ) {
+                                                            return 'Vehicles';
+                                                        }
+                                                        if (str_contains($permission->name, 'View Signed Agreement')) {
+                                                            return 'Allotment';
+                                                        }
+                                                        if (
+                                                            str_contains($permission->name, 'Company Vehicle Invoice')
+                                                        ) {
+                                                            return 'Company';
+                                                        }
+                                                        if (str_contains($permission->name, 'Other Vehicle Invoice')) {
+                                                            return 'Other';
+                                                        }
+
+                                                        return $type;
                                                     });
 
                                                     $customHeadings = [
-                                                        'permissions' => 'Manage Permissions',
-                                                        'roles' => 'Manage Roles',
-                                                        'vehicle' => 'Vehicle Allotment',
+                                                        'Permissions' => 'Manage Permissions',
+                                                        'Roles' => 'Manage Roles',
+                                                        'Users' => 'Manage Users',
+                                                        'Drivers' => 'Driver Details',
+                                                        'Vehicles' => 'Vehicle Details',
+                                                        'Allotment' => 'Vehicle Allotment',
+                                                        'Company' => 'Company Vehicle Bookings',
+                                                        'Other' => 'Other Vehicle Bookings',
                                                     ];
                                                 @endphp
 

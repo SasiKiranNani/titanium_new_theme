@@ -67,6 +67,7 @@ class AccidentController extends Controller implements HasMiddleware
             'vehicle_id' => 'required',
             'accident_date' => 'required',
             'insurance_ref' => 'nullable',
+            'insurance' => 'nullable',
             'description' => 'nullable',
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf,doc,docx|max:2048', // Allow images and documents
         ]);
@@ -76,6 +77,7 @@ class AccidentController extends Controller implements HasMiddleware
         $accident->vehicle_id = $request->vehicle_id;
         $accident->accident_date = $request->accident_date;
         $accident->insurance_ref = $request->insurance_ref;
+        $accident->insurance = $request->insurance;
         $accident->description = $request->description;
         $accident->save();
 
@@ -122,6 +124,7 @@ class AccidentController extends Controller implements HasMiddleware
             'vehicle_id' => 'required',
             'accident_date' => 'required',
             'insurance_ref' => 'nullable',
+            'insurance' => 'nullable',
             'description' => 'nullable',
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf,doc,docx|max:2048', // Allow images and documents
         ]);
@@ -130,6 +133,7 @@ class AccidentController extends Controller implements HasMiddleware
         $accident->vehicle_id = $request->vehicle_id;
         $accident->accident_date = $request->accident_date;
         $accident->insurance_ref = $request->insurance_ref;
+        $accident->insurance = $request->insurance;
         $accident->description = $request->description;
         $accident->save();
 

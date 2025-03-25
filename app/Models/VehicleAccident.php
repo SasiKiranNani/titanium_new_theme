@@ -12,6 +12,7 @@ class VehicleAccident extends Model
         'vehicle_id',
         'accident_date',
         'insurance_ref',
+        'insurance',
         'description',
     ];
 

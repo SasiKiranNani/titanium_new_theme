@@ -49,7 +49,6 @@ Route::middleware([
         Route::delete('/vehicle-files/{id}', [VehicleDetailController::class, 'vehicleFileDestroy'])->name('vehicle-files.destroy');
 
         Route::post('/share-vehicle', [ShareController::class, 'shareVehicle'])->name('vehicle.share');
-        Route::get('/vehicle-details/{id}', [ShareController::class, 'showVehicleDetails'])->name('share.vehicle.details');
 
         Route::get('/vehicle/details/{id}', [VehicleDetailController::class, 'getVehicleDetail'])->name('vehicle.details.id');
         Route::get('/vehicle/details', [VehicleDetailController::class, 'details'])->name('vehicle.details');
@@ -67,9 +66,6 @@ Route::middleware([
         Route::get('/driver/details', [DriverController::class, 'details'])->name('driver.details');
 
         Route::post('/send-drivers-vehicles/email/{id}', [ShareController::class, 'sendUserVehicleEmail'])->name('send.drivers.vehicles.email');
-        Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
-
-        Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
 
         // for assign vehicle pages
         Route::get('/assign-vehicle/upcoming', [AssignVehicleController::class, 'index'])->name('assign.vehicle.list');
@@ -143,6 +139,10 @@ Route::middleware([
         // Service Management Ended
     });
 });
+
+Route::get('/vehicle-details/{id}', [ShareController::class, 'showVehicleDetails'])->name('share.vehicle.details');
+Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
+Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
 
 
 

@@ -17,9 +17,9 @@
 
         <!-- Search -->
         <div class="navbar-nav align-items-center">
-            <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0 d-flex" style="gap: 5px;">
-            <p style="margin: 0px"><b>{{ Auth::user()->name }}</b></p>
-            <p style="margin: 0px">( {{ Auth::user()->roles->pluck('name')->join(', ') }} )</p>
+            <div class="nav-item navbar-search-wrapper px-md-0 px-2 mb-0 d-flex align-items-center" style="gap: 5px; color: #be623f !important;">
+            <p style="margin: 0px"><b style="font-size: 18px">Hi {{ Auth::user()->name }}</b></p>
+            <p style="margin: 0px; padding: 0px;">( {{ Auth::user()->roles->pluck('name')->join(', ') }} )</p>
             </div>
         </div>
 
@@ -48,8 +48,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">John Doe</h6>
-                                    <small class="text-body-secondary">Admin</small>
+                                    <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+                                    <small class="text-body-secondary">{{ Auth::user()->roles->pluck('name')->join(', ') }}</small>
                                 </div>
                             </div>
                         </a>

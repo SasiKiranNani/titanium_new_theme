@@ -78,6 +78,16 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="col-form-label">Insurance <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" name="insurance" id="insurance" class="form-control" value="{{ $accident->insurance }}">
+                                                @error('insurance')
+                                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Description <span

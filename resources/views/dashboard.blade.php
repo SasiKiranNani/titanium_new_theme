@@ -173,7 +173,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: conic-gradient(#7b61ff 0deg, #e0e7ff 0deg);
+            background: conic-gradient(#ff6d00 0deg, #e0e7ff 0deg);
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
             transition: background 0.5s linear;
         }
@@ -316,13 +316,13 @@
 
                     // Update progress bar
                     let gradientValue =
-                        `conic-gradient(#7b61ff ${currentPercentage}%, #e0e7ff ${currentPercentage}% 100%)`;
+                        `conic-gradient(#ff6d00 ${currentPercentage}%, #e0e7ff ${currentPercentage}% 100%)`;
                     progressCircle.style.background = gradientValue;
                 } else {
                     // Ensure the final value is exactly the target percentage, rounded correctly
                     percentageText.textContent = Math.round(percentageTarget) + "%";
                     let gradientValue =
-                        `conic-gradient(#7b61ff ${percentageTarget}%, #e0e7ff ${percentageTarget}% 100%)`;
+                        `conic-gradient(#ff6d00 ${percentageTarget}%, #e0e7ff ${percentageTarget}% 100%)`;
                     progressCircle.style.background = gradientValue;
                     clearInterval(interval);
                 }

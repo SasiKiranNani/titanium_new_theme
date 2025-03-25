@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('vehicle_id')->constrained()->onDelete('cascade');
             $table->date('accident_date');
             $table->string('insurance_ref')->nullable();
+            $table->string('insurance')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
