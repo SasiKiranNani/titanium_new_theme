@@ -10,9 +10,33 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Svg\Tag\Rect;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class UserManagementController extends Controller
+class UserManagementController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Permissions', only: ['permission']),
+            new Middleware('permission:Create Permissions', only: ['permissionStore']),
+            new Middleware('permission:Edit Permissions', only: ['permissionUpdate']),
+            new Middleware('permission:Delete Permissions', only: ['permissionDestroy']),
+
+            // new Middleware('permission:View Roles', only: ['role']),
+            // new Middleware('permission:Create Roles', only: ['roleStore']),
+            // new Middleware('permission:Edit Roles', only: ['roleUpdate']),
+            // new Middleware('permission:Delete Roles', only: ['roleDestroy']),
+
+            new Middleware('permission:View Users', only: ['user']),
+            new Middleware('permission:Create Users', only: ['userStore']),
+            new Middleware('permission:Edit Users', only: ['userUpdate']),
+            new Middleware('permission:Delete Users', only: ['userDestroy']),
+        ];
+    }
+
+
     public function permission(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided

@@ -46,15 +46,18 @@
                                 </select>
                             </div>
 
-                            <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#addPermissionModal">
-                                <span>
-                                    <span class="d-flex align-items-center gap-2">
-                                        <i class="icon-base ti tabler-plus icon-sm"></i>
-                                        <span class="d-none d-sm-inline-block">Create User</span>
+                            @can('Create Users')
+                                <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addPermissionModal">
+                                    <span>
+                                        <span class="d-flex align-items-center gap-2">
+                                            <i class="icon-base ti tabler-plus icon-sm"></i>
+                                            <span class="d-none d-sm-inline-block">Create User</span>
+                                        </span>
                                     </span>
-                                </span>
-                            </a>
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -67,7 +70,10 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Assigned to</th>
-                                <th>Actions</th>
+                                @canany(['Edit Users', 'Delete Users'])
+                                    <th>Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -86,27 +92,36 @@
                                                 @endif
                                             @endforeach
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <!-- Edit Button -->
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editPermissionModal_{{ $user->id }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_user_{{ $user->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                        @canany(['Edit Users', 'Delete Users'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Users')
+                                                            <!-- Edit Button -->
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editPermissionModal_{{ $user->id }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Users')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_user_{{ $user->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else

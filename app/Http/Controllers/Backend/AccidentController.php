@@ -7,9 +7,23 @@ use Illuminate\Http\Request;
 use App\Models\VehicleAccident;
 use App\Models\VehicleAccidentFile;
 use App\Models\VehicleDetail;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AccidentController extends Controller
+class AccidentController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Accident', only: ['index']),
+            new Middleware('permission:Create Accident', only: ['create']),
+            new Middleware('permission:Edit Accident', only: ['edit']),
+            new Middleware('permission:Delete Accident', only: ['destroy']),
+        ];
+    }
+
+
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 if not provided

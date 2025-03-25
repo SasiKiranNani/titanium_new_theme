@@ -12,20 +12,20 @@ use App\Http\Controllers\Backend\SchedulesController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\AccidentController;
 use App\Http\Controllers\Backend\UserManagementController;
+use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
+
     Route::prefix('admin')->group(function () {
 
         // for dashboard page
@@ -172,3 +172,8 @@ Route::middleware([
 Route::get('/link-expired', function () {
     return view('backend.vehicle-management.pages.link-expired');
 })->name('link.expired');
+
+
+Route::get('/redirect', [RedirectController::class, 'index'])->middleware('auth');
+
+Route::get('/', [IndexController::class, 'home'])->name('home');

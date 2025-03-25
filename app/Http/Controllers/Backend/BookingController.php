@@ -14,9 +14,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class BookingController extends Controller
+class BookingController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:View Company Vehicle Bookings', only: ['companyVehicle']),
+            new Middleware('permission:Create Company Vehicle Bookings', only: ['createCompanyVehicle']),
+            new Middleware('permission:Edit Company Vehicle Bookings', only: ['editCompanyVehicle']),
+            new Middleware('permission:Delete Company Vehicle Bookings', only: ['destroyCompanyVehicle']),
+
+            new Middleware('permission:View Other Vehicle Bookings', only: ['otherVehicle']),
+            new Middleware('permission:Create Other Vehicle Bookings', only: ['createOtherVehicle']),
+            new Middleware('permission:Edit Other Vehicle Bookings', only: ['editOtherVehicle']),
+            new Middleware('permission:Delete Other Vehicle Bookings', only: ['destroyOtherVehicle']),
+
+            new Middleware('permission:Company Vehicle Invoice', only: ['companyInvoice']),
+            new Middleware('permission:Other Vehicle Invoice', only: ['otherInvoice']),
+
+            // invoice Management
+            new Middleware('permission:Company Vehicle Invoice Management', only: ['companyInvoicePage']),
+            new Middleware('permission:Other Vehicle Invoice Management', only: ['otherInvoicePage']),
+        ];
+    }
+
+
     // public function companyVehicle(Request $request)
     // {
     //     // Get the per_page value from the request or set a default

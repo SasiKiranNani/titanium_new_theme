@@ -44,14 +44,17 @@
                                 </form>
                             </div>
 
-                            <!-- Create Permission Button -->
-                            <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#addPermissionModal">
-                                <span class="d-flex align-items-center gap-2">
-                                    <i class="icon-base ti tabler-plus icon-sm"></i>
-                                    <span class="d-none d-sm-inline-block">Create permissions</span>
-                                </span>
-                            </a>
+                            @can('Create Permissions')
+                                <!-- Create Permission Button -->
+                                <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addPermissionModal">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <i class="icon-base ti tabler-plus icon-sm"></i>
+                                        <span class="d-none d-sm-inline-block">Create permissions</span>
+                                    </span>
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -62,7 +65,10 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Assigned to</th>
-                                <th>Actions</th>
+                                @canany(['Edit Permissions', 'Delete Permissions'])
+                                    <th>Actions</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
@@ -88,27 +94,36 @@
                                                 @endforeach
                                             </span>
                                         </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <!-- Edit Button -->
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editPermissionModal_{{ $permission->id }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_permission_{{ $permission->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                        @canany(['Edit Permissions', 'Delete Permissions'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Permissions')
+                                                            <!-- Edit Button -->
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editPermissionModal_{{ $permission->id }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Permissions')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_permission_{{ $permission->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -357,7 +372,7 @@
             // Retain existing parameters
             let search = document.querySelector('input[name="search"]').value;
             let perPage = document.querySelector('select[name="per_page"]')
-            .value; // Updated to fetch from select dropdown
+                .value; // Updated to fetch from select dropdown
             let page = 1; // Reset to first page on sorting change
 
             if (search) url.searchParams.set('search', search);

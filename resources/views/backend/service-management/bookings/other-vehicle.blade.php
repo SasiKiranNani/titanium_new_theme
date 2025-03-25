@@ -28,9 +28,13 @@
                                             value="{{ request('end_date') }}">
                                     </div>
                                 </div>
-                                <a href="{{ route('services.other-vehicle.create') }}" class="btn btn-primary"></i>Add
-                                    Servicing Details
-                                </a>
+
+                                @can('Create Other Vehicle Bookings')
+                                    <a href="{{ route('services.other-vehicle.create') }}" class="btn btn-primary"></i>Add
+                                        Servicing Details
+                                    </a>
+                                @endcan
+
                             </div>
                         </div>
                     </div>
@@ -49,14 +53,23 @@
                                 <th class="text-start">Paid Amount</th>
                                 <th class="text-start">Due Amount</th>
                                 <th class="text-start">Total</th>
-                                <th class="text-center">Action</th>
+                                @canany([
+                                    'Other Vehicle Invoice',
+                                    'Edit Other Vehicle Bookings',
+                                    'Delete Other Vehicle
+                                    Bookings',
+                                    ])
+                                    <th class="text-center">Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($serviceBooking->isNotEmpty())
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
-                                        <td>{{ ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}</td> <!-- Serial Number -->
+                                        <td>{{ ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}
+                                        </td> <!-- Serial Number -->
                                         <td>{{ $booking->date }} / {{ $booking->timeSlot->time_slot }}</td>
                                         <td>{{ $booking->reg_no }}</td>
                                         <td>{{ $booking->odometer }}</td>
@@ -72,30 +85,47 @@
                                         <td>{{ number_format($booking->total_paid, 0) }}</td>
                                         <td>{{ number_format($booking->balance_due, 0) }}</td>
                                         <td>{{ number_format($booking->total, 0) }}</td>
-                                        <td class="text-center">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect" target="_blank"
-                                                        href="{{ route('services.other-invoice', $booking->id) }}">
-                                                        <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
-                                                    </a>
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('services.other-vehicle.edit', $booking->id) }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_service_{{ $booking->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                        @canany([
+                                            'Other Vehicle Invoice',
+                                            'Edit Other Vehicle Bookings',
+                                            'Delete Other
+                                            Vehicle Bookings',
+                                            ])
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Other Vehicle Invoice')
+                                                            <a class="dropdown-item waves-effect" target="_blank"
+                                                                href="{{ route('services.other-invoice', $booking->id) }}">
+                                                                <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Edit Other Vehicle Bookings')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('services.other-vehicle.edit', $booking->id) }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
+
+                                                        @can('Delete Other Vehicle Bookings')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_service_{{ $booking->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -205,6 +235,7 @@
         .content-wrapper {
             position: relative;
         }
+
         .modal {
             --bs-modal-width: 40rem !important;
         }

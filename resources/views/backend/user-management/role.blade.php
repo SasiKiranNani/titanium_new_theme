@@ -52,43 +52,53 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-end">
-                                    <a href="javascript:;" data-bs-toggle="modal"
-                                        data-bs-target="#addRoleModal_{{ $role->id }}" class="role-edit-modal">
-                                        <span>Edit Role</span>
-                                    </a>
-                                    <a href="javascript:;" data-bs-toggle="modal"
-                                        data-bs-target="#delete_role_{{ $role->id }}" class="role-delete-modal">
-                                        <span>Delete Role</span>
-                                    </a>
+                                    @can('Edit Roles')
+                                        <a href="javascript:;" data-bs-toggle="modal"
+                                            data-bs-target="#addRoleModal_{{ $role->id }}" class="role-edit-modal">
+                                            <span>Edit Role</span>
+                                        </a>
+                                    @endcan
+
+                                    @can('Delete Roles')
+                                        <a href="javascript:;" data-bs-toggle="modal"
+                                            data-bs-target="#delete_role_{{ $role->id }}" class="role-delete-modal">
+                                            <span>Delete Role</span>
+                                        </a>
+                                    @endcan
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             @endif
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                <div class="card h-100">
-                    <div class="row h-100">
-                        <div class="col-sm-5">
-                            <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-4">
-                                <img src="{{ asset('backend//img/illustrations/add-new-roles.png') }}" class="img-fluid"
-                                    alt="Image" width="83">
+
+            @can('Create Roles')
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card h-100">
+                        <div class="row h-100">
+                            <div class="col-sm-5">
+                                <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-4">
+                                    <img src="{{ asset('backend//img/illustrations/add-new-roles.png') }}" class="img-fluid"
+                                        alt="Image" width="83">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-7">
-                            <div class="card-body text-sm-end text-center ps-sm-0">
-                                <button data-bs-target="#addRoleModal" data-bs-toggle="modal"
-                                    class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role waves-effect waves-light">Add
-                                    New Role</button>
-                                <p class="mb-0">
-                                    Add new role, <br>
-                                    if it doesn't exist.
-                                </p>
+                            <div class="col-sm-7">
+                                <div class="card-body text-sm-end text-center ps-sm-0">
+                                    <button data-bs-target="#addRoleModal" data-bs-toggle="modal"
+                                        class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role waves-effect waves-light">Add
+                                        New Role</button>
+                                    <p class="mb-0">
+                                        Add new role, <br>
+                                        if it doesn't exist.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endcan
+
         </div>
     </div>
 
@@ -124,8 +134,7 @@
                                             <td class="text-nowrap fw-medium">
                                                 Administrator Access
                                                 <i class="icon-base ti tabler-info-circle icon-xs" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top"
-                                                    aria-label="Allows a full access to the system"
+                                                    data-bs-placement="top" aria-label="Allows a full access to the system"
                                                     data-bs-original-title="Allows a full access to the system"></i>
                                             </td>
                                             <td>

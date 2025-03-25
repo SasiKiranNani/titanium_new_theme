@@ -20,9 +20,12 @@
                         <div class="col-sm-8">
                             <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
                                 <div class="dropdown me-2">
-                                    <select name="sort_order" id="sortOrder" class="form-select" onchange="this.form.submit()">
-                                        <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Ascending</option>
-                                        <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                    <select name="sort_order" id="sortOrder" class="form-select"
+                                        onchange="this.form.submit()">
+                                        <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>
+                                            Ascending</option>
+                                        <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
+                                            Descending</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
@@ -55,14 +58,18 @@
                                 <th class="text-start">Paid Amount</th>
                                 <th class="text-start">Due Amount</th>
                                 <th class="text-start">Total</th>
-                                <th class="text-center">Action</th>
+                                @can('Company Vehicle Invoice')
+                                    <th class="text-center">Action</th>
+                                @endcan
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($serviceBooking->isNotEmpty())
                                 @foreach ($serviceBooking as $index => $booking)
                                     <tr>
-                                        <td>{{ request('sort_order') == 'desc' ? $serviceBooking->total() - (($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration - 1) : ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}</td> <!-- Serial Number -->
+                                        <td>{{ request('sort_order') == 'desc' ? $serviceBooking->total() - (($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration - 1) : ($serviceBooking->currentPage() - 1) * $serviceBooking->perPage() + $loop->iteration }}
+                                        </td> <!-- Serial Number -->
                                         {{-- <td>{{ $booking->repair_order_no }}</td> --}}
                                         <td>{{ $booking->repair_order_no }} </td>
                                         <td>{{ $booking->vehicle->reg_no }}</td>
@@ -79,12 +86,15 @@
                                         <td>{{ number_format($booking->total_paid, 0) }}</td>
                                         <td>{{ number_format($booking->balance_due, 0) }}</td>
                                         <td>{{ number_format($booking->total, 0) }}</td>
-                                        <td class="text-center">
-                                            <a class="dropdown-item waves-effect" target="_blank"
-                                                href="{{ route('services.invoice', $booking->id) }}">
-                                                <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
-                                            </a>
-                                        </td>
+                                        @can('Company Vehicle Invoice')
+                                            <td class="text-center">
+                                                <a class="dropdown-item waves-effect" target="_blank"
+                                                    href="{{ route('services.invoice', $booking->id) }}">
+                                                    <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
+                                                </a>
+                                            </td>
+                                        @endcan
+
                                     </tr>
                                 @endforeach
                             @else
@@ -143,8 +153,7 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/apex-charts/apex-charts.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/swiper/swiper.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet"
-        href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+    <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/fonts/flag-icons.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/css/pages/cards-advance.css') }}" />
     <script src="{{ asset('backend/vendor/js/helpers.js') }}"></script>
@@ -162,8 +171,6 @@
         .content-wrapper {
             position: relative;
         }
-
-       
     </style>
 @endsection
 

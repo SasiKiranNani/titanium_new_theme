@@ -40,9 +40,12 @@
 
                     <div class="col-sm-4">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-                            <a href="{{ route('services.accident.create') }}" class="btn btn-primary"></i>Add
-                                Accident
-                            </a>
+                            @can('Create Accident')
+                                <a href="{{ route('services.accident.create') }}" class="btn btn-primary"></i>Add
+                                    Accident
+                                </a>
+                            @endcan
+
                         </div>
                     </div>
                 </div>
@@ -54,37 +57,49 @@
                                 <th>Accident Date</th>
                                 <th>Registration Number</th>
                                 <th>Insurance Reference</th>
-                                <th>Action</th>
+                                @canany(['Edit Accident', 'Delete Accident'])
+                                    <th>Action</th>
+                                @endcanany
+
                             </tr>
                         </thead>
                         <tbody>
                             @if ($accidents->isNotEmpty())
                                 @foreach ($accidents as $accident)
                                     <tr>
-                                        <td>{{ ($accidents->currentPage() - 1) * $accidents->perPage() + $loop->iteration }}</td>
+                                        <td>{{ ($accidents->currentPage() - 1) * $accidents->perPage() + $loop->iteration }}
+                                        </td>
                                         <td>{{ $accident->accident_date }}</td>
                                         <td>{{ $accident->vehicle->reg_no }}</td>
                                         <td>{{ $accident->insurance_ref }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="icon-base ti tabler-dots-vertical"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item waves-effect"
-                                                        href="{{ route('services.accident.edit', $accident->id) }}">
-                                                        <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
-                                                    </a>
+                                        @canany(['Edit Accident', 'Delete Accident'])
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                        data-bs-toggle="dropdown">
+                                                        <i class="icon-base ti tabler-dots-vertical"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @can('Edit Accident')
+                                                            <a class="dropdown-item waves-effect"
+                                                                href="{{ route('services.accident.edit', $accident->id) }}">
+                                                                <i class="icon-base ti tabler-pencil me-1 text-blue"></i> Edit
+                                                            </a>
+                                                        @endcan
 
-                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#delete_accident_{{ $accident->id }}">
-                                                        <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
-                                                    </a>
+                                                        @can('Delete Accident')
+                                                            <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete_accident_{{ $accident->id }}">
+                                                                <i class="icon-base ti tabler-trash me-1 text-danger"></i> Delete
+                                                            </a>
+                                                        @endcan
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcanany
+
                                     </tr>
                                 @endforeach
                             @else
@@ -96,34 +111,36 @@
                     </table>
                 </div>
                 <div class="row m-3 justify-content-between">
-                 <!-- Left Side: Per Page Selection -->
-<div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
-    <!-- Dropdown for Per Page Selection -->
-    <form method="GET" action="{{ route('services.accident') }}" class="">
-        <input type="hidden" name="search" value="{{ request('search') }}">
-        <input type="hidden" name="start_date" value="{{ request('start_date') }}">
-        <input type="hidden" name="end_date" value="{{ request('end_date') }}">
-        <input type="hidden" name="page" value="{{ request('page') }}">
-        <label for="per_page" class="form-label me-2">Show:</label>
-        <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
-            onchange="this.form.submit()">
-            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-            <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
-        </select>
-    </form>
-</div>
+                    <!-- Left Side: Per Page Selection -->
+                    <div
+                        class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
+                        <!-- Dropdown for Per Page Selection -->
+                        <form method="GET" action="{{ route('services.accident') }}" class="">
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+                            <input type="hidden" name="page" value="{{ request('page') }}">
+                            <label for="per_page" class="form-label me-2">Show:</label>
+                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
+                                onchange="this.form.submit()">
+                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
+                            </select>
+                        </form>
+                    </div>
 
-<!-- Right Side: Pagination -->
-<div class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
-    <div class="dt-paging">
-        @if ($perPage !== 'all' && $accidents instanceof \Illuminate\Pagination\LengthAwarePaginator)
-            {{ $accidents->appends(request()->query())->links('pagination::bootstrap-4') }}
-        @endif
-    </div>
-</div>
+                    <!-- Right Side: Pagination -->
+                    <div
+                        class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
+                        <div class="dt-paging">
+                            @if ($perPage !== 'all' && $accidents instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                {{ $accidents->appends(request()->query())->links('pagination::bootstrap-4') }}
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -193,7 +210,6 @@
         .content-wrapper {
             position: relative;
         }
-
     </style>
 @endsection
 

@@ -132,42 +132,126 @@
         @endcanany
 
 
-
-        {{-- Service Management --}}
-        <li class="menu-header small">
-            <span class="menu-header-text" data-i18n="Apps & Pages">Service Management</span>
-        </li>
-
-        @can('View Timeslot')
-            <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
-                <a href="{{ route('time.slots') }}" class="menu-link">
-                    <i class="menu-icon icon-base ti tabler-clock"></i>
-                    <div data-i18n="Dashboards">Time Slot</div>
-                </a>
+        @canany([
+            'View Timeslot',
+            'View Services',
+            'View Jobs',
+            'View Company Vehicle Bookings',
+            'View Other Vehicle
+            Bookings',
+            'View Accident',
+            ])
+            {{-- Service Management --}}
+            <li class="menu-header small">
+                <span class="menu-header-text" data-i18n="Apps & Pages">Service Management</span>
             </li>
-        @endcan
+
+            @can('View Timeslot')
+                <li class="menu-item {{ request()->is('admin/time-slots') ? 'active' : '' }}">
+                    <a href="{{ route('time.slots') }}" class="menu-link">
+                        <i class="menu-icon icon-base ti tabler-clock"></i>
+                        <div data-i18n="Dashboards">Time Slot</div>
+                    </a>
+                </li>
+            @endcan
 
 
-        @canany(['View Services', 'View Jobs'])
+            @canany(['View Services', 'View Jobs'])
+                <li
+                    class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon icon-base ti tabler-briefcase"></i>
+                        <div data-i18n="Users">Services & Jobs</div>
+                    </a>
+                    <ul class="menu-sub">
+                        @can('View Services')
+                            <li class="menu-item {{ request()->is('admin/services/service') ? 'active' : '' }}">
+                                <a href="{{ route('services.service') }}" class="menu-link">
+                                    <div data-i18n="List">Services</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('View Jobs')
+                            <li class="menu-item {{ request()->is('admin/services/job') ? 'active' : '' }}">
+                                <a href="{{ route('services.job') }}" class="menu-link">
+                                    <div data-i18n="List">Jobs</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                    </ul>
+                </li>
+            @endcanany
+
+            @canany(['View Company Vehicle Bookings', 'View Other Vehicle Bookings'])
+                <li
+                    class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon icon-base ti tabler-calendar"></i>
+                        <div data-i18n="Users">Service Bookings</div>
+                    </a>
+                    <ul class="menu-sub">
+                        @can('View Company Vehicle Bookings')
+                            <li class="menu-item {{ request()->is('admin/services/company-vehicle') ? 'active' : '' }}">
+                                <a href="{{ route('services.company-vehicle') }}" class="menu-link">
+                                    <div data-i18n="List">Company Vehicle</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('View Other Vehicle Bookings')
+                            <li class="menu-item {{ request()->is('admin/services/other-vehicle') ? 'active' : '' }}">
+                                <a href="{{ route('services.other-vehicle') }}" class="menu-link">
+                                    <div data-i18n="List">Other Vehicle</div>
+                                </a>
+                            </li>
+                        @endcan
+
+                    </ul>
+                </li>
+            @endcanany
+
+            @can('View Accident')
+                <li class="menu-item {{ request()->is('admin/services/accident') ? 'active' : '' }}">
+                    <a href="{{ route('services.accident') }}" class="menu-link">
+                        <i class="menu-icon icon-base ti tabler-alert-triangle"></i>
+                        <div data-i18n="Dashboards">Accident</div>
+                    </a>
+                </li>
+            @endcan
+        @endcanany
+
+
+
+
+
+        @canany(['Company Vehicle Invoice Management', 'Other Vehicle Invoice Management'])
+
+            {{-- Invoice Management --}}
+            <li class="menu-header small">
+                <span class="menu-header-text" data-i18n="Apps & Pages">Invoice Management</span>
+            </li>
+
             <li
-                class="menu-item {{ request()->is('admin/services/service') || request()->is('admin/services/job') ? 'active open' : '' }}">
+                class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') || request()->is('admin/services/other-vehicle/invoice') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon icon-base ti tabler-briefcase"></i>
-                    <div data-i18n="Users">Services & Jobs</div>
+                    <i class="menu-icon icon-base ti tabler-file-invoice"></i>
+                    <div data-i18n="Users">Service Invoices</div>
                 </a>
                 <ul class="menu-sub">
-                    @can('View Services')
-                        <li class="menu-item {{ request()->is('admin/services/service') ? 'active' : '' }}">
-                            <a href="{{ route('services.service') }}" class="menu-link">
-                                <div data-i18n="List">Services</div>
+                    @can('Company Vehicle Invoice Management')
+                        <li class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') ? 'active' : '' }}">
+                            <a href="{{ route('services.company-vehicle.invoice') }}" class="menu-link">
+                                <div data-i18n="List">Company Invoice</div>
                             </a>
                         </li>
                     @endcan
 
-                    @can('View Jobs')
-                        <li class="menu-item {{ request()->is('admin/services/job') ? 'active' : '' }}">
-                            <a href="{{ route('services.job') }}" class="menu-link">
-                                <div data-i18n="List">Jobs</div>
+                    @can('Other Vehicle Invoice Management')
+                        <li class="menu-item {{ request()->is('admin/services/other-vehicle/invoice') ? 'active' : '' }}">
+                            <a href="{{ route('services.other-vehicle.invoice') }}" class="menu-link">
+                                <div data-i18n="List">Other Invoice</div>
                             </a>
                         </li>
                     @endcan
@@ -176,88 +260,48 @@
             </li>
         @endcanany
 
+        @canany(['View Users', 'View Roles', 'View Permissions'])
+            {{-- user management --}}
+            <li class="menu-header small">
+                <span class="menu-header-text" data-i18n="Apps & Pages">User Management</span>
+            </li>
 
-        <li
-            class="menu-item {{ request()->is('admin/services/company-vehicle') || request()->is('admin/services/other-vehicle') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-calendar"></i>
-                <div data-i18n="Users">Service Bookings</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/services/company-vehicle') ? 'active' : '' }}">
-                    <a href="{{ route('services.company-vehicle') }}" class="menu-link">
-                        <div data-i18n="List">Company Vehicle</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/services/other-vehicle') ? 'active' : '' }}">
-                    <a href="{{ route('services.other-vehicle') }}" class="menu-link">
-                        <div data-i18n="List">Other Vehicle</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+            <li
+                class="menu-item {{ request()->is('admin/users') || request()->is('admin/roles') || request()->is('admin/permissions') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon icon-base ti tabler-file-invoice"></i>
+                    <div data-i18n="Users">Users, Roles & Permissions</div>
+                </a>
+                <ul class="menu-sub">
 
-        <li class="menu-item {{ request()->is('admin/services/accident') ? 'active' : '' }}">
-            <a href="{{ route('services.accident') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-alert-triangle"></i>
-                <div data-i18n="Dashboards">Accident</div>
-            </a>
-        </li>
+                    @can('View Users')
+                        <li class="menu-item {{ request()->is('admin/users') ? 'active' : '' }}">
+                            <a href="{{ route('users') }}" class="menu-link">
+                                <div data-i18n="List">Users</div>
+                            </a>
+                        </li>
+                    @endcan
 
-        {{-- Invoice Management --}}
-        <li class="menu-header small">
-            <span class="menu-header-text" data-i18n="Apps & Pages">Invoice Management</span>
-        </li>
+                    @can('View Roles')
+                        <li class="menu-item {{ request()->is('admin/roles') ? 'active' : '' }}">
+                            <a href="{{ route('roles') }}" class="menu-link">
+                                <div data-i18n="List">Roles</div>
+                            </a>
+                        </li>
+                    @endcan
 
-        <li
-            class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') || request()->is('admin/services/other-vehicle/invoice') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-file-invoice"></i>
-                <div data-i18n="Users">Service Invoices</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/services/company-vehicle/invoice') ? 'active' : '' }}">
-                    <a href="{{ route('services.company-vehicle.invoice') }}" class="menu-link">
-                        <div data-i18n="List">Company Invoice</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/services/other-vehicle/invoice') ? 'active' : '' }}">
-                    <a href="{{ route('services.other-vehicle.invoice') }}" class="menu-link">
-                        <div data-i18n="List">Other Invoice</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+                    @can('View Permissions')
+                        <li class="menu-item {{ request()->is('admin/permissions') ? 'active' : '' }}">
+                            <a href="{{ route('permissions') }}" class="menu-link">
+                                <div data-i18n="List">Permissions</div>
+                            </a>
+                        </li>
+                    @endcan
 
-        {{-- user management --}}
-        <li class="menu-header small">
-            <span class="menu-header-text" data-i18n="Apps & Pages">User Management</span>
-        </li>
+                </ul>
+            </li>
+        @endcanany
 
-        <li
-            class="menu-item {{ request()->is('admin/users') || request()->is('admin/roles') || request()->is('admin/permissions') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base ti tabler-file-invoice"></i>
-                <div data-i18n="Users">Users, Roles & Permissions</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/users') ? 'active' : '' }}">
-                    <a href="{{ route('users') }}" class="menu-link">
-                        <div data-i18n="List">Users</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/roles') ? 'active' : '' }}">
-                    <a href="{{ route('roles') }}" class="menu-link">
-                        <div data-i18n="List">Roles</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->is('admin/permissions') ? 'active' : '' }}">
-                    <a href="{{ route('permissions') }}" class="menu-link">
-                        <div data-i18n="List">Permissions</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
     </ul>
 
 
