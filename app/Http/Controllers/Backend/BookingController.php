@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller implements HasMiddleware
 {
@@ -120,8 +121,17 @@ class BookingController extends Controller implements HasMiddleware
         }
 
         return view('backend.service-management.bookings.company-vehicle', compact(
-            'serviceBooking', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems',
-            'perPage', 'sortOrder', 'search', 'startDate', 'endDate'
+            'serviceBooking',
+            'vehicle',
+            'timeslots',
+            'services',
+            'serviceJobs',
+            'miscellaneousItems',
+            'perPage',
+            'sortOrder',
+            'search',
+            'startDate',
+            'endDate'
         ));
     }
 
@@ -542,8 +552,16 @@ class BookingController extends Controller implements HasMiddleware
         }
 
         return view('backend.service-management.bookings.other-vehicle', compact(
-            'serviceBooking', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems',
-            'perPage', 'sortOrder', 'search', 'startDate', 'endDate'
+            'serviceBooking',
+            'timeslots',
+            'services',
+            'serviceJobs',
+            'miscellaneousItems',
+            'perPage',
+            'sortOrder',
+            'search',
+            'startDate',
+            'endDate'
         ));
     }
 
@@ -914,10 +932,58 @@ class BookingController extends Controller implements HasMiddleware
         }
 
         return view('backend.invoice-management.company-invoice', compact(
-            'serviceBooking', 'sortOrder', 'vehicle', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'
+            'serviceBooking',
+            'sortOrder',
+            'vehicle',
+            'timeslots',
+            'services',
+            'serviceJobs',
+            'miscellaneousItems',
+            'perPage'
         ));
     }
 
+    public function shareCompanyInvoice(Request $request, $id)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $serviceBooking = ServiceBooking::with([
+            'vehicle',
+            'timeSlot',
+        ])->findOrFail($id);
+
+        // Convert "miscellaneous" to an array (same as in companyInvoice)
+        $miscellaneousIds = array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"')));
+
+        // Fetch miscellaneous items manually
+        $miscellaneousItems = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+
+        $serviceJobs = ServiceJob::with('service')
+            ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
+            ->get();
+
+        // Generate PDF with all required data
+        $pdf = PDF::loadView('backend.service-management.bookings.invoice.invoice', [
+            'serviceBooking' => $serviceBooking,
+            'serviceJobs' => $serviceJobs,
+            'miscellaneousItems' => $miscellaneousItems,
+        ]);
+
+        // Send email
+        Mail::send('emails.company-invoice', [
+            'serviceBooking' => $serviceBooking,
+            'serviceJobs' => $serviceJobs,
+            'miscellaneousItems' => $miscellaneousItems,
+        ], function ($message) use ($serviceBooking, $pdf, $request) {
+            $message->to($request->email)
+                ->subject('Invoice #' . $serviceBooking->repair_order_no)
+                ->attachData($pdf->output(), 'invoice_' . $serviceBooking->repair_order_no . '.pdf');
+        });
+
+        return redirect()->back()->with('success', 'Invoice sent successfully!');
+    }
 
     public function otherInvoicePage(Request $request)
     {
@@ -974,8 +1040,54 @@ class BookingController extends Controller implements HasMiddleware
         }
 
         return view('backend.invoice-management.other-invoice', compact(
-            'serviceBooking', 'sortOrder', 'timeslots', 'services', 'serviceJobs', 'miscellaneousItems', 'perPage'
+            'serviceBooking',
+            'sortOrder',
+            'timeslots',
+            'services',
+            'serviceJobs',
+            'miscellaneousItems',
+            'perPage'
         ));
     }
 
+    public function shareOtherInvoice(Request $request, $id)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $serviceBooking = OtherServiceBooking::with([
+            'timeSlot',
+        ])->findOrFail($id);
+
+        // Convert "miscellaneous" to an array (same as in companyInvoice)
+        $miscellaneousIds = array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"')));
+
+        // Fetch miscellaneous items manually
+        $miscellaneousItems = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+
+        $serviceJobs = ServiceJob::with('service')
+            ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
+            ->get();
+
+        // Generate PDF with all required data
+        $pdf = PDF::loadView('backend.service-management.bookings.invoice.invoice', [
+            'serviceBooking' => $serviceBooking,
+            'serviceJobs' => $serviceJobs,
+            'miscellaneousItems' => $miscellaneousItems,
+        ]);
+
+        // Send email
+        Mail::send('emails.company-invoice', [
+            'serviceBooking' => $serviceBooking,
+            'serviceJobs' => $serviceJobs,
+            'miscellaneousItems' => $miscellaneousItems,
+        ], function ($message) use ($serviceBooking, $pdf, $request) {
+            $message->to($request->email)
+                ->subject('Invoice #' . $serviceBooking->repair_order_no)
+                ->attachData($pdf->output(), 'invoice_' . $serviceBooking->repair_order_no . '.pdf');
+        });
+
+        return redirect()->back()->with('success', 'Invoice sent successfully!');
+    }
 }

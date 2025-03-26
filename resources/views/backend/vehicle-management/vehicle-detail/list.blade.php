@@ -121,8 +121,8 @@
                                                     {{ $vehicle->rented ? 'checked' : '' }}>
                                             </div>
                                         </td>
-                                        @canany(['Vehicles Details', 'Edit Vehicles', 'Delete Vehicles',
-                                        'Share From Vehicle'])
+                                        @canany(['Vehicles Details', 'Edit Vehicles', 'Delete Vehicles', 'Share From
+                                            Vehicle'])
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

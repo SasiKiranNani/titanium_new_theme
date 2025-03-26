@@ -90,8 +90,8 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Odometer Reading <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" name="odometer" id="odometer_{{ $serviceBooking->id }}"
-                                                    class="form-control"
+                                                <input type="text" name="odometer"
+                                                    id="odometer_{{ $serviceBooking->id }}" class="form-control"
                                                     value="{{ old('odometer', $serviceBooking->odometer) }}">
                                                 @error('odometer')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -102,8 +102,8 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Service Interval <span
                                                         class="text-danger">*</span></label>
-                                                <select name="service_interval" id="service_interval_{{ $serviceBooking->id }}"
-                                                    class="form-control">
+                                                <select name="service_interval"
+                                                    id="service_interval_{{ $serviceBooking->id }}" class="form-control">
                                                     <option value="">Select Service Interval</option>
                                                     <option value="10000"
                                                         {{ old('service_interval', $serviceBooking->service_interval) == 10000 ? 'selected' : '' }}>
@@ -132,11 +132,12 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Job <span class="text-danger">*</span></label>
-                                                <select name="service_job_id[]" id="service_job_id" class="form-control select2"
-                                                    multiple>
+                                                <select name="service_job_id[]" id="service_job_id"
+                                                    class="form-control select2" multiple>
                                                     <option value="">Select Job</option>
                                                     @foreach ($serviceJobs as $job)
-                                                        <option value="{{ $job->id }}" data-price="{{ $job->price }}"
+                                                        <option value="{{ $job->id }}"
+                                                            data-price="{{ $job->price }}"
                                                             {{ in_array($job->id, $selectedJobIds) ? 'selected' : '' }}>
                                                             {{ $job->name }}
                                                         </option>
@@ -170,21 +171,24 @@
                                                     <div class="row misc-row">
                                                         <div class="col-md-4">
                                                             <div class="mb-3">
-                                                                <input type="text" name="misc_name[]" class="form-control"
-                                                                    placeholder="Enter Name" value="{{ $misc->name }}">
+                                                                <input type="text" name="misc_name[]"
+                                                                    class="form-control" placeholder="Enter Name"
+                                                                    value="{{ $misc->name }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="mb-3 d-flex position-relative">
                                                                 <input type="text" name="misc_cost[]"
-                                                                    class="form-control misc-cost" placeholder="Enter Price"
+                                                                    class="form-control misc-cost"
+                                                                    placeholder="Enter Price"
                                                                     value="{{ $misc->price }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
                                                             <div class="mb-3 d-flex position-relative">
                                                                 <input type="text" name="misc_qty[]"
-                                                                    class="form-control misc-qty" placeholder="Enter Quantity"
+                                                                    class="form-control misc-qty"
+                                                                    placeholder="Enter Quantity"
                                                                     value="{{ $misc->quantity }}">
                                                             </div>
                                                         </div>
@@ -198,7 +202,8 @@
                                                                     class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
                                                             </div>
                                                         </div>
-                                                        <input type="hidden" name="misc_id[]" value="{{ $misc->id }}">
+                                                        <input type="hidden" name="misc_id[]"
+                                                            value="{{ $misc->id }}">
                                                     </div>
                                                 @endforeach
                                             @else
@@ -221,7 +226,8 @@
                                         </div>
                                         <div class="col-md-5">
                                             <div class="mb-3">
-                                                <label class="col-form-label">GST <span class="text-danger">*</span></label>
+                                                <label class="col-form-label">GST <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="text" name="gst_percentage" id="gst_rate"
                                                     class="form-control"
                                                     value="{{ old('gst_percentage', $serviceBooking->gst_percentage) }}">
@@ -234,7 +240,8 @@
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" name="total" id="final_total" class="form-control" step="0.01"
+                                                <input type="text" name="total" id="final_total"
+                                                    class="form-control" step="0.01"
                                                     value="{{ old('total', $serviceBooking->total) }}" readonly>
                                                 @error('total')
                                                     <p class="text-danger font-medium">{{ $message }}</p>
@@ -254,7 +261,7 @@
                                                     <option value="cc"
                                                         {{ old('payment', $serviceBooking->payment) == 'cc' ? 'selected' : '' }}>
                                                         Credit Card</option>
-                                                        <option value="bank_transfer"
+                                                    <option value="bank_transfer"
                                                         {{ old('payment', $serviceBooking->payment) == 'bank_transfer' ? 'selected' : '' }}>
                                                         Bank Transfer</option>
                                                 </select>
@@ -266,7 +273,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid" class="form-control" step="0.01"
+                                                <input type="number" name="total_paid" id="total_paid"
+                                                    class="form-control" step="0.01"
                                                     value="{{ old('total_paid', $serviceBooking->total_paid) }}">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -332,7 +340,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="engine_no" class="col-form-label">Engine Number</label>
-                                                <input type="text" name="engine_no" id="engine_no" class="form-control"
+                                                <input type="text" name="engine_no" id="engine_no"
+                                                    class="form-control"
                                                     value="{{ old('engine_no', $serviceBooking->engine_no) }}">
                                             </div>
                                         </div>
@@ -356,7 +365,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="cust_name" class="col-form-label">Customer Name</label>
-                                                <input type="text" name="cust_name" id="cust_name" class="form-control"
+                                                <input type="text" name="cust_name" id="cust_name"
+                                                    class="form-control"
                                                     value="{{ old('cust_name', $serviceBooking->cust_name) }}">
                                                 @error('cust_name')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -365,7 +375,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label for="street" class="col-form-label">Street ( size must be 12 )</label>
+                                                <label for="street" class="col-form-label">Street ( size must be 12
+                                                    )</label>
                                                 <textarea name="street" id="street" cols="30" rows="10">{{ old('street', $serviceBooking->street) }}</textarea>
                                                 @error('street')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
@@ -389,10 +400,12 @@
                                                         QLD
                                                     </option>
                                                     <option value="WA"
-                                                        {{ old('state', $serviceBooking->state) == 'WA' ? 'selected' : '' }}>WA
+                                                        {{ old('state', $serviceBooking->state) == 'WA' ? 'selected' : '' }}>
+                                                        WA
                                                     </option>
                                                     <option value="SA"
-                                                        {{ old('state', $serviceBooking->state) == 'SA' ? 'selected' : '' }}>SA
+                                                        {{ old('state', $serviceBooking->state) == 'SA' ? 'selected' : '' }}>
+                                                        SA
                                                     </option>
                                                     <option value="TAS"
                                                         {{ old('state', $serviceBooking->state) == 'TAS' ? 'selected' : '' }}>
@@ -407,12 +420,20 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="post_code" class="col-form-label">Post Code</label>
-                                                <input type="text" name="post_code" id="post_code" class="form-control"
+                                                <input type="text" name="post_code" id="post_code"
+                                                    class="form-control"
                                                     value="{{ old('post_code', $serviceBooking->post_code) }}">
                                                 @error('post_code')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <button type="button" id="getLocationBtn" class="btn btn-secondary"
+                                                style="background: #fe6d00 !important; gap: 10px;">
+                                                <i class="fas fa-location-arrow"></i> Auto-fill My Address
+                                            </button>
+                                            <small class="text-muted ms-2">Click to detect your current location</small>
                                         </div>
                                     </div>
                                 </div>
@@ -457,11 +478,13 @@
 
     <!-- Include Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         .select2-container {
             width: 100% !important;
         }
+
         .custom-dropdown {
             position: relative;
             width: 100%;
@@ -631,20 +654,175 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
+    <!-- Add this script at the bottom of your form -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrUACR9L395Bd6nplwa6vlLGAU9ix95k0&libraries=places">
+    </script>
+    {{-- for getting live location --}}
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            initializeCKEditor('street'); // Remove the '#' since CKEditor uses the `name` or `id` directly
-        });
-
-        function initializeCKEditor(id) {
-            CKEDITOR.replace(id, {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize CKEditor
+            const editor = CKEDITOR.replace('street', {
                 extraPlugins: 'htmlwriter, font, colorbutton',
                 allowedContent: true,
                 versionCheck: false,
-                format_tags: 'p;h1;h2;h3;h4;h5;h6', // Allow heading tags from h1-h6
+                format_tags: 'p;h1;h2;h3;h4;h5;h6',
             });
-        }
+
+            const getLocationBtn = document.getElementById('getLocationBtn');
+            const postCodeField = document.getElementById('post_code');
+
+            if (getLocationBtn) {
+                getLocationBtn.addEventListener('click', function() {
+                    if (navigator.geolocation) {
+                        getLocationBtn.disabled = true;
+                        getLocationBtn.innerHTML =
+                            '<i class="fas fa-spinner fa-spin"></i> Detecting Location...';
+
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const geocoder = new google.maps.Geocoder();
+                                const latlng = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+
+                                geocoder.geocode({
+                                    location: latlng
+                                }, function(results, status) {
+                                    if (status === 'OK' && results[0]) {
+                                        // Get the full address
+                                        let fullAddress = results[0].formatted_address;
+
+                                        // Remove unwanted components
+                                        const componentsToRemove = [];
+
+                                        // Find components to remove
+                                        results[0].address_components.forEach(component => {
+                                            if (component.types.includes(
+                                                    'administrative_area_level_1') ||
+                                                // State
+                                                component.types.includes(
+                                                    'postal_code') || // Postal code
+                                                component.types.includes('country')
+                                            ) { // Country
+                                                componentsToRemove.push(component
+                                                    .long_name);
+                                                componentsToRemove.push(component
+                                                    .short_name);
+                                            }
+                                        });
+
+                                        // Remove the components from the address
+                                        componentsToRemove.forEach(component => {
+                                            fullAddress = fullAddress.replace(
+                                                    new RegExp(
+                                                        `,?\\s*${component}\\s*,?`, 'gi'
+                                                    ), '')
+                                                .replace(/\s{2,}/g, ' ')
+                                                .trim()
+                                                .replace(/,$/, '');
+                                        });
+
+                                        // Set the filtered address in CKEditor
+                                        editor.setData(fullAddress);
+
+                                        // Find and set postal code separately
+                                        const postalCodeComponent = results[0]
+                                            .address_components.find(
+                                                component => component.types.includes(
+                                                    'postal_code')
+                                            );
+
+                                        if (postalCodeComponent) {
+                                            postCodeField.value = postalCodeComponent
+                                                .short_name;
+                                        }
+
+                                        getLocationBtn.innerHTML =
+                                            '<i class="fas fa-check"></i> Location Found';
+                                    } else {
+                                        alert(
+                                            'Could not retrieve address details. Please enter manually.'
+                                        );
+                                    }
+                                    getLocationBtn.disabled = false;
+                                });
+                            },
+                            function(error) {
+                                alert('Location access denied or unavailable. Please enter manually.');
+                                getLocationBtn.innerHTML =
+                                    '<i class="fas fa-location-arrow"></i> Get My Location';
+                                getLocationBtn.disabled = false;
+                            }
+                        );
+                    } else {
+                        alert('Geolocation not supported. Please enter manually.');
+                    }
+                });
+            }
+
+            // Custom autocomplete that excludes unwanted components
+            const streetTextarea = document.getElementById('street');
+            if (streetTextarea) {
+                const autocomplete = new google.maps.places.Autocomplete(streetTextarea, {
+                    types: ['geocode'],
+                    componentRestrictions: {
+                        country: 'au'
+                    }
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (place.address_components) {
+                        // Set postal code
+                        const postalCodeComponent = place.address_components.find(
+                            component => component.types.includes('postal_code')
+                        );
+                        if (postalCodeComponent) {
+                            postCodeField.value = postalCodeComponent.short_name;
+                        }
+
+                        // Filter address for CKEditor
+                        let filteredAddress = place.formatted_address;
+                        const unwantedComponents = [];
+
+                        place.address_components.forEach(component => {
+                            if (component.types.includes('administrative_area_level_1') ||
+                                component.types.includes('postal_code') ||
+                                component.types.includes('country')) {
+                                unwantedComponents.push(component.long_name);
+                                unwantedComponents.push(component.short_name);
+                            }
+                        });
+
+                        unwantedComponents.forEach(component => {
+                            filteredAddress = filteredAddress.replace(new RegExp(
+                                    `,?\\s*${component}\\s*,?`, 'gi'), '')
+                                .replace(/\s{2,}/g, ' ')
+                                .trim()
+                                .replace(/,$/, '');
+                        });
+
+                        editor.setData(filteredAddress);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     initializeCKEditor('street'); // Remove the '#' since CKEditor uses the `name` or `id` directly
+        // });
+
+        // function initializeCKEditor(id) {
+        //     CKEDITOR.replace(id, {
+        //         extraPlugins: 'htmlwriter, font, colorbutton',
+        //         allowedContent: true,
+        //         versionCheck: false,
+        //         format_tags: 'p;h1;h2;h3;h4;h5;h6', // Allow heading tags from h1-h6
+        //     });
+        // }
     </script>
 
     <script>
@@ -794,30 +972,30 @@
         //         let miscContainer = $(`#misc_container_edit_${bookingId}`);
 
         //         let newMiscRow = `
-        //             <div class="row misc-row">
-        //                 <div class="col-md-4">
-        //                     <div class="mb-3">
-        //                         <input type="text" name="misc_name[]" class="form-control" placeholder="Enter Name">
-        //                     </div>
-        //                 </div>
-        //                 <div class="col-md-3">
-        //                     <div class="mb-3 d-flex position-relative">
-        //                         <input type="text" name="misc_cost[]" class="form-control misc-cost" placeholder="Enter Price">
-        //                     </div>
-        //                 </div>
-        //                 <div class="col-md-2">
-        //                     <div class="mb-3 d-flex position-relative">
-        //                         <input type="text" name="misc_qty[]" class="form-control misc-qty" placeholder="Enter Quantity">
-        //                     </div>
-        //                 </div>
-        //                 <div class="col-md-3">
-        //                     <div class="mb-3 d-flex position-relative">
-        //                         <input type="text" name="misc_total_cost[]" class="form-control misc-total-cost" placeholder="Enter Total" readonly>
-        //                         <button type="button" class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         `;
+    //             <div class="row misc-row">
+    //                 <div class="col-md-4">
+    //                     <div class="mb-3">
+    //                         <input type="text" name="misc_name[]" class="form-control" placeholder="Enter Name">
+    //                     </div>
+    //                 </div>
+    //                 <div class="col-md-3">
+    //                     <div class="mb-3 d-flex position-relative">
+    //                         <input type="text" name="misc_cost[]" class="form-control misc-cost" placeholder="Enter Price">
+    //                     </div>
+    //                 </div>
+    //                 <div class="col-md-2">
+    //                     <div class="mb-3 d-flex position-relative">
+    //                         <input type="text" name="misc_qty[]" class="form-control misc-qty" placeholder="Enter Quantity">
+    //                     </div>
+    //                 </div>
+    //                 <div class="col-md-3">
+    //                     <div class="mb-3 d-flex position-relative">
+    //                         <input type="text" name="misc_total_cost[]" class="form-control misc-total-cost" placeholder="Enter Total" readonly>
+    //                         <button type="button" class="btn btn-danger btn-sm ms-2 remove-misc">X</button>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         `;
         //         miscContainer.append(newMiscRow);
         //     });
 
@@ -835,7 +1013,7 @@
             // Function to calculate total price
             function calculateTotalPrice() {
                 let bookingId =
-                '{{ $serviceBooking->id }}'; // Use the booking ID directly from the server-side variable
+                    '{{ $serviceBooking->id }}'; // Use the booking ID directly from the server-side variable
                 let totalJobPrice = 0;
 
                 // Calculate total job price
@@ -855,7 +1033,7 @@
                 // Check if GST toggle is enabled
                 let gstToggle = $('#gst_toggle').is(':checked');
                 let gstPercentage = gstToggle ? parseFloat($('#gst_rate').val()) || 0 :
-                0; // Apply GST only if toggle is true
+                    0; // Apply GST only if toggle is true
                 let gstAmount = (subTotal * gstPercentage) / 100;
                 let finalTotal = subTotal + gstAmount;
 
@@ -905,8 +1083,8 @@
             $('#gst_rate').on('input', function() {
                 calculateTotalPrice();
             });
-                  // Event listener for total paid amount change
-                  $('#total_paid').on('input', function() {
+            // Event listener for total paid amount change
+            $('#total_paid').on('input', function() {
                 calculateTotalPrice();
             });
 

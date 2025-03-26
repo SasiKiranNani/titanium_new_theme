@@ -24,10 +24,10 @@ class UserManagementController extends Controller implements HasMiddleware
             new Middleware('permission:Edit Permissions', only: ['permissionUpdate']),
             new Middleware('permission:Delete Permissions', only: ['permissionDestroy']),
 
-            // new Middleware('permission:View Roles', only: ['role']),
-            // new Middleware('permission:Create Roles', only: ['roleStore']),
-            // new Middleware('permission:Edit Roles', only: ['roleUpdate']),
-            // new Middleware('permission:Delete Roles', only: ['roleDestroy']),
+            new Middleware('permission:View Roles', only: ['role']),
+            new Middleware('permission:Create Roles', only: ['roleStore']),
+            new Middleware('permission:Edit Roles', only: ['roleUpdate']),
+            new Middleware('permission:Delete Roles', only: ['roleDestroy']),
 
             new Middleware('permission:View Users', only: ['user']),
             new Middleware('permission:Create Users', only: ['userStore']),
@@ -52,8 +52,8 @@ class UserManagementController extends Controller implements HasMiddleware
                         ->orWhere('guard_name', 'like', "%$search%");
                 });
             })
-        ->orderBy($sortBy, $sortOrder)
-        ->paginate($perPage === 'all' ? Permission::count() : (int) $perPage);
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate($perPage === 'all' ? Permission::count() : (int) $perPage);
 
         return view('backend.user-management.permission', compact('permissions', 'perPage', 'sortBy', 'sortOrder'));
     }
@@ -185,35 +185,35 @@ class UserManagementController extends Controller implements HasMiddleware
 
     public function user(Request $request)
     {
-        $perPage = $request->input('per_page', 10); // Default to 10 items per page
-        $search = $request->query('search'); // Fix: Corrected search input name
-        $sortBy = $request->query('sort_by', 'id'); // Default sort by 'id'
-        $sortOrder = $request->query('sort_order', 'asc'); // Default sort order 'asc'
-        $roleFilter = $request->query('role'); // Role filter
+        $perPage = $request->input('per_page', 10);
+        $search = $request->query('search');
+        $sortBy = $request->query('sort_by', 'id');
+        $sortOrder = $request->query('sort_order', 'asc');
+        $roleFilter = $request->query('role');
 
-        // Get all roles
         $roles = Role::all();
 
-        // Query users
         $users = User::query();
 
-        // Apply search filter
-        if (!empty($search)) {
-            $users->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
-        }
-
-        // Apply role filter
+        // Role filter
         if (!empty($roleFilter)) {
             $users->whereHas('roles', function ($query) use ($roleFilter) {
                 $query->where('id', $roleFilter);
             });
         }
 
-        // Apply sorting
+        // Apply search filter if specified (only within the role-filtered results)
+        if (!empty($search)) {
+            $users->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Sorting
         $users = $users->orderBy($sortBy, $sortOrder);
 
-        // Apply pagination
+        // Pagination
         if ($perPage === 'all') {
             $users = $users->get();
         } else {

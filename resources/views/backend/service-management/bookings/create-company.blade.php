@@ -205,7 +205,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Amount </label>
-                                                <input type="number" name="total" id="total" class="form-control" step="0.01">
+                                                <input type="number" name="total" id="total" class="form-control"
+                                                    step="0.01">
                                                 @error('total')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -228,7 +229,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Total Paid Amount </label>
-                                                <input type="number" name="total_paid" id="total_paid" class="form-control" step="0.01">
+                                                <input type="number" name="total_paid" id="total_paid"
+                                                    class="form-control" step="0.01">
                                                 @error('total_paid')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -237,7 +239,8 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Balance Due </label>
-                                                <input type="number" name="balance_due" id="balance_due" class="form-control" step="0.01">
+                                                <input type="number" name="balance_due" id="balance_due"
+                                                    class="form-control" step="0.01">
                                                 @error('balance_due')
                                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                                 @enderror
@@ -356,6 +359,12 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="col-md-12 mb-3">
+                                            <button type="button" id="getLocationBtn" class="btn btn-secondary" style="background: #fe6d00 !important; gap: 10px;">
+                                                <i class="fas fa-location-arrow"></i> Auto-fill My Address
+                                            </button>
+                                            <small class="text-muted ms-2">Click to detect your current location</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -398,6 +407,7 @@
 
     <!-- Include Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         .custom-dropdown {
@@ -569,6 +579,160 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrUACR9L395Bd6nplwa6vlLGAU9ix95k0&libraries=places">
+    </script>
+    {{-- for getting live location --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize CKEditor
+            const editor = CKEDITOR.replace('street', {
+                extraPlugins: 'htmlwriter, font, colorbutton',
+                allowedContent: true,
+                versionCheck: false,
+                format_tags: 'p;h1;h2;h3;h4;h5;h6',
+            });
+
+            const getLocationBtn = document.getElementById('getLocationBtn');
+            const postCodeField = document.getElementById('post_code');
+
+            if (getLocationBtn) {
+                getLocationBtn.addEventListener('click', function() {
+                    if (navigator.geolocation) {
+                        getLocationBtn.disabled = true;
+                        getLocationBtn.innerHTML =
+                            '<i class="fas fa-spinner fa-spin"></i> Detecting Location...';
+
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const geocoder = new google.maps.Geocoder();
+                                const latlng = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+
+                                geocoder.geocode({
+                                    location: latlng
+                                }, function(results, status) {
+                                    if (status === 'OK' && results[0]) {
+                                        // Get the full address
+                                        let fullAddress = results[0].formatted_address;
+
+                                        // Remove unwanted components
+                                        const componentsToRemove = [];
+
+                                        // Find components to remove
+                                        results[0].address_components.forEach(component => {
+                                            if (component.types.includes(
+                                                    'administrative_area_level_1') ||
+                                                // State
+                                                component.types.includes(
+                                                    'postal_code') || // Postal code
+                                                component.types.includes('country')
+                                            ) { // Country
+                                                componentsToRemove.push(component
+                                                    .long_name);
+                                                componentsToRemove.push(component
+                                                    .short_name);
+                                            }
+                                        });
+
+                                        // Remove the components from the address
+                                        componentsToRemove.forEach(component => {
+                                            fullAddress = fullAddress.replace(
+                                                    new RegExp(
+                                                        `,?\\s*${component}\\s*,?`, 'gi'
+                                                    ), '')
+                                                .replace(/\s{2,}/g, ' ')
+                                                .trim()
+                                                .replace(/,$/, '');
+                                        });
+
+                                        // Set the filtered address in CKEditor
+                                        editor.setData(fullAddress);
+
+                                        // Find and set postal code separately
+                                        const postalCodeComponent = results[0]
+                                            .address_components.find(
+                                                component => component.types.includes(
+                                                    'postal_code')
+                                            );
+
+                                        if (postalCodeComponent) {
+                                            postCodeField.value = postalCodeComponent
+                                                .short_name;
+                                        }
+
+                                        getLocationBtn.innerHTML =
+                                            '<i class="fas fa-check"></i> Location Found';
+                                    } else {
+                                        alert(
+                                            'Could not retrieve address details. Please enter manually.'
+                                        );
+                                    }
+                                    getLocationBtn.disabled = false;
+                                });
+                            },
+                            function(error) {
+                                alert('Location access denied or unavailable. Please enter manually.');
+                                getLocationBtn.innerHTML =
+                                    '<i class="fas fa-location-arrow"></i> Get My Location';
+                                getLocationBtn.disabled = false;
+                            }
+                        );
+                    } else {
+                        alert('Geolocation not supported. Please enter manually.');
+                    }
+                });
+            }
+
+            // Custom autocomplete that excludes unwanted components
+            const streetTextarea = document.getElementById('street');
+            if (streetTextarea) {
+                const autocomplete = new google.maps.places.Autocomplete(streetTextarea, {
+                    types: ['geocode'],
+                    componentRestrictions: {
+                        country: 'au'
+                    }
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (place.address_components) {
+                        // Set postal code
+                        const postalCodeComponent = place.address_components.find(
+                            component => component.types.includes('postal_code')
+                        );
+                        if (postalCodeComponent) {
+                            postCodeField.value = postalCodeComponent.short_name;
+                        }
+
+                        // Filter address for CKEditor
+                        let filteredAddress = place.formatted_address;
+                        const unwantedComponents = [];
+
+                        place.address_components.forEach(component => {
+                            if (component.types.includes('administrative_area_level_1') ||
+                                component.types.includes('postal_code') ||
+                                component.types.includes('country')) {
+                                unwantedComponents.push(component.long_name);
+                                unwantedComponents.push(component.short_name);
+                            }
+                        });
+
+                        unwantedComponents.forEach(component => {
+                            filteredAddress = filteredAddress.replace(new RegExp(
+                                    `,?\\s*${component}\\s*,?`, 'gi'), '')
+                                .replace(/\s{2,}/g, ' ')
+                                .trim()
+                                .replace(/,$/, '');
+                        });
+
+                        editor.setData(filteredAddress);
+                    }
+                });
+            }
+        });
+    </script>
     <script>
         //  for filtering date range
         $(document).ready(function() {
@@ -612,18 +776,18 @@
         });
 
 
-        document.addEventListener("DOMContentLoaded", function() {
-            initializeCKEditor('street');
-        });
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     initializeCKEditor('street');
+        // });
 
-        function initializeCKEditor(id) {
-            CKEDITOR.replace(id, {
-                extraPlugins: 'htmlwriter',
-                allowedContent: true,
-                versionCheck: false,
-                format_tags: 'p;h1;h2;h3;h4;h5;h6',
-            });
-        }
+        // function initializeCKEditor(id) {
+        //     CKEDITOR.replace(id, {
+        //         extraPlugins: 'htmlwriter',
+        //         allowedContent: true,
+        //         versionCheck: false,
+        //         format_tags: 'p;h1;h2;h3;h4;h5;h6',
+        //     });
+        // }
     </script>
 
     <script>

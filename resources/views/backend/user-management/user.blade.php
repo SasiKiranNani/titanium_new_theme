@@ -9,26 +9,31 @@
 
             <div class="card">
                 <div class="row card-header">
+                    <!-- Search Form -->
                     <div class="col-sm-4">
-                        <form id="searchForm" action="{{ route('users') }}" method="GET">
-                            <input type="hidden" name="per_page" value="{{ request('per_page') }}">
-                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
+                        <form id="filterForm" action="{{ route('users') }}" method="GET">
+                            <!-- Hidden inputs for all filter parameters -->
+                            <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
+                            <input type="hidden" name="sort_by" value="{{ request('sort_by', 'id') }}">
+                            <input type="hidden" name="sort_order" value="{{ request('sort_order', 'asc') }}">
                             <input type="hidden" name="role" value="{{ request('role') }}">
-                            <input type="hidden" id="pageInput" name="page" value="1">
+                            <input type="hidden" name="page" value="1"> <!-- Reset to page 1 on filter change -->
+
+                            <!-- Search Input -->
                             <div class="icon-form mb-3 mb-sm-0">
                                 <input type="text" id="searchInput" name="search" class="form-control"
-                                    placeholder="Search Name or Email" value="{{ request('search') }}">
+                                    placeholder="Search Name or Email" value="{{ request('search') }}"
+                                    onkeypress="if(event.keyCode == 13) { this.form.submit(); }">
                             </div>
                         </form>
-
                     </div>
 
+                    <!-- Filter Controls -->
                     <div class="col-sm-8">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
-
-                            <!-- Role Filter Dropdown -->
+                            <!-- Role Filter -->
                             <div class="me-2">
-                                <select id="roleFilter" class="form-select">
+                                <select id="roleFilter" class="form-select" onchange="updateFilter('role', this.value)">
                                     <option value="">All Roles</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}"
@@ -39,11 +44,26 @@
                                 </select>
                             </div>
 
-                            <!-- Sorting Dropdown -->
+                            <!-- Sort By -->
                             <div class="me-2">
-                                <select id="sortOrder" class="form-select">
-                                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Ascending
+                                <select id="sortBy" class="form-select" onchange="updateFilter('sort_by', this.value)">
+                                    <option value="id" {{ request('sort_by', 'id') == 'id' ? 'selected' : '' }}>ID
                                     </option>
+                                    <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Name
+                                    </option>
+                                    <option value="email" {{ request('sort_by') == 'email' ? 'selected' : '' }}>Email
+                                    </option>
+                                    <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>
+                                        Created At</option>
+                                </select>
+                            </div>
+
+                            <!-- Sort Order -->
+                            <div class="me-2">
+                                <select id="sortOrder" class="form-select"
+                                    onchange="updateFilter('sort_order', this.value)">
+                                    <option value="asc" {{ request('sort_order', 'asc') == 'asc' ? 'selected' : '' }}>
+                                        Ascending</option>
                                     <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>
                                         Descending</option>
                                 </select>
@@ -52,15 +72,12 @@
                             @can('Create Users')
                                 <a href="javascript:void(0);" class="btn create-new btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addPermissionModal">
-                                    <span>
-                                        <span class="d-flex align-items-center gap-2">
-                                            <i class="icon-base ti tabler-plus icon-sm"></i>
-                                            <span class="d-none d-sm-inline-block">Create User</span>
-                                        </span>
+                                    <span class="d-flex align-items-center gap-2">
+                                        <i class="icon-base ti tabler-plus icon-sm"></i>
+                                        <span class="d-none d-sm-inline-block">Create User</span>
                                     </span>
                                 </a>
                             @endcan
-
                         </div>
                     </div>
                 </div>
@@ -136,30 +153,28 @@
                     </table>
                 </div>
 
-                <!-- Pagination and Per Page Selection -->
+                <!-- Pagination Controls -->
                 <div class="row m-3 justify-content-between">
-                    <!-- Left Side: Per Page Selection -->
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
-                        <!-- Dropdown for Per Page Selection -->
+                        <!-- Per Page Selection -->
                         <form method="GET" action="{{ route('users') }}" class="ms-3">
-                            <input type="hidden" name="search" value="{{ request('search') }}">
-                            <input type="hidden" name="page" value="{{ request('page') }}">
-                            <input type="hidden" name="sort_order" value="{{ request('sort_order') }}">
-                            <input type="hidden" name="role" value="{{ request('role') }}">
+                            @foreach (request()->except('per_page', 'page') as $key => $value)
+                                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                            @endforeach
                             <label for="per_page" class="form-label me-2">Show:</label>
-                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto">
-                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                            <select name="per_page" id="per_page" class="form-select d-inline-block w-auto"
+                                onchange="this.form.submit()">
+                                <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                                 <option value="all" {{ request('per_page') == 'all' ? 'selected' : '' }}>All</option>
                             </select>
                         </form>
-
                     </div>
 
-                    <!-- Right Side: Pagination -->
+                    <!-- Pagination Links -->
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
                         <div class="dt-paging">
@@ -179,7 +194,8 @@
         <div class="modal-dialog modal-dialog-centered modal-simple">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                     <div class="text-center mb-6">
                         <h3>Add New User</h3>
                     </div>
@@ -418,26 +434,10 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <script>
-        document.getElementById("searchInput").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("pageInput").value = 1; // Reset to page 1 on new search
-                document.getElementById("searchForm").submit();
-            }
-        });
-
-        // Sorting Functionality
-        document.getElementById("sortOrder").addEventListener("change", function() {
-            let urlParams = new URLSearchParams(window.location.search);
-            urlParams.set("sort_order", this.value);
-            window.location.search = urlParams.toString();
-        });
-
-        // Role Filtering Functionality
-        document.getElementById("roleFilter").addEventListener("change", function() {
-            let urlParams = new URLSearchParams(window.location.search);
-            urlParams.set("role", this.value);
-            window.location.search = urlParams.toString();
-        });
+        function updateFilter(name, value) {
+            const form = document.getElementById('filterForm');
+            form.querySelector(`input[name="${name}"]`).value = value;
+            form.submit();
+        }
     </script>
 @endsection

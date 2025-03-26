@@ -84,10 +84,26 @@
                                         <td>{{ number_format($booking->balance_due, 0) }}</td>
                                         <td>{{ number_format($booking->total, 0) }}</td>
                                         <td class="text-center">
-                                            <a class="dropdown-item waves-effect" target="_blank"
-                                                href="{{ route('services.other-invoice', $booking->id) }}">
-                                                <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
-                                            </a>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="icon-base ti tabler-dots-vertical"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    @can('Company Vehicle Invoice')
+                                                        <a class="dropdown-item waves-effect" target="_blank"
+                                                            href="{{ route('services.other-invoice', $booking->id) }}">
+                                                            <i class="icon-base ti tabler-eye me-1 text-blue"></i> View Invoice
+                                                        </a>
+                                                    @endcan
+                                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modaldemo8_{{ $booking->id }}">
+                                                        <i class="icon-base ti tabler-mail me-1 text-blue"></i> Share Via
+                                                        Mail
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -137,6 +153,42 @@
 
         </div>
     </div>
+
+    {{-- share invoice modal --}}
+    @if ($serviceBooking->isNotEmpty())
+        @foreach ($serviceBooking as $booking)
+            <div class="modal fade" id="modaldemo8_{{ $booking->id ?? '' }}" tabindex="-1"
+                aria-labelledby="modaldemo8Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                    <div class="modal-content modal-content-demo">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modaldemo8Label">Share Invoice</h4>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="shareInvoiceForm_{{ $booking->id ?? '' }}" method="POST"
+                            action="{{ route('other-invoice.share', ['id' => $booking->id ?? '']) }}">
+                            @csrf
+                            <div class="modal-body text-start">
+                                <!-- Email Address Field -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <p class="text-muted mb-0">Please enter the email address to which you want to
+                                    share the Invoice.</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" form="shareInvoiceForm_{{ $booking->id ?? '' }}"
+                                    class="btn btn-primary">Send</button>
+                                <button class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
 @endsection
 
 

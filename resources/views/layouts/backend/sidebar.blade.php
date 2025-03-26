@@ -269,8 +269,8 @@
             <li
                 class="menu-item {{ request()->is('admin/users') || request()->is('admin/roles') || request()->is('admin/permissions') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon icon-base ti tabler-file-invoice"></i>
-                    <div data-i18n="Users">Users, Roles & Permissions</div>
+                    <i class="menu-icon icon-base ti tabler-settings"></i>
+                    <div data-i18n="Management">Roles & Permissions</div>
                 </a>
                 <ul class="menu-sub">
 

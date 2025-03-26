@@ -31,6 +31,8 @@ Route::middleware([
         // for dashboard page
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/get-rent-amount', [DashboardController::class, 'getRentAmount'])->name('get.rent.amount');
+        Route::get('/dashboard/service-stats', [DashboardController::class, 'getServiceStats']);
+        Route::get('/dashboard/other-service-stats', [DashboardController::class, 'getOtherServiceStats']);
         // vehicle Management Started
 
         // for category page
@@ -105,6 +107,7 @@ Route::middleware([
         Route::get('/services/company-vehicle/create', [BookingController::class, 'createCompanyVehicle'])->name('services.company-vehicle.create');
         Route::post('/services/company-vehicle/store', [BookingController::class, 'storeCompanyVehicle'])->name('services.company-vehicle.store');
         Route::get('/services/company-vehicle/edit/{id}', [BookingController::class, 'editCompanyVehicle'])->name('services.company-vehicle.edit');
+        Route::post('/services/company-vehicle/share/invoice/{id}', [BookingController::class, 'shareCompanyInvoice'])->name('company-invoice.share');
         Route::put('/services/company-vehicle/{id}', [BookingController::class, 'updateCompanyVehicle'])->name('services.company-vehicle.update');
         Route::delete('/services/company-vehicle/delete/{id}', [BookingController::class, 'destroyCompanyVehicle'])->name('services.company-vehicle.delete');
 
@@ -118,6 +121,7 @@ Route::middleware([
         Route::get('/services/other-vehicle/edit/{id}', [BookingController::class, 'editOtherVehicle'])->name('services.other-vehicle.edit');
         Route::put('/services/other-vehicle/update/{id}', [BookingController::class, 'updateOtherVehicle'])->name('services.other-vehicle.update');
         Route::delete('/services/other-vehicle/delete/{id}', [BookingController::class, 'destroyOtherVehicle'])->name('services.other-vehicle.delete');
+        Route::post('/services/other-vehicle/share/invoice/{id}', [BookingController::class, 'shareOtherInvoice'])->name('other-invoice.share');
 
         // Bookings invoices
         Route::get('/services/company-invoice/{id}', [BookingController::class, 'companyInvoice'])->name('services.invoice');

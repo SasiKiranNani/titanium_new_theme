@@ -55,14 +55,14 @@
                                     @can('Edit Roles')
                                         <a href="javascript:;" data-bs-toggle="modal"
                                             data-bs-target="#addRoleModal_{{ $role->id }}" class="role-edit-modal">
-                                            <span>Edit Role</span>
+                                            <span style="color: #fe6d00 !important;">Edit Role</span>
                                         </a>
                                     @endcan
 
                                     @can('Delete Roles')
                                         <a href="javascript:;" data-bs-toggle="modal"
                                             data-bs-target="#delete_role_{{ $role->id }}" class="role-delete-modal">
-                                            <span>Delete Role</span>
+                                            <span style="color: #fe6d00 !important;">Delete Role</span>
                                         </a>
                                     @endcan
 

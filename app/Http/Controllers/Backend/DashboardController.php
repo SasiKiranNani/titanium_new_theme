@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AssignVehicle;
+use App\Models\OtherServiceBooking;
+use App\Models\ServiceBooking;
 use App\Models\VehicleDetail;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -22,23 +24,27 @@ class DashboardController extends Controller implements HasMiddleware
 
     public function index()
     {
-        // Get the count of users with the 'driver' role
+        // Existing vehicle and driver counts
         $driverCount = User::role('driver')->count();
-
-        // Get the total count of vehicles
         $totalVehicles = VehicleDetail::count();
-
-        // Get the count of rented vehicles
         $rentedVehicles = VehicleDetail::where('rented', 1)->count();
-
-        // Get the count of available vehicles
         $availableVehicles = VehicleDetail::where('rented', 0)->count();
 
-        // Calculate the total rent received
+        // Vehicle rental earnings
         $outstandingTotal = AssignVehicle::sum('outstanding_amount');
         $depositTotal = AssignVehicle::sum('deposit_amount');
         $rentReceived = AssignVehicle::sum('total_price');
         $totalEarnings = $outstandingTotal + $depositTotal;
+
+        // Service booking earnings
+        $serviceTotal = ServiceBooking::sum('total');
+        $servicePaid = ServiceBooking::sum('total_paid');
+        $serviceOutstanding = ServiceBooking::sum('balance_due');
+
+        // Other service booking earnings
+        $otherServiceTotal = OtherServiceBooking::sum('total');
+        $otherServicePaid = OtherServiceBooking::sum('total_paid');
+        $otherServiceOutstanding = OtherServiceBooking::sum('balance_due');
 
         return view('dashboard', compact(
             'driverCount',
@@ -48,7 +54,13 @@ class DashboardController extends Controller implements HasMiddleware
             'rentReceived',
             'outstandingTotal',
             'depositTotal',
-            'totalEarnings'
+            'totalEarnings',
+            'serviceTotal',
+            'servicePaid',
+            'serviceOutstanding',
+            'otherServiceTotal',
+            'otherServicePaid',
+            'otherServiceOutstanding'
         ));
     }
 
@@ -69,6 +81,36 @@ class DashboardController extends Controller implements HasMiddleware
 
         return response()->json([
             'totalEarnings' => $rentReceived
+        ]);
+    }
+
+    public function getServiceStats(Request $request)
+    {
+        $query = ServiceBooking::query();
+
+        if ($request->start_date && $request->end_date) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        return response()->json([
+            'total' => (float) $query->sum('total'),
+            'paid' => (float) $query->sum('total_paid'),
+            'outstanding' => (float) $query->sum('balance_due')
+        ]);
+    }
+
+    public function getOtherServiceStats(Request $request)
+    {
+        $query = OtherServiceBooking::query();
+
+        if ($request->start_date && $request->end_date) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        return response()->json([
+            'total' => (float) $query->sum('total'),
+            'paid' => (float) $query->sum('total_paid'),
+            'outstanding' => (float) $query->sum('balance_due')
         ]);
     }
 }

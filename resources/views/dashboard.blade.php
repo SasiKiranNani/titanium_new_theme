@@ -124,6 +124,128 @@
             </div>
             <!--/ Support Tracker -->
 
+            {{-- service report --}}
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header pb-0 d-flex justify-content-between">
+                        <div class="card-title mb-0">
+                            <h5 class="mb-1">Company Vehicle Service Reports</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center g-md-8">
+                            <div class="col-12 col-md-5 d-flex flex-column">
+                                <div class="d-flex gap-2 align-items-center mb-3 flex-wrap">
+                                    <h4 class="mb-0 service_total">${{ number_format($serviceTotal, 2) }}</h4>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-7 ps-xl-8">
+                                <div id="service-date-range">
+                                    <input type="text" id="serviceDateRangePicker" class="form-control mx-2"
+                                        placeholder="Select Date Range">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-5 mt-5">
+                            <div class="row gap-4 gap-sm-0">
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-primary p-1">
+                                            <i class="icon-base ti tabler-currency-dollar icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Received</h6>
+                                    </div>
+                                    <p class="my-2 text-center service_paid"><b>${{ number_format($servicePaid, 2) }}</b>
+                                    </p>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-info p-1">
+                                            <i class="icon-base ti tabler-chart-pie-2 icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Outstanding</h6>
+                                    </div>
+                                    <p class="my-2 text-center service_outstanding">
+                                        <b>${{ number_format($serviceOutstanding, 2) }}</b>
+                                    </p>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-danger p-1">
+                                            <i class="icon-base ti tabler-brand-paypal icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Total</h6>
+                                    </div>
+                                    <p class="my-2 text-center service_total_amount">
+                                        <b>${{ number_format($serviceTotal, 2) }}</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- other service report --}}
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header pb-0 d-flex justify-content-between">
+                        <div class="card-title mb-0">
+                            <h5 class="mb-1">Other Service Reports</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center g-md-8">
+                            <div class="col-12 col-md-5 d-flex flex-column">
+                                <div class="d-flex gap-2 align-items-center mb-3 flex-wrap">
+                                    <h4 class="mb-0 other_service_total">${{ number_format($otherServiceTotal, 2) }}</h4>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-7 ps-xl-8">
+                                <div id="other-service-date-range">
+                                    <input type="text" id="otherServiceDateRangePicker" class="form-control mx-2"
+                                        placeholder="Select Date Range">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded p-5 mt-5">
+                            <div class="row gap-4 gap-sm-0">
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-primary p-1">
+                                            <i class="icon-base ti tabler-currency-dollar icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Received</h6>
+                                    </div>
+                                    <p class="my-2 text-center other_service_paid">
+                                        <b>${{ number_format($otherServicePaid, 2) }}</b></p>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-info p-1">
+                                            <i class="icon-base ti tabler-chart-pie-2 icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Outstanding</h6>
+                                    </div>
+                                    <p class="my-2 text-center other_service_outstanding">
+                                        <b>${{ number_format($otherServiceOutstanding, 2) }}</b></p>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="badge rounded bg-label-danger p-1">
+                                            <i class="icon-base ti tabler-brand-paypal icon-18px"></i>
+                                        </div>
+                                        <h6 class="mb-0 fw-normal">Total</h6>
+                                    </div>
+                                    <p class="my-2 text-center other_service_total_amount">
+                                        <b>${{ number_format($otherServiceTotal, 2) }}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
@@ -141,7 +263,8 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/apex-charts/apex-charts.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/swiper/swiper.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('backend/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/fonts/flag-icons.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/vendor/css/pages/cards-advance.css') }}" />
     <script src="{{ asset('backend/vendor/js/helpers.js') }}"></script>
@@ -310,7 +433,7 @@
                     var roundedPercentage = Math.round(currentPercentage);
                     if (roundedPercentage > percentageTarget) {
                         roundedPercentage = Math.floor(
-                        percentageTarget); // Ensure it doesn't exceed the target
+                            percentageTarget); // Ensure it doesn't exceed the target
                     }
                     percentageText.textContent = roundedPercentage + "%";
 
@@ -327,6 +450,102 @@
                     clearInterval(interval);
                 }
             }, intervalTime);
+        });
+
+        // service statictics
+
+        $(document).ready(function() {
+            // Initialize date range picker for service bookings
+            $('#serviceDateRangePicker').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear',
+                    format: 'MM/DD/YYYY'
+                }
+            });
+
+            $('#serviceDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format(
+                    'MM/DD/YYYY'));
+                fetchServiceData(picker.startDate.format('YYYY-MM-DD'), picker.endDate.format(
+                    'YYYY-MM-DD'));
+            });
+
+            $('#serviceDateRangePicker').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                fetchServiceData('', '');
+            });
+
+            function fetchServiceData(startDate, endDate) {
+                $.ajax({
+                    url: '/admin/dashboard/service-stats',
+                    type: 'GET',
+                    data: {
+                        start_date: startDate,
+                        end_date: endDate
+                    },
+                    success: function(response) {
+                        // Format numbers with 2 decimal places
+                        $('.service_total').text('$' + parseFloat(response.total).toFixed(2));
+                        $('.service_paid').text('$' + parseFloat(response.paid).toFixed(2));
+                        $('.service_outstanding').text('$' + parseFloat(response.outstanding).toFixed(
+                            2));
+                        $('.service_total_amount b').text('$' + parseFloat(response.total).toFixed(2));
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        // other service statictics
+        $(document).ready(function() {
+            // Initialize date range picker for other service bookings
+            $('#otherServiceDateRangePicker').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear',
+                    format: 'MM/DD/YYYY'
+                }
+            });
+
+            $('#otherServiceDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format(
+                    'MM/DD/YYYY'));
+                fetchOtherServiceData(picker.startDate.format('YYYY-MM-DD'), picker.endDate.format(
+                    'YYYY-MM-DD'));
+            });
+
+            $('#otherServiceDateRangePicker').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                fetchOtherServiceData('', '');
+            });
+
+            function fetchOtherServiceData(startDate, endDate) {
+                $.ajax({
+                    url: '/admin/dashboard/other-service-stats',
+                    type: 'GET',
+                    data: {
+                        start_date: startDate,
+                        end_date: endDate
+                    },
+                    success: function(response) {
+                        // Format numbers with 2 decimal places
+                        $('.other_service_total').text('$' + parseFloat(response.total).toFixed(2));
+                        $('.other_service_paid').text('$' + parseFloat(response.paid).toFixed(2));
+                        $('.other_service_outstanding').text('$' + parseFloat(response.outstanding)
+                            .toFixed(2));
+                        $('.other_service_total_amount b').text('$' + parseFloat(response.total)
+                            .toFixed(2));
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
         });
     </script>
 @endsection
