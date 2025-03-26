@@ -101,8 +101,8 @@
                                                 </select>
                                             </div>
                                             @error('company_name')
-                                            <p class="text-red-400 font-medium">{{ $message }}</p>
-                                        @enderror
+                                                <p class="text-red-400 font-medium">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
@@ -425,12 +425,16 @@
                                                                         <a href="{{ asset($file->file_path) }}"
                                                                             target="_blank"
                                                                             class="btn btn-primary btn-sm">
-                                                                            <i class="icon-base ti tabler-eye icon-22px"></i> View
+                                                                            <i
+                                                                                class="icon-base ti tabler-eye icon-22px"></i>
+                                                                            View
                                                                         </a>
                                                                         <button type="button"
                                                                             class="btn btn-danger btn-sm delete-file"
                                                                             data-file-id="{{ $file->id }}">
-                                                                            <i class="icon-base ti tabler-trash icon-22px"></i> Delete
+                                                                            <i
+                                                                                class="icon-base ti tabler-trash icon-22px"></i>
+                                                                            Delete
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -577,10 +581,20 @@
         $(document).ready(function() {
             // Function to handle file previews
             function handleFilePreview(fileInputId, previewContainerId) {
-                $(`#${fileInputId}`).on('change', function(e) {
+                const fileInput = $(`#${fileInputId}`);
+                const previewContainer = $(`#${previewContainerId}`);
+
+                // Check if elements exist
+                if (fileInput.length === 0 || previewContainer.length === 0) {
+                    console.error(`Element with ID ${fileInputId} or ${previewContainerId} not found`);
+                    return;
+                }
+
+                fileInput.on('change', function(e) {
                     const files = e.target.files;
-                    const previewContainer = $(`#${previewContainerId}`);
                     previewContainer.empty(); // Clear previous previews
+
+                    if (!files || files.length === 0) return;
 
                     // Loop through selected files
                     for (let i = 0; i < files.length; i++) {
@@ -589,21 +603,21 @@
 
                         // Create preview element
                         const previewElement = `
-                           <div class="col-md-2 mb-3">
-                                <div class="file-preview-item border p-2">
-                                    <div class="position-relative">
-                                        <div class="">
-                                            <img src="${fileURL}" alt="${file.name}" class="img-fluid" style="max-height: 100px;">
-                                        </div>
-                                        <div class="ms-2 position-absolute top-0 end-0">
-                                            <button type="button" class="btn btn-danger btn-sm remove-file" data-file-name="${file.name}">
-                                                <i class="icon-base ti tabler-trash icon-22px"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="file-preview-item border p-2">
+                            <div class="position-relative">
+                                <div class="">
+                                    <img src="${fileURL}" alt="${file.name}" class="img-fluid" style="max-height: 100px;">
+                                </div>
+                                <div class="ms-2 position-absolute top-0 end-0">
+                                    <button type="button" class="btn btn-danger btn-sm remove-file" data-file-name="${file.name}">
+                                        <i class="icon-base ti tabler-trash icon-22px"></i>
+                                    </button>
                                 </div>
                             </div>
-                        `;
+                        </div>
+                    </div>
+                `;
 
                         // Append preview to container
                         previewContainer.append(previewElement);
@@ -615,8 +629,13 @@
                     const fileName = $(this).data('file-name');
                     const fileInput = $(`#${fileInputId}`)[0];
 
+                    if (!fileInput) {
+                        console.error(`File input with ID ${fileInputId} not found`);
+                        return;
+                    }
+
                     // Remove file from input
-                    const files = Array.from(fileInput.files);
+                    const files = Array.from(fileInput.files || []);
                     const updatedFiles = files.filter(file => file.name !== fileName);
 
                     // Update file input
@@ -625,15 +644,17 @@
                     fileInput.files = dataTransfer.files;
 
                     // Remove preview element
-                    $(this).closest('.col-md-4').remove();
+                    $(this).closest('.col-md-2').remove();
                 });
             }
 
-            handleFilePreview('fileInputUpdate_{{ $vehicle->id }}',
-                'filePreviewUpdate_{{ $vehicle->id }}');
+            // Initialize for update form
+            handleFilePreview('fileInputUpdate_{{ $vehicle->id }}', 'filePreviewUpdate_{{ $vehicle->id }}');
 
-            // Initialize file preview handler for the store form
-            handleFilePreview('fileInputStore', 'filePreviewStore');
+            // Initialize for store form (if exists)
+            if ($('#fileInputStore').length && $('#filePreviewStore').length) {
+                handleFilePreview('fileInputStore', 'filePreviewStore');
+            }
         });
     </script>
     {{-- sweet alret for deleting files --}}
@@ -693,90 +714,90 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Find all modals
-        const modals = document.querySelectorAll('.modal');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all modals
+            const modals = document.querySelectorAll('.modal');
 
-        modals.forEach((modal) => {
-            // Get modal ID
-            const modalId = modal.id;
+            modals.forEach((modal) => {
+                // Get modal ID
+                const modalId = modal.id;
 
-            // Select input fields specific to this modal
-            const costPerWeekInput = modal.querySelector('[name="cost_per_week"]');
-            const countInput = modal.querySelector('[name="count"]');
-            const timeUnitSelect = modal.querySelector('[name="time_unit"]');
-            const rentStartDateInput = modal.querySelector('[name="rent_start_date"]');
-            const rentEndDateInput = modal.querySelector('[name="rent_end_date"]');
-            const totalDaysInput = modal.querySelector('[name="total_days"]');
-            const totalPriceInput = modal.querySelector('[name="total_price"]');
+                // Select input fields specific to this modal
+                const costPerWeekInput = modal.querySelector('[name="cost_per_week"]');
+                const countInput = modal.querySelector('[name="count"]');
+                const timeUnitSelect = modal.querySelector('[name="time_unit"]');
+                const rentStartDateInput = modal.querySelector('[name="rent_start_date"]');
+                const rentEndDateInput = modal.querySelector('[name="rent_end_date"]');
+                const totalDaysInput = modal.querySelector('[name="total_days"]');
+                const totalPriceInput = modal.querySelector('[name="total_price"]');
 
-            // Set min attribute for rent_start_date to today's date
-            const today = new Date();
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(today.getMonth() - 3);
+                // Set min attribute for rent_start_date to today's date
+                const today = new Date();
+                const threeMonthsAgo = new Date();
+                threeMonthsAgo.setMonth(today.getMonth() - 3);
 
-            rentStartDateInput.min = formatDate(threeMonthsAgo);
+                rentStartDateInput.min = formatDate(threeMonthsAgo);
 
-            // Add event listeners for input changes
-            countInput.addEventListener('input', () => calculateValues(modal));
-            timeUnitSelect.addEventListener('change', () => calculateValues(modal));
-            rentStartDateInput.addEventListener('change', () => calculateValues(modal));
-            costPerWeekInput.addEventListener('input', () => calculateValues(
-                modal)); // Added listener for cost_per_week
+                // Add event listeners for input changes
+                countInput.addEventListener('input', () => calculateValues(modal));
+                timeUnitSelect.addEventListener('change', () => calculateValues(modal));
+                rentStartDateInput.addEventListener('change', () => calculateValues(modal));
+                costPerWeekInput.addEventListener('input', () => calculateValues(
+                    modal)); // Added listener for cost_per_week
 
-            // Function to calculate total days and total price
-            function calculateValues(modal) {
-                const count = parseInt(countInput.value) || 1;
-                const timeUnit = timeUnitSelect.value;
-                const rentStartDate = new Date(rentStartDateInput.value);
-                const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
+                // Function to calculate total days and total price
+                function calculateValues(modal) {
+                    const count = parseInt(countInput.value) || 1;
+                    const timeUnit = timeUnitSelect.value;
+                    const rentStartDate = new Date(rentStartDateInput.value);
+                    const costPerWeek = parseFloat(costPerWeekInput.value) || 0;
 
-                // Ensure the rent start date is valid
-                if (isNaN(rentStartDate.getTime())) {
-                    console.log("Invalid rent start date");
-                    return;
+                    // Ensure the rent start date is valid
+                    if (isNaN(rentStartDate.getTime())) {
+                        console.log("Invalid rent start date");
+                        return;
+                    }
+
+                    let rentEndDate = new Date(rentStartDate);
+
+                    // Calculate rent end date based on time unit
+                    if (timeUnit === 'months') {
+                        rentEndDate.setMonth(rentEndDate.getMonth() + count);
+                    } else if (timeUnit === 'years') {
+                        rentEndDate.setFullYear(rentEndDate.getFullYear() + count);
+                    } else if (timeUnit === 'weeks') {
+                        rentEndDate.setDate(rentEndDate.getDate() + (7 * count));
+                    } else if (timeUnit === 'days') {
+                        rentEndDate.setDate(rentEndDate.getDate() + count);
+                    }
+
+                    // Update rent end date field
+                    rentEndDateInput.value = formatDate(rentEndDate);
+
+                    // Calculate total days
+                    const totalDays = Math.floor((rentEndDate - rentStartDate) / (1000 * 60 * 60 * 24));
+                    totalDaysInput.value = totalDays;
+
+                    // Calculate total price (convert weekly cost to daily cost)
+                    const costPerDay = costPerWeek / 7;
+                    const totalPrice = totalDays * costPerDay;
+
+                    // Round total price and update the input
+                    totalPriceInput.value = Math.round(totalPrice);
+
+                    console.log("Total Days:", totalDays);
+                    console.log("Total Price:", Math.round(totalPrice));
                 }
 
-                let rentEndDate = new Date(rentStartDate);
-
-                // Calculate rent end date based on time unit
-                if (timeUnit === 'months') {
-                    rentEndDate.setMonth(rentEndDate.getMonth() + count);
-                } else if (timeUnit === 'years') {
-                    rentEndDate.setFullYear(rentEndDate.getFullYear() + count);
-                } else if (timeUnit === 'weeks') {
-                    rentEndDate.setDate(rentEndDate.getDate() + (7 * count));
-                } else if (timeUnit === 'days') {
-                    rentEndDate.setDate(rentEndDate.getDate() + count);
+                // Utility function to format Date object as yyyy-mm-dd
+                function formatDate(date) {
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const day = date.getDate().toString().padStart(2, '0');
+                    return `${year}-${month}-${day}`;
                 }
-
-                // Update rent end date field
-                rentEndDateInput.value = formatDate(rentEndDate);
-
-                // Calculate total days
-                const totalDays = Math.floor((rentEndDate - rentStartDate) / (1000 * 60 * 60 * 24));
-                totalDaysInput.value = totalDays;
-
-                // Calculate total price (convert weekly cost to daily cost)
-                const costPerDay = costPerWeek / 7;
-                const totalPrice = totalDays * costPerDay;
-
-                // Round total price and update the input
-                totalPriceInput.value = Math.round(totalPrice);
-
-                console.log("Total Days:", totalDays);
-                console.log("Total Price:", Math.round(totalPrice));
-            }
-
-            // Utility function to format Date object as yyyy-mm-dd
-            function formatDate(date) {
-                const year = date.getFullYear();
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const day = date.getDate().toString().padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

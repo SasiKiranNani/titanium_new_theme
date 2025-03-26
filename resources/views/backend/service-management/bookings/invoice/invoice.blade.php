@@ -205,8 +205,8 @@
         </table>
         <table class="table" style="margin-bottom: 5px; border-collapse: collapse; width: 100%;">
             <tr>
-                <td class="td" rowspan="4" colspan="4"
-                    style="border: 1px solid black !important; font-size: 10px; box-sizing: border-box;">
+                <td class="td" rowspan="4" colspan="1"
+                    style="border: 1px solid black !important; font-size: 10px; box-sizing: border-box; width: 200px !important;">
                     <div>
                         <p style="font-size: 12px; padding-bottom: 5px;"><b>Customer Name :
                             </b>{{ $serviceBooking->cust_name ?? '' }}</p>

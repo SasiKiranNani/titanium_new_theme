@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('color', 20)->nullable();
             $table->string('mobile', 15)->nullable();
             $table->string('cust_name', 100)->nullable();
-            $table->string('street', 1000)->nullable();
+            $table->string('street', 255)->nullable();
             $table->string('state', 50)->nullable();
             $table->string('post_code', 10)->nullable();
             $table->string('make', 50)->nullable();

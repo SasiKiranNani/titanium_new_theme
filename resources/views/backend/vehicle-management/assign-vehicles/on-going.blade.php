@@ -607,14 +607,28 @@
             let sortOrder = this.value;
             let url = new URL(window.location.href);
 
-            // Preserve existing query parameters
+            // Validate sortOrder before setting it
+            sortOrder = ['asc', 'desc'].includes(sortOrder) ? sortOrder : 'asc';
+
             url.searchParams.set('sort_order', sortOrder);
-            url.searchParams.set('search', "{{ request('search') }}");
-            url.searchParams.set('start_date', "{{ request('start_date') }}");
-            url.searchParams.set('end_date', "{{ request('end_date') }}");
-            url.searchParams.set('category_id', "{{ request('category_id') }}");
+
+            // Preserve other parameters
+            if ("{{ request('search') }}") {
+                url.searchParams.set('search', "{{ request('search') }}");
+            }
+            if ("{{ request('start_date') }}") {
+                url.searchParams.set('start_date', "{{ request('start_date') }}");
+            }
+            if ("{{ request('end_date') }}") {
+                url.searchParams.set('end_date', "{{ request('end_date') }}");
+            }
+            if ("{{ request('category_id') }}") {
+                url.searchParams.set('category_id', "{{ request('category_id') }}");
+            }
             url.searchParams.set('per_page', "{{ request('per_page', 10) }}");
-            url.searchParams.set('page', "{{ request('page', 1) }}");
+
+            // Remove page parameter to go back to first page when sorting changes
+            url.searchParams.delete('page');
 
             window.location.href = url.toString();
         });

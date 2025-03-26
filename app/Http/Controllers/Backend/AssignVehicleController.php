@@ -35,7 +35,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $categoryId = $request->input('category_id');
-        $sortOrder = $request->input('sort_order', 'asc');
+        // Validate sort_order - default to 'asc' if invalid
+        $sortOrder = strtolower($request->input('sort_order', 'asc'));
+        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'asc';
 
         // Update rented status dynamically
         AssignVehicle::all()->each->updateRentedStatus();
@@ -95,7 +97,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $categoryId = $request->input('category_id');
-        $sortOrder = $request->input('sort_order', 'asc'); // Default sorting order
+        // Validate sort_order - default to 'asc' if invalid
+        $sortOrder = strtolower($request->input('sort_order', 'asc'));
+        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'asc';
 
         // Update rented status dynamically
         AssignVehicle::all()->each->updateRentedStatus();
@@ -157,7 +161,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         $startDate = $request->input('start_date'); // Start date filter
         $endDate = $request->input('end_date'); // End date filter
         $categoryId = $request->input('category_id');
-        $sortOrder = $request->input('sort_order', 'asc'); // Default sorting order
+        // Validate sort_order - default to 'asc' if invalid
+        $sortOrder = strtolower($request->input('sort_order', 'asc'));
+        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'asc';
 
         // Query for completed rentals
         $query = AssignVehicle::where('rent_end_date', '<', now()) // Rent has ended
