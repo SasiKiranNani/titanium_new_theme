@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h5 class="card-header">Create New Booking</h5>
+                        <h5 class="card-header">Update Booking</h5>
                     </div>
                     <div class="col-sm-8 card-header">
                         <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
@@ -134,13 +134,12 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="col-form-label">Job <span class="text-danger">*</span></label>
-                                                <select name="service_job_id[]" id="service_job_id"
-                                                    class="form-control select2" multiple>
+                                                <select name="service_job_id[]" id="service_job_id" class="form-control select2" multiple>
                                                     <option value="">Select Job</option>
                                                     @foreach ($serviceJobs as $job)
                                                         <option value="{{ $job->id }}"
-                                                            data-price="{{ $job->price }}"
-                                                            {{ in_array($job->id, $selectedJobIds) ? 'selected' : '' }}>
+                                                                data-price="{{ $job->price }}"
+                                                                @selected(is_array($selectedJobIds) && in_array($job->id, $selectedJobIds))>
                                                             {{ $job->name }}
                                                         </option>
                                                     @endforeach

@@ -196,7 +196,9 @@ class BookingController extends Controller implements HasMiddleware
             $booking->date             = $validatedData['date'];
             $booking->time_slot_id     = $validatedData['time_slot_id'];
             $booking->vehicle_id       = $validatedData['vehicle_id'];
-            $booking->service_job_id   = json_encode($validatedData['service_job_id']); // Store as JSON
+            $booking->service_job_id   = isset($validatedData['service_job_id'])
+                ? json_encode($validatedData['service_job_id'])
+                : null;
             $booking->odometer         = $validatedData['odometer'];
             $booking->service_interval = $validatedData['service_interval'];
             $booking->next_service_due = $validatedData['next_service_due'];
@@ -271,7 +273,12 @@ class BookingController extends Controller implements HasMiddleware
         $timeslots      = TimeSlot::all();
         $services       = Service::all();
         $serviceJobs    = ServiceJob::all();
-        $selectedJobIds = json_decode($serviceBooking->service_job_id, true);
+        // Triple protection for selectedJobIds:
+        $selectedJobIds = [];
+        if (!empty($serviceBooking->service_job_id)) {
+            $decoded = json_decode($serviceBooking->service_job_id, true);
+            $selectedJobIds = is_array($decoded) ? $decoded : [];
+        }
 
         // Handle empty or invalid miscellaneous field
         $miscellaneousIds   = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
@@ -343,12 +350,10 @@ class BookingController extends Controller implements HasMiddleware
             // Find the existing ServiceBooking
             $booking = ServiceBooking::findOrFail($id);
 
-            // Update the ServiceBooking
-            $booking->update([
+            $updateData = [
                 'date'             => $validatedData['date'],
                 'time_slot_id'     => $validatedData['time_slot_id'],
                 'vehicle_id'       => $validatedData['vehicle_id'],
-                'service_job_id'   => json_encode($validatedData['service_job_id']), // Encode as JSON
                 'odometer'         => $validatedData['odometer'],
                 'service_interval' => $validatedData['service_interval'],
                 'next_service_due' => $validatedData['next_service_due'],
@@ -371,7 +376,18 @@ class BookingController extends Controller implements HasMiddleware
                 'payment'          => $validatedData['payment'],
                 'total_paid'       => $validatedData['total_paid'],
                 'balance_due'      => $validatedData['balance_due'],
-            ]);
+            ];
+
+            // Handle service_job_id - check if it exists and is an array
+            if (isset($validatedData['service_job_id']) && is_array($validatedData['service_job_id'])) {
+                $updateData['service_job_id'] = json_encode($validatedData['service_job_id']);
+            } else {
+                $updateData['service_job_id'] = null;
+            }
+
+            // Update the ServiceBooking
+            $booking->update($updateData);
+
 
             // Handle miscellaneous items
             $miscellaneousIds = [];
@@ -628,7 +644,9 @@ class BookingController extends Controller implements HasMiddleware
             $booking->date             = $validatedData['date'];
             $booking->time_slot_id     = $validatedData['time_slot_id'];
             $booking->reg_no           = $validatedData['reg_no'];
-            $booking->service_job_id   = json_encode($validatedData['service_job_id']); // Store as JSON
+            $booking->service_job_id   = isset($validatedData['service_job_id'])
+                ? json_encode($validatedData['service_job_id'])
+                : null;
             $booking->odometer         = $validatedData['odometer'];
             $booking->service_interval = $validatedData['service_interval'];
             $booking->next_service_due = $validatedData['next_service_due'];
@@ -696,7 +714,12 @@ class BookingController extends Controller implements HasMiddleware
         $timeslots      = TimeSlot::all();
         $services       = Service::all();
         $serviceJobs    = ServiceJob::all();
-        $selectedJobIds = json_decode($serviceBooking->service_job_id, true);
+        // Triple protection for selectedJobIds:
+        $selectedJobIds = [];
+        if (!empty($serviceBooking->service_job_id)) {
+            $decoded = json_decode($serviceBooking->service_job_id, true);
+            $selectedJobIds = is_array($decoded) ? $decoded : [];
+        }
 
         // Handle empty or invalid miscellaneous field
         $miscellaneousIds   = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
@@ -766,12 +789,11 @@ class BookingController extends Controller implements HasMiddleware
             // Find the existing ServiceBooking
             $booking = OtherServiceBooking::findOrFail($id);
 
-            // Update the ServiceBooking
-            $booking->update([
+            // Prepare the update data
+            $updateData = [
                 'date'             => $validatedData['date'],
                 'time_slot_id'     => $validatedData['time_slot_id'],
                 'reg_no'           => $validatedData['reg_no'],
-                'service_job_id'   => json_encode($validatedData['service_job_id']), // Encode as JSON
                 'odometer'         => $validatedData['odometer'],
                 'service_interval' => $validatedData['service_interval'],
                 'next_service_due' => $validatedData['next_service_due'],
@@ -794,7 +816,17 @@ class BookingController extends Controller implements HasMiddleware
                 'payment'          => $validatedData['payment'],
                 'total_paid'       => $validatedData['total_paid'],
                 'balance_due'      => $validatedData['balance_due'],
-            ]);
+            ];
+
+            // Handle service_job_id - check if it exists and is an array
+            if (isset($validatedData['service_job_id']) && is_array($validatedData['service_job_id'])) {
+                $updateData['service_job_id'] = json_encode($validatedData['service_job_id']);
+            } else {
+                $updateData['service_job_id'] = null;
+            }
+
+            // Update the ServiceBooking
+            $booking->update($updateData);
 
             // Handle miscellaneous items
             $miscellaneousIds = [];

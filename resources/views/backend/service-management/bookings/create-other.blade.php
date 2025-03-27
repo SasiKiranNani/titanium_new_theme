@@ -268,7 +268,7 @@
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="purchase_date" class="col-form-label">Year</label>
-                                                <input type="text" name="purchase_date" id="purchase_date"
+                                                <input type="date" name="purchase_date" id="purchase_date"
                                                     class="form-control">
                                             </div>
                                         </div>
