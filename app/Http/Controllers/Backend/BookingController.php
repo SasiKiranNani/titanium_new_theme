@@ -484,15 +484,29 @@ class BookingController extends Controller implements HasMiddleware
             'timeSlot',
         ])->findOrFail($id);
 
-        // Convert "miscellaneous" to an array
-        $miscellaneousIds = array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"')));
+        // Handle miscellaneous items
+        $miscellaneousIds = [];
+        if (!empty($serviceBooking->miscellaneous)) {
+            $miscellaneousIds = array_filter(
+                array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"'))),
+                fn($id) => !empty($id)
+            );
+        }
 
-        // Fetch miscellaneous items manually
-        $miscellaneousItems = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+        $miscellaneousItems = !empty($miscellaneousIds)
+            ? Miscellaneous::whereIn('id', $miscellaneousIds)->get()
+            : collect();
 
-        $serviceJobs = ServiceJob::with('service')
-            ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
-            ->get();
+        // Handle service jobs
+        $serviceJobIds = [];
+        if (!empty($serviceBooking->service_job_id)) {
+            $decoded = json_decode($serviceBooking->service_job_id, true);
+            $serviceJobIds = is_array($decoded) ? $decoded : [];
+        }
+
+        $serviceJobs = !empty($serviceJobIds)
+            ? ServiceJob::with('service')->whereIn('id', $serviceJobIds)->get()
+            : collect();
 
         $pdf = Pdf::loadView('backend.service-management.bookings.invoice.invoice', [
             'serviceBooking' => $serviceBooking,
@@ -509,14 +523,29 @@ class BookingController extends Controller implements HasMiddleware
         ])->findOrFail($id);
 
         // Convert "miscellaneous" to an array
-        $miscellaneousIds = array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"')));
+        // Handle miscellaneous items
+        $miscellaneousIds = [];
+        if (!empty($serviceBooking->miscellaneous)) {
+            $miscellaneousIds = array_filter(
+                array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"'))),
+                fn($id) => !empty($id)
+            );
+        }
 
-        // Fetch miscellaneous items manually
-        $miscellaneousItems = Miscellaneous::whereIn('id', $miscellaneousIds)->get();
+        $miscellaneousItems = !empty($miscellaneousIds)
+            ? Miscellaneous::whereIn('id', $miscellaneousIds)->get()
+            : collect();
 
-        $serviceJobs = ServiceJob::with('service')
-            ->whereIn('id', json_decode($serviceBooking->service_job_id, true))
-            ->get();
+        // Handle service jobs
+        $serviceJobIds = [];
+        if (!empty($serviceBooking->service_job_id)) {
+            $decoded = json_decode($serviceBooking->service_job_id, true);
+            $serviceJobIds = is_array($decoded) ? $decoded : [];
+        }
+
+        $serviceJobs = !empty($serviceJobIds)
+            ? ServiceJob::with('service')->whereIn('id', $serviceJobIds)->get()
+            : collect();
 
         $pdf = Pdf::loadView('backend.service-management.bookings.invoice.invoice', [
             'serviceBooking' => $serviceBooking,
