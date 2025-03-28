@@ -177,6 +177,10 @@ Route::get('/link-expired', function () {
     return view('backend.vehicle-management.pages.link-expired');
 })->name('link.expired');
 
+Route::get('/ddr-form', function () {
+    return view('backend.payment.direct-debit-form');
+})->name('ddr.form');
+
 
 Route::get('/redirect', [RedirectController::class, 'index'])->middleware('auth');
 

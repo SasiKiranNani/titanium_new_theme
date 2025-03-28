@@ -6,31 +6,13 @@
         body {
             font-family: Arial, sans-serif;
             color: black;
-            background-color: #f5f5f5;
-            /* Light gray background for the page */
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
             background-color: white;
-            width: 100%;
-            max-width: 800px;
-            /* Adjust this to your preferred width */
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Optional: adds a subtle shadow */
         }
 
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .footer {
             text-align: center;
         }
@@ -128,8 +110,8 @@
         .input-box {
             border: 1px solid black;
             border-radius: 4px;
-            width: 20px;
-            height: 20px;
+            width: 10px;
+            height: 10px;
             text-align: center;
         }
 
@@ -155,6 +137,8 @@
             text-align: left;
         }
 
+
+
         .input-box:last-child {
             margin-right: 0;
         }
@@ -174,8 +158,8 @@
         }
 
         .table .input-box {
-            width: 20px;
-            height: 20px;
+            width: 10px;
+            height: 10px;
             text-align: center;
             border: 1px solid black;
             margin: 0px;
@@ -200,55 +184,43 @@
         <table class="table"
             style="border-bottom: 1px solid black; margin-bottom: 0px; width: 100%; border-collapse: collapse; font-size: 10px;">
             <tr>
-                <td style="text-align: left; border: none; padding: 3px;">
-                    <h1 style="margin: 0; font-size: 20px;">MAHAJAN GROUP PTY LTD</h1>
-                </td>
+            <td style="text-align: left; border: none; padding: 3px;">
+                <h1 style="margin: 0; font-size: 20px;">MAHAJAN GROUP PTY LTD</h1>
+            </td>
             </tr>
             <tr>
-                <td style="width: 70%;"></td>
-                <td style="text-align: left; border: none; padding: 3px;">
-                    <p style="margin: 0;">Phone 0433200025</p>
-                    <p style="margin: 0;">info@mahajangroup.au</p>
-                    <p style="margin: 0;">9 Gulliver Dr, Officer 3809</p>
-                </td>
+            <td style="width: 70%;"></td>
+            <td style="text-align: left; border: none; padding: 3px;">
+                <p style="margin: 0;">Phone 0433200025</p>
+                <p style="margin: 0;">info@mahajangroup.au</p>
+                <p style="margin: 0;">9 Gulliver Dr, Officer 3809</p>
+            </td>
             </tr>
             <tr>
-                <td style="text-align: left; border: none; padding: 3px;">
-                    <h3 style="margin: 0; font-size: 14px;">DIRECT DEBIT REQUEST</h3>
-                </td>
-                <td></td>
+            <td style="text-align: left; border: none; padding: 3px;">
+                <h3 style="margin: 0; font-size: 14px;">DIRECT DEBIT REQUEST</h3>
+            </td>
+            <td></td>
             </tr>
         </table>
         <table class="table" style="margin-bottom: 0px;">
             <tr>
-                <td style="font-size: 13px; width: 15%;">Customer Name:</td>
-                <td class="from_db" style="width: 25%;"><input type="text" name="customer_name"
-                        style="border: none; width: 100%; border-bottom: 1px solid black; outline: none; height: 20px;">
-                </td>
-                <td style="font-size: 13px; width: 10%;">D.O.B.:</td>
-                <td class="from_db" style="width: 20%;"><input type="date" name="dob"
-                        style="border: none; width: 100%; border-bottom: 1px solid black; outline: none; height: 20px;">
-                </td>
-                <td style="font-size: 13px; width: 15%;">DDR Reference #</td>
-                <td class="from_db" style="width: 15%;"><input type="text" name="dob"
-                    style="border: none; width: 100%; border-bottom: 1px solid black; outline: none; height: 20px;"></td>
+                <td style="font-size: 13px;">Customer Name:</td>
+                <td class="from_db">Sasi Kiran</td>
+                <td style="font-size: 13px;">D.O.B.:</td>
+                <td class="from_db">02/01/2002</td>
+                <td style="font-size: 13px;">DDR Reference #</td>
+                <td class="from_db">dfgdfgdfg</td>
             </tr>
             <tr>
-                <td colspan="1" style="font-size: 13px; width: 16%;">Customer Address:</td>
-                <td colspan="5" class="from_db">
-                    <textarea name="address" id="address"
-                        style="width: 100%;border: none; width: 100%; border-bottom: 1px solid black; outline: none;"></textarea>
-                </td>
+                <td colspan="1" style="font-size: 13px;">Customer Address:</td>
+                <td colspan="5" class="from_db">fdfdfdgfdgdf</td>
             </tr>
             <tr>
                 <td style="font-size: 13px;">Email:</td>
-                <td class="from_db"><input type="text" class="input"
-                        style="height: 20px; border: none; width: 100%; border-bottom: 1px solid black; outline: none;">
-                </td>
+                <td class="from_db">penubakusasikiran@gmail.com</td>
                 <td style="font-size: 13px;">Phone:</td>
-                <td class="from_db"><input type="text" class="input"
-                        style="height: 20px; border: none; width: 100%; border-bottom: 1px solid black; outline: none;">
-                </td>
+                <td class="from_db">9493851281</td>
             </tr>
         </table>
         <p class="mb-4" style="border-bottom: 1px solid black; padding-bottom: 10px; margin: 0px; font-size: 9px;">*
@@ -288,7 +260,7 @@
                         <input type="text" style="text-align: center; margin: 0;">
                         <input type="text" style="text-align: center; margin: 0;">
                     </td>
-                    <td class="input-group" style="padding: 0; width: 21%;">
+                    <td class="input-group" style="padding: 0; width: 20%;">
                         <input type="text" style="text-align: center; margin: 0;">
                         <input type="text" style="text-align: center; margin: 0;">
                         <span>/</span>
@@ -305,18 +277,18 @@
         <table style="margin-top: 5px;">
             <thead>
                 <tr>
-                    <th style="text-align: left; width: 13%;"></th>
-                    <th style="text-align: left; font-size: 10px; width: 30%; font-weight: normal;">
+                    <th style="text-align: left; width: 75px;"></th>
+                    <th
+                        style="text-align: left; font-size: 10px; width: 180px; padding-left: 14px; font-weight: normal;">
                         Amount</th>
-                    <th style="text-align: left; font-size: 10px; width: 40%; font-weight: normal; padding-left: 14px;">
+                    <th style="text-align: left; font-size: 10px; width: 40%; padding-left: 30px; font-weight: normal;">
                         Frequency</th>
-                    <th style="width: 17%;"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="label" style="width: 45px;">Recurring <br>Debits</td>
-                    <td class="input-group" style="width: 180px;">
+                    <td class="label" style="width: 75px;">Recurring <br>Debits</td>
+                    <td class="input-group" style="padding-left: 14px; width: 180px;">
                         <!-- Nested table for Amount and Start Date -->
                         <table style="width: 100%; border-collapse: collapse;">
                             <tr>
@@ -351,7 +323,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td style="vertical-align: top; width: 40%; padding-left: 10px;">
+                    <td style="vertical-align: top; width: 40%; padding-left: 30px;">
                         <table style="width: 100%;">
                             <tr>
                                 <td><input type="checkbox" style="margin: 0px;"></td>
@@ -367,7 +339,6 @@
                             </tr>
                         </table>
                     </td>
-                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -517,7 +488,7 @@
                         debit amounts, stopping a debit, suspending the Direct Debit, or cancelling the Direct Debit
                         completely. The notice period for any such proposed amendments shall be no less than thirty (30)
                         days in advance of the intended effective date of the changes. If a cancellation is requested
-                        due to the merchant's variations to terms of the debit agreement, no penalty should be imposed.
+                        due to the merchant’s variations to terms of the debit agreement, no penalty should be imposed.
                     </p>
                     <h4 class="text-bold" style="font-size: 9px;">Enquiries</h4>
                     <p style="font-size: 9px;">All enquiries should be made to the Provider in the first instance, and
@@ -536,14 +507,15 @@
             </tr>
         </table>
         <div class="footer">
-            <p class="text-sm" style="font-size: 9px; width: 100%;">Direct debit services provided by <img
-                    src="{{ asset('backend/img/payadvantage.png') }}" alt="" style="width: 20px;">
-                <strong>Pay<span style="color: red;">Advantage</span></strong> <b style="color: red;">|</b> <span
+            <p class="text-sm" style="font-size: 9px; width: 100%;">Direct debit services provided by <img src="/public/backend/img/payadvantage.png"
+                    alt="" style="width: 20px;"> <strong>Pay<span
+                        style="color: red;">Advantage</span></strong> <b style="color: red;">|</b> <span
                     style="color: red;"> P </span> <b style="color: red;">1300 641
                     310</b> <b style="color: red;">|</b>
                 <b style="color: red;">info@payadvantage.com.au</b> <b style="color: red;">|</b> <b
                     style="color: red;">www.payadvantage.com.au</b>
             </p>
+            <!-- <img src="{{ asset('backend/img/payadvantage.png') }}" alt=""> -->
         </div>
     </div>
 </body>
