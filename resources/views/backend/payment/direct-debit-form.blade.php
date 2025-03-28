@@ -192,6 +192,9 @@
         .from_db {
             font-size: 12px;
         }
+        input {
+            outline: none;
+        }
     </style>
 </head>
 

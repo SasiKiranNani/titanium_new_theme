@@ -135,7 +135,7 @@
                     </table>
                 </div>
                 <!-- Per Page Selection -->
-                <div class="row m-3 justify-content-between">
+                <div class="row m-3 justify-content-between align-items-center">
                     <div class="col-md-auto me-auto">
                         <form method="GET" action="{{ route('permissions') }}">
                             <input type="hidden" name="search" value="{{ request('search') }}">
@@ -158,8 +158,16 @@
                     <!-- Pagination -->
                     <div class="col-md-auto ms-auto">
                         <div class="dt-paging">
-                            @if ($perPage !== 'all')
-                                {{ $permissions->appends(request()->query())->links('pagination::bootstrap-4') }}
+                            @if (isset($perPage) && $perPage !== 'all')
+                                <div class="pagination-container">
+                                    {{  $permissions->appends(request()->query())->onEachSide(1)->links('pagination::bootstrap-4') }}
+                                </div>
+                            @endif
+                            <!-- Add this after the bootstrap pagination -->
+                            @if (isset($perPage) && $perPage !== 'all')
+                                <div class="simple-tailwind-pagination hidden">
+                                    {{  $permissions->appends(request()->query())->onEachSide(1)->links('pagination::simple-tailwind') }}
+                                </div>
                             @endif
                         </div>
                     </div>

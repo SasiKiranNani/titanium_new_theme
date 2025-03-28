@@ -98,7 +98,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row m-3 justify-content-between">
+                <div class="row m-3 justify-content-between align-items-center">
                     <!-- Left Side: Per Page Selection -->
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto mt-0">
@@ -121,8 +121,16 @@
                     <div
                         class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto mt-0">
                         <div class="dt-paging">
-                            @if ($perPage !== 'all')
-                                {{ $timeslots->appends(['per_page' => $perPage])->links('pagination::bootstrap-4') }}
+                            @if (isset($perPage) && $perPage !== 'all')
+                                <div class="pagination-container">
+                                    {{  $timeslots->appends(request()->query())->onEachSide(1)->links('pagination::bootstrap-4') }}
+                                </div>
+                            @endif
+                            <!-- Add this after the bootstrap pagination -->
+                            @if (isset($perPage) && $perPage !== 'all')
+                                <div class="simple-tailwind-pagination hidden">
+                                    {{  $timeslots->appends(request()->query())->onEachSide(1)->links('pagination::simple-tailwind') }}
+                                </div>
                             @endif
                         </div>
                     </div>
