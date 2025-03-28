@@ -280,24 +280,38 @@
                     <td class="label" style="width: 13%; padding: 5px;">Upfront Debit</td>
                     <td class="input-group" style="width: 30%; padding: 5px;">
                         <span>$</span>
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
                         <span>.</span>
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
                     </td>
+
                     <td class="input-group" style="padding: 0; width: 21%;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
                         <span>/</span>
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
                         <span>/</span>
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
-                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;"
+                            oninput="moveToNext(this)">
                     </td>
                     <td></td>
                 </tr>
@@ -324,14 +338,21 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <span>$</span>
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
                                     <span>.</span>
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
                                 </td>
                             </tr>
                             <tr>
@@ -341,14 +362,20 @@
                             </tr>
                             <tr>
                                 <td style="padding: 0; padding-top: 2px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
                                     <span>/</span>
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
                                     <span>/</span>
-                                    <input type="text" maxlength="1" style="margin: 0px;">
-                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
+                                    <input type="text" maxlength="1" style="margin: 0px;"
+                                        oninput="moveToNext(this)">
                                 </td>
                             </tr>
                         </table>
@@ -386,15 +413,15 @@
                 <td style="width: 11%;"></td>
                 <td style="text-align: left; width: 70%; padding-left: 10px;">
                     <span style="font-size: 10px;"> Amount Reached $</span>
-                    <input type="text" maxlength="1" class="input-box">
-                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
                     <span style="font-size: 12px;"> ,</span>
-                    <input type="text" maxlength="1" class="input-box">
-                    <input type="text" maxlength="1" class="input-box">
-                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
                     <span style="font-size: 12px;"> .</span>
-                    <input type="text" maxlength="1" class="input-box">
-                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
+                    <input type="text" maxlength="1" class="input-box" oninput="moveToNext(this)">
                     <span style="font-size: 10px;"> (excludes any on-charged fees)</span>
                 </td>
                 <td style="width: 9%;"></td>
@@ -428,27 +455,42 @@
             <tr>
                 <td style="width: 10%; font-size: 11px;">Account</td>
                 <td style="width: 30%; padding-left: 15px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
                 </td>
                 <td style="width: 30%;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1"
+                        oninput="moveToNext(this)" style="margin: 0px;">
                 </td>
                 <td style="width: 30%;">
                     <input type="text" name="account_name"
-                        style="border: none; width: 100%; border-bottom: 1px dotted black; outline: none; height: 9px;">
+                        style="border: none; width: 100%; border-bottom: 1px dotted black; outline: none; height: 20px;">
                 </td>
             </tr>
         </table>
@@ -461,7 +503,7 @@
                         style="border: none; border-bottom: 1px dotted black; outline: none; width: 100%;">
                 </td>
                 <td style="vertical-align: top; width: 25%; padding-right: 15px; text-align: left;">
-                    <input type="text" name="account_name"
+                    <input type="date" name="account_name"
                         style="border: none; border-bottom: 1px dotted black; outline: none; width: 100px;">
                     <p class="left" style="margin: 0; font-size: 12px;">Date</p>
                 </td>
@@ -470,7 +512,7 @@
                         style="border: none; border-bottom: 1px dotted black; outline: none; width: 100%;">
                 </td>
                 <td style="vertical-align: top; width: 25%; padding-right: 15px; text-align: left;">
-                    <input type="text" name="account_name"
+                    <input type="date" name="account_name"
                         style="border: none; border-bottom: 1px dotted black; outline: none; width: 100px;">
                     <p class="left" style="margin: 0; font-size: 12px;">Date</p>
                 </td>
@@ -548,6 +590,39 @@
             </p>
         </div>
     </div>
+
+
+    <script>
+        function moveToNext(input) {
+            if (input.value.length >= input.maxLength) {
+                let nextInput = input.nextElementSibling;
+                while (nextInput && nextInput.tagName !== "INPUT") {
+                    nextInput = nextInput.nextElementSibling;
+                }
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
+
+        function moveToPrevious(input) {
+            if (input.value.length === 0) {
+                let previousInput = input.previousElementSibling;
+                while (previousInput && previousInput.tagName !== "INPUT") {
+                    previousInput = previousInput.previousElementSibling;
+                }
+                if (previousInput) {
+                    previousInput.focus();
+                }
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Backspace') {
+                moveToPrevious(document.activeElement);
+            }
+        });
+    </script>
 </body>
 
 </html>
