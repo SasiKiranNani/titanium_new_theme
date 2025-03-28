@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\AccidentController;
 use App\Http\Controllers\Backend\UserManagementController;
 use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
@@ -185,3 +186,5 @@ Route::get('/ddr-form', function () {
 Route::get('/redirect', [RedirectController::class, 'index'])->middleware('auth');
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
+
+Route::get('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
