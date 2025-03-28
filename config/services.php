@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'payAdvantage' => [
+        'username' => env('PAY_ADVANTAGE_USERNAME'),
+        'password' => env('PAY_ADVANTAGE_PASSWORD'),
+    ],
+
 ];
