@@ -231,7 +231,8 @@
                 </td>
                 <td style="font-size: 13px; width: 15%;">DDR Reference #</td>
                 <td class="from_db" style="width: 15%;"><input type="text" name="dob"
-                    style="border: none; width: 100%; border-bottom: 1px solid black; outline: none; height: 20px;"></td>
+                        style="border: none; width: 100%; border-bottom: 1px solid black; outline: none; height: 20px;">
+                </td>
             </tr>
             <tr>
                 <td colspan="1" style="font-size: 13px; width: 16%;">Customer Address:</td>
@@ -279,24 +280,24 @@
                     <td class="label" style="width: 13%; padding: 5px;">Upfront Debit</td>
                     <td class="input-group" style="width: 30%; padding: 5px;">
                         <span>$</span>
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
                         <span>.</span>
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
                     </td>
                     <td class="input-group" style="padding: 0; width: 21%;">
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
                         <span>/</span>
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
                         <span>/</span>
-                        <input type="text" style="text-align: center; margin: 0;">
-                        <input type="text" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
+                        <input type="text" maxlength="1" style="text-align: center; margin: 0;">
                     </td>
                     <td></td>
                 </tr>
@@ -308,7 +309,8 @@
                     <th style="text-align: left; width: 13%;"></th>
                     <th style="text-align: left; font-size: 10px; width: 30%; font-weight: normal;">
                         Amount</th>
-                    <th style="text-align: left; font-size: 10px; width: 40%; font-weight: normal; padding-left: 14px;">
+                    <th
+                        style="text-align: left; font-size: 10px; width: 40%; font-weight: normal; padding-left: 14px;">
                         Frequency</th>
                     <th style="width: 17%;"></th>
                 </tr>
@@ -322,14 +324,14 @@
                             <tr>
                                 <td style="padding: 0;">
                                     <span>$</span>
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
                                     <span>.</span>
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
                                 </td>
                             </tr>
                             <tr>
@@ -339,14 +341,14 @@
                             </tr>
                             <tr>
                                 <td style="padding: 0; padding-top: 2px;">
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
                                     <span>/</span>
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
                                     <span>/</span>
-                                    <input type="text" style="margin: 0px;">
-                                    <input type="text" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
+                                    <input type="text" maxlength="1" style="margin: 0px;">
                                 </td>
                             </tr>
                         </table>
@@ -384,15 +386,15 @@
                 <td style="width: 11%;"></td>
                 <td style="text-align: left; width: 70%; padding-left: 10px;">
                     <span style="font-size: 10px;"> Amount Reached $</span>
-                    <input type="text" class="input-box">
-                    <input type="text" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
                     <span style="font-size: 12px;"> ,</span>
-                    <input type="text" class="input-box">
-                    <input type="text" class="input-box">
-                    <input type="text" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
                     <span style="font-size: 12px;"> .</span>
-                    <input type="text" class="input-box">
-                    <input type="text" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
+                    <input type="text" maxlength="1" class="input-box">
                     <span style="font-size: 10px;"> (excludes any on-charged fees)</span>
                 </td>
                 <td style="width: 9%;"></td>
@@ -426,23 +428,23 @@
             <tr>
                 <td style="width: 10%; font-size: 11px;">Account</td>
                 <td style="width: 30%; padding-left: 15px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
                 </td>
                 <td style="width: 30%;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
-                    <input type="text" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
+                    <input type="text" maxlength="1" class="input-box" maxlength="1" style="margin: 0px;">
                 </td>
                 <td style="width: 30%;">
                     <input type="text" name="account_name"
