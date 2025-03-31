@@ -282,7 +282,7 @@
                 you agree to be bound
                 by each of the terms contained in this Agreement, whether or not you have read its contents</p>
         </div>
-        <form id="signatureForm" action="{{ route('hirer.handle') }}" method="POST" enctype="multipart/form-data">
+        <form id="signatureForm" action="{{ route('payment.initiate') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <table>
                 <tbody>

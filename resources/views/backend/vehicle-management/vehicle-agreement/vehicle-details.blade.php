@@ -279,12 +279,12 @@
         <div class="body-header">
             @if ($vehicle->company_name == 'Mahajan Group')
                 <h1>MAHAJAN GROUP</h1>
-   @elseif ($vehicle->company_name == 'EMM Kay Group')
+            @elseif ($vehicle->company_name == 'EMM Kay Group')
                 <h1>EMM KAY GROUP PTY LTD</h1>
             @else
                 <h1>Vaa Transport Pty Ltd</h1>
             @endif
-{{-- @dd($vehicle->company_name) --}}
+            {{-- @dd($vehicle->company_name) --}}
             <h2>MOTOR VEHICLE (RIDE SHARE) RENTAL AGREEMENT</h2>
             <p class="size">This Agreement contains all of the terms that apply to your rental of a Vehicle from Us.
                 Therefore, we ask you that read this
@@ -292,7 +292,7 @@
                 you agree to be bound
                 by each of the terms contained in this Agreement, whether or not you have read its contents</p>
         </div>
-        <form id="signatureForm" action="{{ route('hirer.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="signatureForm" action="{{ route('payment.initiate') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <table>
                 <tbody>
@@ -526,7 +526,7 @@
             <h5 style="margin-top: 20px;">Mahajan Group Pty Ltd - ABN: 62 626 607 145 - Hire Terms and Conditions
                 of
                 Trade</h5>
-@elseif ($vehicle->company_name == 'EMM Kay Group')
+        @elseif ($vehicle->company_name == 'EMM Kay Group')
             <h5 style="margin-top: 20px;">EMM KAY GROUP PTY LTD - ABN: 52 652 574 528 - Hire Terms and Conditions
                 of
                 Trade</h5>
@@ -543,7 +543,7 @@
                 <span class="content-text"><b>
                         @if ($vehicle->company_name == 'Mahajan Group')
                             “MG”
-              @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             “EMM KAY”
                         @else
                             “Vaa Transport”
@@ -551,7 +551,7 @@
                     </b> means
                     @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan Group Pty Ltd, ABN 62 626 607 145
-          @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY Group Pty Ltd, ABN 52 652 574 528
                     @else
                         Vaa Transport Pty Ltd
@@ -561,7 +561,7 @@
                     and
                     assigns or any person acting on behalf of and with the authority of @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan
-          @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -597,7 +597,7 @@
                     parts,
                     accessories and/or consumables) supplied on hire by @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan
-          @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -607,7 +607,7 @@
                     quotation, authority to hire, or any other work authorisation forms as provided
                     by @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan
-          @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -617,7 +617,7 @@
                     the
                     invoices, quotation, authority to hire, or any other forms as provided by @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -625,7 +625,7 @@
                     Group Pty Ltd to the Hirer</span></p>
             <p>1.6<span class="content-text"><b>"Services”</b> mean all Services supplied by @if ($vehicle->company_name == 'Mahajan Group')
                         Mahajan
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -655,7 +655,7 @@
                     Equipment/Services as agreed between
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -671,7 +671,7 @@
                         operate in the background when using
                         @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -699,7 +699,7 @@
                     parties in writing, and shall prevail to the extent of any inconsistency with any
                     other document or contract between the Hirer and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -709,7 +709,7 @@
                     provided by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -717,7 +717,7 @@
                     in relation to Equipment/Services supplied is given in good faith, is based on
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -725,7 +725,7 @@
                     liability on
                     the part of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -737,7 +737,7 @@
                     shall not
                     take effect until the Hirer has completed a credit application with @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -748,7 +748,7 @@
                     Hirers
                     credit limit and/or the account exceeds the payment terms, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -760,7 +760,7 @@
                     accepted orders may be subject to availability and if, for any reason,
                     Equipment/Services are not, or cease to be available, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -783,7 +783,7 @@
                     GST and other taxes or duties are additionally at the Hirer’s account.</span></p>
             <p>3.2<span class="content-text">At @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -794,7 +794,7 @@
             <p class="subpoints">(a)<span class="content-text">as indicated on any invoice provided by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -805,7 +805,7 @@
             <p class="subpoints">(b)<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -822,7 +822,7 @@
             <p>3.3<span class="content-text">If the Hirer requests any variation to the Equipment/Services,
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -834,14 +834,14 @@
                     by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif in
                     relation to the Equipment/Services, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -850,7 +850,7 @@
                 </span></p>
             <p>3.5<span class="content-text"></span>At @if ($vehicle->company_name == 'Mahajan Group')
                     MG
-       @elseif ($vehicle->company_name == 'EMM Kay Group')
+                @elseif ($vehicle->company_name == 'EMM Kay Group')
                     EMM KAY
                 @else
                     Vaa Transport
@@ -859,7 +859,7 @@
                 (1) weeks
                 rent may be required. If required, @if ($vehicle->company_name == 'Mahajan Group')
                     MG
-       @elseif ($vehicle->company_name == 'EMM Kay Group')
+                @elseif ($vehicle->company_name == 'EMM Kay Group')
                     EMM KAY
                 @else
                     Vaa Transport
@@ -873,7 +873,7 @@
             <p>4.2<span class="content-text">The Price will be payable by the Hirer on the date/s determined by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -894,7 +894,7 @@
                     failing any notice to the contrary, the date which is seven (7) days following
                     the date of any invoice given to the Hirer by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -905,7 +905,7 @@
                     any
                     other method as agreed to between the Hirer and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -916,7 +916,7 @@
                     Price, any
                     sums owed or claimed to be owed to the Hirer by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -928,19 +928,19 @@
                     or duties imposed on or in relation to the Equipment/Services. In addition to the
                     Price the Hirer must pay to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif an amount equal to any GST @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
                             @endif must pay for any supply by @if ($vehicle->company_name == 'Mahajan Group')
                                 MG
-                   @elseif ($vehicle->company_name == 'EMM Kay Group')
+                            @elseif ($vehicle->company_name == 'EMM Kay Group')
                                 EMM KAY
                             @else
                                 Vaa Transport
@@ -952,7 +952,7 @@
                             are expressly included in the Price</span></p>
             <p>4.7<span class="content-text">Payment terms may be revoked or amended at @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -967,14 +967,14 @@
             <p>5.1<span class="content-text">Hire charges shall commence from the time the Equipment leaves
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif’s
                     premises and continue until the Hirer notifies @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -991,7 +991,7 @@
                     returned
                     to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -999,21 +999,21 @@
                     then the daily hire charge rate calculated on a pro-rata basis plus twenty
                     percent (20%) shall be payable by the Hirer to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif until the whole of the
                     Equipment originally supplied is returned to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif. The parties agree that this is a
                     genuine estimate of damages which will be suffered by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1023,14 +1023,14 @@
                     Equipment is
                     not in use for any reason, unless @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif confirms special prior arrangements in
                     writing. In the event of Equipment breakdown provided the Hirer notifies @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1039,14 +1039,14 @@
                     not working, unless the condition is due to negligence or misuse on the part of
                     or attributable to the Hirer. Upon notice of breakdown @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif undertakes to repair
                     or (where necessary) supply suitable replacement Equipment as soon as @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1056,13 +1056,13 @@
                     either
                     collected by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif or returned to @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -1073,7 +1073,7 @@
 
             <p>6.1<span class="content-text">The Hirer shall ensure that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1083,20 +1083,20 @@
                     and clear access not being available, then the Hirer shall be responsible for
                     (and shall reimburse) @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif for all additional costs incurred by @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
                         @endif in gaining
                         suitable access to the worksite and/or @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -1112,7 +1112,7 @@
                     the Hirer or the Hirer’s nominated carrier takes possession of the Goods at
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1123,14 +1123,14 @@
                     Delivery (“Delivery”) of the Goods and/or Services is taken to occur at the
                     time that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif
                     (or @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1141,7 +1141,7 @@
             </p>
             <p>7.2<span class="content-text"> At @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1152,7 +1152,7 @@
             <p>7.3<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1163,7 +1163,7 @@
                 </span></p>
             <p>7.4<span class="content-text">Any time specified by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1171,7 +1171,7 @@
                     estimate
                     only and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1180,7 +1180,7 @@
                     every endeavour to enable the Equipment/Services to be delivered at the time
                     and place as was arranged between both parties. In the event that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1188,7 +1188,7 @@
                     to supply the Equipment/Services as agreed solely due to any action or inaction
                     of the Hirer, then @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1201,7 +1201,7 @@
             <p>8.1<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1215,7 +1215,7 @@
                     and
                     indemnifies @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1225,7 +1225,7 @@
                     the Hirer.</span></p>
             <p>8.3<span class="content-text"> The Hirer must prior to Delivery insure, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1243,7 +1243,7 @@
             <p>9.1<span class="content-text">The Equipment is and will at all times remain the absolute property of
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1253,7 +1253,7 @@
             <p>9.2<span class="content-text">If the Hirer fails to allow for the collection of the Equipment to
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1262,13 +1262,13 @@
                     required
                     under this agreement then @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif or @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -1280,20 +1280,20 @@
                         liability to repair or re-instate items belonging to the Hirer. Any costs incurred by
                         @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
                             @endif as a result of @if ($vehicle->company_name == 'Mahajan Group')
                                 MG
-                   @elseif ($vehicle->company_name == 'EMM Kay Group')
+                            @elseif ($vehicle->company_name == 'EMM Kay Group')
                                 EMM KAY
                             @else
                                 Vaa Transport
                             @endif so repossessing the Equipment shall be charged to the
                             Hirer. In addition, @if ($vehicle->company_name == 'Mahajan Group')
                                 MG
-                   @elseif ($vehicle->company_name == 'EMM Kay Group')
+                            @elseif ($vehicle->company_name == 'EMM Kay Group')
                                 EMM KAY
                             @else
                                 Vaa Transport
@@ -1304,7 +1304,7 @@
 
             <p><b>10. @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1313,7 +1313,7 @@
             <p>10.1<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1322,14 +1322,14 @@
                     Equipment may be reasonably used, and the suitability of the Equipment to be
                     used. If at any time @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif believes that its Equipment is not suitable for the type of
                     operation that the Hirer is using the Equipment for then @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1339,7 +1339,7 @@
             <p>10.2<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1351,7 +1351,7 @@
                     and tear
                     shall be borne by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1373,7 +1373,7 @@
                     that the operator holds and is fully licensed to drive and/or operate the
                     Equipment and shall provide evidence of the same to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1385,7 +1385,7 @@
                     sign of looseness or wear and shall at the Hirer’s own cost maintain the
                     Equipment as is required by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1394,7 +1394,7 @@
                     (where applicable) water, battery, grease, oil and other fluid levels (using
                     only products approved by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1412,7 +1412,7 @@
                     storage costs incurred during the hire period and will supply relevant details
                     as required by the Police and/or @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1424,7 +1424,7 @@
                     not carry any animals, illegal, prohibited or hazardous substances on, or in,
                     the Equipment supplied without the prior written permission of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1448,7 +1448,7 @@
             <p class="subpoints">(i)<span class="content-text">
                     notify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1470,7 +1470,7 @@
                     its intended use, and in accordance with any manufacturer’s instruction
                     whether supplied by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1482,14 +1482,14 @@
                     accessories, clean and in good order as delivered, fair wear and tear
                     accepted, to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif
                     (or @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1505,14 +1505,14 @@
                     possession of, or attempting to seize the Equipment (for any reason), of
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif’s interest in, and ownership of, the Equipment, and must immediately
                     notify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1526,21 +1526,21 @@
                     mark, plate or number on or in the Equipment or in any other manner
                     interfere with the Equipment. In the event that any decal on @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif’s equipment
                     has been removed then all costs incurred by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif in replacing the same
                     (should @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1550,7 +1550,7 @@
             <p class="subpoints">(o)<span class="content-text">
                     immediately notify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1561,7 +1561,7 @@
                     not move the Equipment from the address where the Equipment was
                     delivered to without the prior written approval of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1571,27 +1571,27 @@
             <p class="subpoints">(q)<span class="content-text">
                     provide to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif
                     (upon reasonable notice by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif) free access to @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
                         @endif’s
                         Equipment in order that @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -1614,7 +1614,7 @@
                     when moving the Equipment comply with any and all safety guidelines
                     advised by either @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1626,7 +1626,7 @@
             <p class="subpoints">(b)<span class="content-text">
                     not at any time attempt to repair Equipment without the prior consent of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1634,7 +1634,7 @@
                     Where such consent is given if the repairs prove to be defective any way
                     whatsoever, rectification to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1643,7 +1643,7 @@
             </p>
             <p>11.3<span class="content-text"> Immediately on request by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1652,7 +1652,7 @@
                     the new list price of any Equipment, accessories or consumables that are
                     for whatever reason destroyed, written off or not returned to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1679,7 +1679,7 @@
                     the cost of repairing any damage to the Equipment caused by vandalism,
                     theft or burglary, arson or act of god, or (in @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1691,7 +1691,7 @@
             <p class="subpoints">(f)<span class="content-text">
                     the cost of fuels and consumables provided by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1701,7 +1701,7 @@
             <p class="subpoints">(g)<span class="content-text">
                     any lost hire fees @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1713,7 +1713,7 @@
                     any insurance excess payable in relation to a claim made by either the Hirer
                     or @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1722,7 +1722,7 @@
                     the same is hired by the Hirer and irrespective of whether charged by the
                     Hirer’s insurers or @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1732,7 +1732,7 @@
             <p class="subpoints">(i)<span class="content-text">
                     where the Equipment has been lost or stolen any costs incurred by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1811,14 +1811,14 @@
                     the purposes of the PPSA and creates a security interest in all Goods and/or
                     collateral (account) – being a monetary obligation of the Hirer to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif for Services
                     – that have previously been supplied and that will be supplied in the future by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1831,7 +1831,7 @@
                     information (such information to be complete, accurate and up-to-date in
                     all respects) which @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1862,7 +1862,7 @@
                 <span class="content-text">
                     indemnify, and upon demand reimburse, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1877,7 +1877,7 @@
                     not register a financing change statement in respect of a security interest
                     without the prior written consent of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1891,7 +1891,7 @@
                     (account) in favour of a third party without the prior written consent of
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1902,7 +1902,7 @@
                 <span class="content-text">
                     mmediately advise @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1914,7 +1914,7 @@
             <p>13.4<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1932,7 +1932,7 @@
                     and 143 of the PPSA. </span></p>
             <p>13.7<span class="content-text"> Unless otherwise agreed to in writing by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1943,7 +1943,7 @@
             <p>13.8<span class="content-text">The Hirer must unconditionally ratify any actions taken by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1968,14 +1968,14 @@
                     future solely or jointly or have or become to have a beneficial interest in, in favour
                     of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif, with the due and punctual observance and performance of all the
                     obligations of the Hirer. The Hirer indemnifies @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1984,7 +1984,7 @@
                     caveat</span></p>
             <p>14.2<span class="content-text"> The Hirer hereby acknowledges that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -1994,7 +1994,7 @@
                     a caveat(s) on such property or properties in respect of the interests conferred on
                     it under clause 14.1. Such registration of a caveat by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2004,7 +2004,7 @@
                     via the Land Titles Office to have the caveat removed, until such time that the
                     Hirer has paid all monies owing by it to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2019,7 +2019,7 @@
                     days of
                     delivery notify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2028,7 +2028,7 @@
                     alleged defect in the Services provided within two (2) hours after any such defect
                     becomes evident. Upon such notification the Hirer must allow @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2043,7 +2043,7 @@
             <p>15.3<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2055,7 +2055,7 @@
             <p>15.4<span class="content-text">If the Hirer is a consumer within the meaning of the CCA,
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2074,14 +2074,14 @@
                     payable to
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif,
                     then all money which would become payable by the Hirer to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2089,7 +2089,7 @@
                     on any account, becomes immediately due and payable without the
                     requirement of any notice to the Hirer, and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2102,7 +2102,7 @@
                     payment becomes due, until the date of payment, at a rate of two and a
                     half percent (2.5%) per calendar month (and at @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2121,7 +2121,7 @@
                 <span class="content-text">
                     charge the Hirer for, and the Hirer must indemnify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2145,7 +2145,7 @@
             </p>
             <p>16.2<span class="content-text">Clauses 16.1(d) and 16.1(e) may also be relied upon, at @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2177,7 +2177,7 @@
 
             <p>17.1<span class="content-text">Without prejudice to any other remedies @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2187,14 +2187,14 @@
                     breach of any obligation (including those relating to payment) under these terms
                     and conditions @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif may suspend or terminate the supply of Equipment/Services to
                     the Hirer. @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2202,7 +2202,7 @@
                     suffers
                     because @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2210,7 +2210,7 @@
             <p>17.2<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2220,14 +2220,14 @@
                     delivery of Equipment/Services at any time before the Equipment/Services are
                     delivered by giving written notice to the Hirer. On giving such notice @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif shall
                     repay to the Hirer any money paid by the Hirer for the Equipment/Services. @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2241,7 +2241,7 @@
                     Hirer shall
                     be liable for any and all loss incurred (whether direct or indirect) by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2256,7 +2256,7 @@
                     by
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2264,7 +2264,7 @@
                     and
                     therefore considered Confidential Information. @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2276,7 +2276,7 @@
                     Area (“EEA”), under the EU Data Privacy Laws (including the General Data
                     Protection Regulation “GDPR”) (collectively, “EU Data Privacy Laws”). @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2284,14 +2284,14 @@
                     acknowledges that in the event it becomes aware of any data breaches and/or
                     disclosure of the Hirers Personal Information, held by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif that may result in
                     serious harm to the Hirer, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2302,7 +2302,7 @@
                 </span></p>
             <p>18.2<span class="content-text">The Hirer agrees for @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2313,7 +2313,7 @@
                     occupation, previous credit applications, credit history) about the Hirer in relation
                     to credit provided by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2322,7 +2322,7 @@
             </p>
             <p>18.3<span class="content-text">The Hirer agrees that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2359,7 +2359,7 @@
 
             <p>18.4<span class="content-text">The Hirer consents to @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2370,7 +2370,7 @@
                     used and
                     retained by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2404,7 +2404,7 @@
             <p>18.6<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2427,7 +2427,7 @@
                 <span class="content-text">
                     name of the credit provider and that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2460,7 +2460,7 @@
                     debt recovery action commenced or alternatively that the Hirer no longer
                     has any overdue accounts and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2473,7 +2473,7 @@
                 <span class="content-text">
                     information that, in the opinion of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2490,7 +2490,7 @@
             <p>18.8<span class="content-text">The Hirer shall have the right to request (by e-mail) from
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2500,7 +2500,7 @@
             <p>18.9<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2512,14 +2512,14 @@
                 </span></p>
             <p>18.10<span class="content-text">The Hirer can make a privacy complaint by contacting @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif via e-mail.
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2537,7 +2537,7 @@
 
             <p>19.1<span class="content-text">The Hirer and @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2550,7 +2550,7 @@
                     materials (and the safe removal and disposal of the same). The Hirer agrees to
                     indemnify @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2569,14 +2569,14 @@
                     is acting
                     in the capacity of trustee of any trust (“Trust”) then whether or not @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif may have
                     notice of the Trust, the Hirer covenants with @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2602,14 +2602,14 @@
                 <span class="content-text">
                     the Hirer will not without consent in writing of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif
                     (@if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2698,7 +2698,7 @@
 
             <p>23.1<span class="content-text">The Hirer acknowledges and accepts that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2710,9 +2710,10 @@
                 <span class="content-text">
                     resulting from an inadvertent mistake made by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
-                    @else                    Vaa Transport
+                    @else
+                        Vaa Transport
                     @endif in the formation and/or
                     administration of this Contract; and/or
                 </span>
@@ -2722,9 +2723,10 @@
                     contained in/omitted from any literature (hard copy and/or electronic)
                     supplied by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
-                    @else                    Vaa Transport
+                    @else
+                        Vaa Transport
                     @endif in respect of the Services.
                 </span>
             </p>
@@ -2732,9 +2734,10 @@
                     clause
                     23.1, and is not attributable to the negligence and/or willful misconduct of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
-                    @else                    Vaa Transport
+                    @else
+                        Vaa Transport
                     @endif ; the
                     Hirer shall not be entitled to treat this Contract as repudiated nor render it invalid.</span>
             </p>
@@ -2758,7 +2761,7 @@
 
             <p>25.1<span class="content-text"> Neither @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2807,7 +2810,7 @@
                     be
                     governed by the laws of Victoria, the state in which @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2815,7 +2818,7 @@
                     business and are subject to the jurisdiction of the courts in Pakenham</span></p>
             <p>26.3<span class="content-text">Subject to clause 8, @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2824,14 +2827,14 @@
                     any indirect and/or consequential loss and/or expense (including loss of profit)
                     suffered by the Hirer arising out of a breach by @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                     @endif of these terms and
                     conditions (alternatively @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2841,7 +2844,7 @@
             <p>26.4<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2852,7 +2855,7 @@
             <p>26.5<span class="content-text"> The Hirer cannot licence or assign without the written approval of
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2861,7 +2864,7 @@
             <p>26.6<span class="content-text">
                     @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2871,13 +2874,13 @@
                     Furthermore, the Hirer agrees and understands that they have no authority to
                     give any instruction to any of @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
                         @endif’s subcontractors without the authority of @if ($vehicle->company_name == 'Mahajan Group')
                             MG
-               @elseif ($vehicle->company_name == 'EMM Kay Group')
+                        @elseif ($vehicle->company_name == 'EMM Kay Group')
                             EMM KAY
                         @else
                             Vaa Transport
@@ -2885,7 +2888,7 @@
                 </span></p>
             <p>26.7<span class="content-text">The Hirer agrees that @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport
@@ -2895,7 +2898,7 @@
                     on which the Hirer accepts such changes, or otherwise at such time as the Hirer
                     makes a further request for @if ($vehicle->company_name == 'Mahajan Group')
                         MG
-           @elseif ($vehicle->company_name == 'EMM Kay Group')
+                    @elseif ($vehicle->company_name == 'EMM Kay Group')
                         EMM KAY
                     @else
                         Vaa Transport

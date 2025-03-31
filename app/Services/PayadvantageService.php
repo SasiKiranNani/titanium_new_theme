@@ -28,54 +28,54 @@ class PayadvantageService
     {
         $response = Http::withHeaders([
             'accept' => 'application/json',
-            'authorization' => 'Bearer '.$this->token,
+            'authorization' => 'Bearer ' . $this->token,
         ])->get('https://api.test.payadvantage.com.au/v3/customers/');
 
         return $response;
     }
 
-    public function createCustomer()
+    public function createCustomer($driverABN, $name, $licenceNumber, $email, $DOB, $contact)
     {
         $response = Http::withHeaders([
             'accept' => 'application/json',
-            'authorization' => 'Bearer '.$this->token,
+            'authorization' => 'Bearer ' . $this->token,
             'content-type' => 'application/json',
         ])->post('https://api.test.payadvantage.com.au/v3/customers', [
-            'ExternalID' => '123456',
+            'ExternalID' => $driverABN,
             'IsConsumer' => true,
-            'Name' => 'Harpreet Singh',
-            'FirstName' => 'Harpreet',
-            'LastName' => 'Singh',
-            'CustomRef' => '13351',
-            'Email' => 'jfsldl@fkkds.cksjk',
+            'Name' => $name,
+            'FirstName' => '',
+            'LastName' => '',
+            'CustomRef' => $licenceNumber,
+            'Email' => $email,
             'SendDirectDebitErrorEmails' => true,
             'SendPaymentReceiptEmails' => true,
-            'DOB' => today()->subYears(30)->format('Y-m-d'),
-            'Phone' => '0234567890',
+            'DOB' => $DOB,
+            'Phone' => $contact,
             'PhoneCountryID' => 61,
         ]);
 
         return $response;
     }
 
-    public function createPayment()
+    public function createPayment($customerCode, $driverABN, $depositAmount, $rentStartDate, $totalAmount, $rentEndDate)
     {
         $response = Http::withHeaders([
             'accept' => 'application/json',
-            'authorization' => 'Bearer '.$this->token,
+            'authorization' => 'Bearer ' . $this->token,
             'content-type' => 'application/json',
         ])->post('https://api.test.payadvantage.com.au/v3/direct_debits', [
             'Customer' => (object) [
-                'Code' => 'BJ9MSA',
+                'Code' => $customerCode,
             ],
             'Description' => 'Test Direct Debit',
-            'ExternalID' => '123456',
-            'UpfrontAmount' => 100.00,
-            'UpfrontDate' => today()->format('Y-m-d'),
-            'RecurringAmount' => 50.00,
-            'RecurringDateStart' => today()->addMonth()->format('Y-m-d'),
+            'ExternalID' => $driverABN,
+            'UpfrontAmount' => $depositAmount,
+            'UpfrontDate' => $rentStartDate,
+            'RecurringAmount' => $totalAmount - $depositAmount,
+            'RecurringDateStart' => $rentEndDate,
             'Frequency' => 'weekly',
-            'EndConditionAmount' => 500.00,
+            'EndConditionAmount' => $totalAmount,
             'FailureOption' => 'pause',
             'ReminderDays' => 1,
             'OnchargedFees' => [],

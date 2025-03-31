@@ -184,4 +184,4 @@ Route::get('/redirect', [RedirectController::class, 'index'])->middleware('auth'
 
 Route::get('/', [IndexController::class, 'home'])->name('home');
 
-Route::get('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
+Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
