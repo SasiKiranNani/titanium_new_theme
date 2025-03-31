@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\TimeSlot;
 use App\Models\Service;
 use App\Models\ServiceJob;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class ServiceController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -27,7 +25,6 @@ class ServiceController extends Controller implements HasMiddleware
             new Middleware('permission:Delete Jobs', only: ['jobDestroy']),
         ];
     }
-
 
     // public function index(Request $request)
     // {
@@ -52,7 +49,7 @@ class ServiceController extends Controller implements HasMiddleware
 
         // Query the services with search functionality
         $query = Service::when($search, function ($query) use ($search) {
-            return $query->where('name', 'like', '%' . $search . '%');
+            return $query->where('name', 'like', '%'.$search.'%');
         })->orderBy('name', $sortOrder);
 
         // Fetch all records if 'all' is selected, otherwise paginate
@@ -73,6 +70,7 @@ class ServiceController extends Controller implements HasMiddleware
         ]);
 
         Service::create($request->all());
+
         return redirect()->back()->with('success', 'Service created successfully');
     }
 
@@ -85,6 +83,7 @@ class ServiceController extends Controller implements HasMiddleware
         ]);
 
         $service->update($request->all());
+
         return redirect()->back()->with('success', 'Service updated successfully');
     }
 
@@ -92,6 +91,7 @@ class ServiceController extends Controller implements HasMiddleware
     {
         $service = Service::findOrFail($id);
         $service->delete();
+
         return redirect()->back()->with('success', 'Service deleted successfully');
     }
 
@@ -111,7 +111,6 @@ class ServiceController extends Controller implements HasMiddleware
     //     return view('backend.service-management.services-and-jobs.job', compact('serviceJobs', 'services', 'search', 'perPage'));
     // }
 
-
     public function job(Request $request)
     {
         $search = $request->input('search');
@@ -120,9 +119,9 @@ class ServiceController extends Controller implements HasMiddleware
 
         $services = Service::all();
         $query = ServiceJob::when($search, function ($query) use ($search) {
-            return $query->where('name', 'like', '%' . $search . '%')
+            return $query->where('name', 'like', '%'.$search.'%')
                 ->orWhereHas('service', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
+                    $query->where('name', 'like', '%'.$search.'%');
                 });
         })->orderBy('name', $sortOrder);
 
@@ -171,6 +170,7 @@ class ServiceController extends Controller implements HasMiddleware
             'price' => $request->price,
             'description' => $request->description,
         ]);
+
         return redirect()->back()->with('success', 'Service Job updated successfully');
     }
 
@@ -178,6 +178,7 @@ class ServiceController extends Controller implements HasMiddleware
     {
         $serviceJob = ServiceJob::findOrFail($id);
         $serviceJob->delete();
+
         return redirect()->back()->with('success', 'Service Job deleted successfully');
     }
 }

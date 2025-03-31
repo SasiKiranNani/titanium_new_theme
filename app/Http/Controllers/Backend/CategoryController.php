@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Category;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -23,7 +21,6 @@ class CategoryController extends Controller implements HasMiddleware
         ];
     }
 
-
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10); // Default to 10 items per page
@@ -32,14 +29,13 @@ class CategoryController extends Controller implements HasMiddleware
 
         // Fetch categories based on search input and sorting order
         $categories = Category::when($search, function ($query, $search) {
-                return $query->where('name', 'like', "%$search%");
-            })
+            return $query->where('name', 'like', "%$search%");
+        })
             ->orderBy('name', $sortOrder) // Apply sorting order
             ->paginate($perPage === 'all' ? Category::count() : (int) $perPage); // Handle 'all' option
 
         return view('backend.vehicle-management.categories.list', compact('categories', 'perPage', 'search', 'sortOrder'));
     }
-
 
     public function store(Request $request)
     {
@@ -51,11 +47,12 @@ class CategoryController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $category = new Category();
+        $category = new Category;
 
         $category->name = $request->name;
         $category->slug = \Str::slug($request->name);
         $category->save();
+
         return redirect()->back()->withInput()->with('success', 'Category created successfully');
     }
 
@@ -64,7 +61,7 @@ class CategoryController extends Controller implements HasMiddleware
         $category = Category::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name,' . $category->id,
+            'name' => 'required|unique:categories,name,'.$category->id,
         ]);
 
         if ($validator->fails()) {
@@ -82,6 +79,7 @@ class CategoryController extends Controller implements HasMiddleware
     {
         $category = Category::findOrFail($id);
         $category->delete();
+
         return redirect()->back()->withInput(['success' => 'Category deleted successfully']);
     }
 }

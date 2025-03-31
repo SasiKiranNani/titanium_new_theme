@@ -37,26 +37,26 @@ class OtherServiceBooking extends Model
         'vin',
         'purchase_date',
         'engine_no',
-        ];
+    ];
 
-        protected $casts = [
-            'service_job_id' => 'array', // Cast JSON to array
-        ];
+    protected $casts = [
+        'service_job_id' => 'array', // Cast JSON to array
+    ];
 
-        // Define the relationship with ServiceSubcategory
-        public function serviceJob()
-        {
-            return $this->belongsTo(ServiceJob::class, 'service_job_id');
-        }
+    // Define the relationship with ServiceSubcategory
+    public function serviceJob()
+    {
+        return $this->belongsTo(ServiceJob::class, 'service_job_id');
+    }
 
-        // Define the relationship with TimeSlot
-        public function timeSlot()
-        {
-            return $this->belongsTo(TimeSlot::class, 'time_slot_id');
-        }
+    // Define the relationship with TimeSlot
+    public function timeSlot()
+    {
+        return $this->belongsTo(TimeSlot::class, 'time_slot_id');
+    }
 
-        public function miscellaneousItems()
-        {
-            return $this->hasMany(Miscellaneous::class, 'booking_id');
-        }
+    public function miscellaneousItems()
+    {
+        return $this->hasMany(Miscellaneous::class, 'booking_id');
+    }
 }

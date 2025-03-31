@@ -12,7 +12,7 @@ class CreateVehicleFilesTable extends Migration
             $table->id();
             $table->foreignId('vehicle_detail_id')->constrained('vehicle_details')->onDelete('cascade');
             $table->string('file_path');
-            $table->string('file_name'); 
+            $table->string('file_name');
             $table->timestamps();
         });
     }

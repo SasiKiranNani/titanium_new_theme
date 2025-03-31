@@ -10,17 +10,16 @@ use App\Models\ServiceBooking;
 use App\Models\ServiceJob;
 use App\Models\TimeSlot;
 use App\Models\VehicleDetail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -42,7 +41,6 @@ class BookingController extends Controller implements HasMiddleware
             new Middleware('permission:Other Vehicle Invoice Management', only: ['otherInvoicePage']),
         ];
     }
-
 
     // public function companyVehicle(Request $request)
     // {
@@ -90,14 +88,14 @@ class BookingController extends Controller implements HasMiddleware
         $query = ServiceBooking::with(['vehicle']);
 
         // Apply search filter
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->whereHas('vehicle', function ($q) use ($search) {
                 $q->where('reg_no', 'LIKE', "%$search%");
             });
         }
 
         // Apply date range filter
-        if (!empty($startDate) && !empty($endDate)) {
+        if (! empty($startDate) && ! empty($endDate)) {
             $query->whereBetween('date', [$startDate, $endDate]);
         }
 
@@ -108,9 +106,9 @@ class BookingController extends Controller implements HasMiddleware
         $serviceBooking = ($perPage === 'all') ? $query->get() : $query->paginate((int) $perPage);
 
         // Fetch other necessary data
-        $vehicle     = VehicleDetail::all();
-        $timeslots   = TimeSlot::all();
-        $services    = Service::all();
+        $vehicle = VehicleDetail::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
         $serviceJobs = ServiceJob::all();
 
         // Prepare miscellaneous items
@@ -141,6 +139,7 @@ class BookingController extends Controller implements HasMiddleware
         $timeslots = TimeSlot::all();
         $services = Service::all();
         $serviceJobs = ServiceJob::all();
+
         return view('backend.service-management.bookings.create-company', compact('vehicle', 'timeslots', 'services', 'serviceJobs'));
     }
 
@@ -153,78 +152,78 @@ class BookingController extends Controller implements HasMiddleware
 
         // Validate the request data
         $validatedData = $request->validate([
-            'date'                        => 'required|date',
-            'vehicle_id'                  => 'required|exists:vehicle_details,id',
-            'time_slot_id'                => 'required|exists:time_slots,id',
-            'service_job_id'              => 'nullable|array',
-            'service_job_id.*'            => 'exists:service_jobs,id',
-            'odometer'                    => 'nullable|string',
-            'service_interval'            => 'nullable|string',
-            'next_service_due'            => 'nullable',
-            'gst_toggle'                  => 'nullable|boolean', // Add validation for gst_toggle
-            'gst_percentage'              => 'nullable|numeric',
-            'total'                       => 'nullable|numeric',
-            'miscellaneous_name'          => 'nullable|array',
-            'miscellaneous_name.*'        => 'nullable|string',
-            'miscellaneous_quantity'      => 'nullable|array',
-            'miscellaneous_quantity.*'    => 'nullable|numeric',
-            'miscellaneous_price'         => 'nullable|array',
-            'miscellaneous_price.*'       => 'nullable|numeric',
-            'miscellaneous_total_price'   => 'nullable|array',
+            'date' => 'required|date',
+            'vehicle_id' => 'required|exists:vehicle_details,id',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'service_job_id' => 'nullable|array',
+            'service_job_id.*' => 'exists:service_jobs,id',
+            'odometer' => 'nullable|string',
+            'service_interval' => 'nullable|string',
+            'next_service_due' => 'nullable',
+            'gst_toggle' => 'nullable|boolean', // Add validation for gst_toggle
+            'gst_percentage' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'miscellaneous_name' => 'nullable|array',
+            'miscellaneous_name.*' => 'nullable|string',
+            'miscellaneous_quantity' => 'nullable|array',
+            'miscellaneous_quantity.*' => 'nullable|numeric',
+            'miscellaneous_price' => 'nullable|array',
+            'miscellaneous_price.*' => 'nullable|numeric',
+            'miscellaneous_total_price' => 'nullable|array',
             'miscellaneous_total_price.*' => 'nullable|numeric',
-            'abn'                         => 'nullable|string',
-            'color'                       => 'nullable|string',
-            'mobile'                      => 'nullable|string',
-            'cust_name'                   => 'nullable|string',
-            'street'                      => 'nullable|string',
-            'state'                       => 'nullable|string',
-            'post_code'                   => 'nullable|string',
-            'make'                        => 'nullable|string',
-            'model'                       => 'nullable|string',
-            'vin'                         => 'nullable|string',
-            'engine_no'                   => 'nullable|string',
-            'purchase_date'               => 'nullable|date',
-            'payment'                     => 'nullable|string',
-            'total_paid'                  => 'nullable|string',
-            'balance_due'                 => 'nullable|string',
+            'abn' => 'nullable|string',
+            'color' => 'nullable|string',
+            'mobile' => 'nullable|string',
+            'cust_name' => 'nullable|string',
+            'street' => 'nullable|string',
+            'state' => 'nullable|string',
+            'post_code' => 'nullable|string',
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'engine_no' => 'nullable|string',
+            'purchase_date' => 'nullable|date',
+            'payment' => 'nullable|string',
+            'total_paid' => 'nullable|string',
+            'balance_due' => 'nullable|string',
         ]);
 
         // Use a database transaction to ensure data consistency
         DB::transaction(function () use ($validatedData) {
             // Create the ServiceBooking
-            $booking                   = new ServiceBooking();
-            $booking->date             = $validatedData['date'];
-            $booking->time_slot_id     = $validatedData['time_slot_id'];
-            $booking->vehicle_id       = $validatedData['vehicle_id'];
-            $booking->service_job_id   = isset($validatedData['service_job_id'])
+            $booking = new ServiceBooking;
+            $booking->date = $validatedData['date'];
+            $booking->time_slot_id = $validatedData['time_slot_id'];
+            $booking->vehicle_id = $validatedData['vehicle_id'];
+            $booking->service_job_id = isset($validatedData['service_job_id'])
                 ? json_encode($validatedData['service_job_id'])
                 : null;
-            $booking->odometer         = $validatedData['odometer'];
+            $booking->odometer = $validatedData['odometer'];
             $booking->service_interval = $validatedData['service_interval'];
             $booking->next_service_due = $validatedData['next_service_due'];
-            $booking->gst_toggle       = $validatedData['gst_toggle'] ?? false; // Store gst_toggle
-            $booking->gst_percentage   = $validatedData['gst_percentage'];
-            $booking->total            = $validatedData['total'];
-            $booking->abn              = $validatedData['abn'];
-            $booking->payment          = $validatedData['payment'];
-            $booking->total_paid       = $validatedData['total_paid'];
-            $booking->balance_due      = $validatedData['balance_due'];
+            $booking->gst_toggle = $validatedData['gst_toggle'] ?? false; // Store gst_toggle
+            $booking->gst_percentage = $validatedData['gst_percentage'];
+            $booking->total = $validatedData['total'];
+            $booking->abn = $validatedData['abn'];
+            $booking->payment = $validatedData['payment'];
+            $booking->total_paid = $validatedData['total_paid'];
+            $booking->balance_due = $validatedData['balance_due'];
 
             // Auto-generate repair_order_no
-            $lastBooking              = ServiceBooking::orderBy('repair_order_no', 'desc')->first();
-            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
-            $booking->repair_order_no = 'TEA-' . ($lastRepairOrderNo + 1);
+            $lastBooking = ServiceBooking::orderBy('repair_order_no', 'desc')->first();
+            $lastRepairOrderNo = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
+            $booking->repair_order_no = 'TEA-'.($lastRepairOrderNo + 1);
 
-            $booking->color         = $validatedData['color'];
-            $booking->mobile        = $validatedData['mobile'];
-            $booking->cust_name     = $validatedData['cust_name'];
-            $booking->street        = $validatedData['street'];
-            $booking->state         = $validatedData['state'];
-            $booking->post_code     = $validatedData['post_code'];
-            $booking->make          = $validatedData['make'];
-            $booking->model         = $validatedData['model'];
-            $booking->vin           = $validatedData['vin'];
-            $booking->engine_no     = $validatedData['engine_no'];
+            $booking->color = $validatedData['color'];
+            $booking->mobile = $validatedData['mobile'];
+            $booking->cust_name = $validatedData['cust_name'];
+            $booking->street = $validatedData['street'];
+            $booking->state = $validatedData['state'];
+            $booking->post_code = $validatedData['post_code'];
+            $booking->make = $validatedData['make'];
+            $booking->model = $validatedData['model'];
+            $booking->vin = $validatedData['vin'];
+            $booking->engine_no = $validatedData['engine_no'];
             $booking->purchase_date = $validatedData['purchase_date'];
 
             // Save the booking
@@ -236,9 +235,9 @@ class BookingController extends Controller implements HasMiddleware
                 foreach ($validatedData['miscellaneous_name'] as $index => $name) {
                     if (! empty($name) && isset($validatedData['miscellaneous_price'][$index])) {
                         $miscellaneousItem = Miscellaneous::create([
-                            'name'        => $name,
-                            'quantity'    => $validatedData['miscellaneous_quantity'][$index],
-                            'price'       => $validatedData['miscellaneous_price'][$index],
+                            'name' => $name,
+                            'quantity' => $validatedData['miscellaneous_quantity'][$index],
+                            'price' => $validatedData['miscellaneous_price'][$index],
                             'total_price' => $validatedData['miscellaneous_total_price'][$index],
                         ]);
                         // Store the ID of the created miscellaneous item
@@ -254,10 +253,11 @@ class BookingController extends Controller implements HasMiddleware
 
         $vehicle = VehicleDetail::findOrFail($validatedData['vehicle_id']);
         $vehicle->update([
-            'odometer'          => $validatedData['odometer'],
+            'odometer' => $validatedData['odometer'],
             'last_service_date' => $validatedData['date'],
             'engine_no' => $validatedData['engine_no'],
         ]);
+
         // Redirect with a success message
         return redirect()->route('services.company-vehicle')->with('success', 'Booking created successfully.');
     }
@@ -269,19 +269,19 @@ class BookingController extends Controller implements HasMiddleware
             return redirect()->back()->with('error', 'Service Booking not found.');
         }
 
-        $vehicle        = VehicleDetail::all();
-        $timeslots      = TimeSlot::all();
-        $services       = Service::all();
-        $serviceJobs    = ServiceJob::all();
+        $vehicle = VehicleDetail::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
+        $serviceJobs = ServiceJob::all();
         // Triple protection for selectedJobIds:
         $selectedJobIds = [];
-        if (!empty($serviceBooking->service_job_id)) {
+        if (! empty($serviceBooking->service_job_id)) {
             $decoded = json_decode($serviceBooking->service_job_id, true);
             $selectedJobIds = is_array($decoded) ? $decoded : [];
         }
 
         // Handle empty or invalid miscellaneous field
-        $miscellaneousIds   = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
+        $miscellaneousIds = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
         $miscellaneousItems = $miscellaneousIds ? Miscellaneous::whereIn('id', $miscellaneousIds)->get() : collect();
 
         return view('backend.service-management.bookings.edit-company', compact(
@@ -299,47 +299,47 @@ class BookingController extends Controller implements HasMiddleware
     {
         // Convert checkbox value to boolean manually
         $request->merge([
-            'gst_toggle'     => $request->has('gst_toggle') ? true : false,
+            'gst_toggle' => $request->has('gst_toggle') ? true : false,
             'gst_percentage' => $request->has('gst_toggle') ? $request->gst_percentage : 0, // Set default value if gst_toggle is false
         ]);
 
         // Validate the request data
         $validatedData = $request->validate([
-            'date'              => 'required|date',
-            'vehicle_id'        => 'required|exists:vehicle_details,id',
-            'time_slot_id'      => 'required|exists:time_slots,id',
-            'service_job_id'    => 'nullable|array',         // Ensure service_job_id is an array
-            'service_job_id.*'  => 'exists:service_jobs,id', // Ensure each ID exists in the service_jobs table
-            'odometer'          => 'nullable|string',
-            'service_interval'  => 'nullable|string',
-            'next_service_due'  => 'nullable',
-            'gst_toggle'        => 'nullable|boolean',
-            'gst_percentage'    => 'nullable|numeric',
-            'total'             => 'nullable|numeric',
-            'misc_name'         => 'nullable|array',
-            'misc_name.*'       => 'nullable|string',
-            'misc_qty'          => 'nullable|array',
-            'misc_qty.*'        => 'nullable|numeric',
-            'misc_cost'         => 'nullable|array',
-            'misc_cost.*'       => 'nullable|numeric',
-            'misc_total_cost'   => 'nullable|array',
+            'date' => 'required|date',
+            'vehicle_id' => 'required|exists:vehicle_details,id',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'service_job_id' => 'nullable|array',         // Ensure service_job_id is an array
+            'service_job_id.*' => 'exists:service_jobs,id', // Ensure each ID exists in the service_jobs table
+            'odometer' => 'nullable|string',
+            'service_interval' => 'nullable|string',
+            'next_service_due' => 'nullable',
+            'gst_toggle' => 'nullable|boolean',
+            'gst_percentage' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'misc_name' => 'nullable|array',
+            'misc_name.*' => 'nullable|string',
+            'misc_qty' => 'nullable|array',
+            'misc_qty.*' => 'nullable|numeric',
+            'misc_cost' => 'nullable|array',
+            'misc_cost.*' => 'nullable|numeric',
+            'misc_total_cost' => 'nullable|array',
             'misc_total_cost.*' => 'nullable|numeric',
-            'abn'               => 'nullable|string',
-            'color'             => 'nullable|string',
-            'mobile'            => 'nullable|string',
-            'cust_name'         => 'nullable|string',
-            'street'            => 'nullable|string',
-            'state'             => 'nullable|string',
-            'post_code'         => 'nullable|string',
-            'make'              => 'nullable|string',
-            'model'             => 'nullable|string',
-            'vin'               => 'nullable|string',
-            'engine_no'         => 'nullable|string',
-            'purchase_date'     => 'nullable|date',
-            'repair_order_no'   => 'nullable|string',
-            'payment'           => 'nullable|string',
-            'total_paid'        => 'nullable|string',
-            'balance_due'       => 'nullable|string',
+            'abn' => 'nullable|string',
+            'color' => 'nullable|string',
+            'mobile' => 'nullable|string',
+            'cust_name' => 'nullable|string',
+            'street' => 'nullable|string',
+            'state' => 'nullable|string',
+            'post_code' => 'nullable|string',
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'engine_no' => 'nullable|string',
+            'purchase_date' => 'nullable|date',
+            'repair_order_no' => 'nullable|string',
+            'payment' => 'nullable|string',
+            'total_paid' => 'nullable|string',
+            'balance_due' => 'nullable|string',
         ]);
 
         // Debugging: Check the validated data
@@ -351,31 +351,31 @@ class BookingController extends Controller implements HasMiddleware
             $booking = ServiceBooking::findOrFail($id);
 
             $updateData = [
-                'date'             => $validatedData['date'],
-                'time_slot_id'     => $validatedData['time_slot_id'],
-                'vehicle_id'       => $validatedData['vehicle_id'],
-                'odometer'         => $validatedData['odometer'],
+                'date' => $validatedData['date'],
+                'time_slot_id' => $validatedData['time_slot_id'],
+                'vehicle_id' => $validatedData['vehicle_id'],
+                'odometer' => $validatedData['odometer'],
                 'service_interval' => $validatedData['service_interval'],
                 'next_service_due' => $validatedData['next_service_due'],
-                'gst_toggle'       => $validatedData['gst_toggle'] ?? false,
-                'gst_percentage'   => $validatedData['gst_percentage'],
-                'total'            => $validatedData['total'],
-                'abn'              => $validatedData['abn'],
-                'color'            => $validatedData['color'],
-                'mobile'           => $validatedData['mobile'],
-                'cust_name'        => $validatedData['cust_name'],
-                'street'           => $validatedData['street'],
-                'state'            => $validatedData['state'],
-                'post_code'        => $validatedData['post_code'],
-                'make'             => $validatedData['make'],
-                'model'            => $validatedData['model'],
-                'vin'              => $validatedData['vin'],
-                'engine_no'        => $validatedData['engine_no'],
-                'purchase_date'    => $validatedData['purchase_date'],
-                'repair_order_no'  => $validatedData['repair_order_no'],
-                'payment'          => $validatedData['payment'],
-                'total_paid'       => $validatedData['total_paid'],
-                'balance_due'      => $validatedData['balance_due'],
+                'gst_toggle' => $validatedData['gst_toggle'] ?? false,
+                'gst_percentage' => $validatedData['gst_percentage'],
+                'total' => $validatedData['total'],
+                'abn' => $validatedData['abn'],
+                'color' => $validatedData['color'],
+                'mobile' => $validatedData['mobile'],
+                'cust_name' => $validatedData['cust_name'],
+                'street' => $validatedData['street'],
+                'state' => $validatedData['state'],
+                'post_code' => $validatedData['post_code'],
+                'make' => $validatedData['make'],
+                'model' => $validatedData['model'],
+                'vin' => $validatedData['vin'],
+                'engine_no' => $validatedData['engine_no'],
+                'purchase_date' => $validatedData['purchase_date'],
+                'repair_order_no' => $validatedData['repair_order_no'],
+                'payment' => $validatedData['payment'],
+                'total_paid' => $validatedData['total_paid'],
+                'balance_due' => $validatedData['balance_due'],
             ];
 
             // Handle service_job_id - check if it exists and is an array
@@ -388,7 +388,6 @@ class BookingController extends Controller implements HasMiddleware
             // Update the ServiceBooking
             $booking->update($updateData);
 
-
             // Handle miscellaneous items
             $miscellaneousIds = [];
             if (! empty($validatedData['misc_name'])) {
@@ -398,17 +397,17 @@ class BookingController extends Controller implements HasMiddleware
                             // Update existing miscellaneous item
                             $miscellaneousItem = Miscellaneous::find($validatedData['misc_id'][$index]);
                             $miscellaneousItem->update([
-                                'name'        => $name,
-                                'quantity'    => $validatedData['misc_qty'][$index],
-                                'price'       => $validatedData['misc_cost'][$index],
+                                'name' => $name,
+                                'quantity' => $validatedData['misc_qty'][$index],
+                                'price' => $validatedData['misc_cost'][$index],
                                 'total_price' => $validatedData['misc_total_cost'][$index],
                             ]);
                         } else {
                             // Create new miscellaneous item
                             $miscellaneousItem = Miscellaneous::create([
-                                'name'        => $name,
-                                'quantity'    => $validatedData['misc_qty'][$index],
-                                'price'       => $validatedData['misc_cost'][$index],
+                                'name' => $name,
+                                'quantity' => $validatedData['misc_qty'][$index],
+                                'price' => $validatedData['misc_cost'][$index],
                                 'total_price' => $validatedData['misc_total_cost'][$index],
                             ]);
                         }
@@ -419,7 +418,7 @@ class BookingController extends Controller implements HasMiddleware
 
             // Delete old miscellaneous items that are not in the new list
             $oldMiscellaneousIds = explode(',', $booking->miscellaneous);
-            $idsToDelete         = array_diff($oldMiscellaneousIds, $miscellaneousIds);
+            $idsToDelete = array_diff($oldMiscellaneousIds, $miscellaneousIds);
             Miscellaneous::destroy($idsToDelete);
 
             // Update miscellaneous IDs in the booking
@@ -429,10 +428,11 @@ class BookingController extends Controller implements HasMiddleware
 
         $vehicle = VehicleDetail::findOrFail($validatedData['vehicle_id']);
         $vehicle->update([
-            'odometer'          => $validatedData['odometer'],
+            'odometer' => $validatedData['odometer'],
             'last_service_date' => $validatedData['date'],
-            'engine_no'         => $validatedData['engine_no'],
+            'engine_no' => $validatedData['engine_no'],
         ]);
+
         // Redirect with a success message
         return redirect()->route('services.company-vehicle')->with('success', 'Booking updated successfully.');
     }
@@ -486,25 +486,25 @@ class BookingController extends Controller implements HasMiddleware
 
         // Handle miscellaneous items
         $miscellaneousIds = [];
-        if (!empty($serviceBooking->miscellaneous)) {
+        if (! empty($serviceBooking->miscellaneous)) {
             $miscellaneousIds = array_filter(
                 array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"'))),
-                fn($id) => !empty($id)
+                fn ($id) => ! empty($id)
             );
         }
 
-        $miscellaneousItems = !empty($miscellaneousIds)
+        $miscellaneousItems = ! empty($miscellaneousIds)
             ? Miscellaneous::whereIn('id', $miscellaneousIds)->get()
             : collect();
 
         // Handle service jobs
         $serviceJobIds = [];
-        if (!empty($serviceBooking->service_job_id)) {
+        if (! empty($serviceBooking->service_job_id)) {
             $decoded = json_decode($serviceBooking->service_job_id, true);
             $serviceJobIds = is_array($decoded) ? $decoded : [];
         }
 
-        $serviceJobs = !empty($serviceJobIds)
+        $serviceJobs = ! empty($serviceJobIds)
             ? ServiceJob::with('service')->whereIn('id', $serviceJobIds)->get()
             : collect();
 
@@ -514,8 +514,9 @@ class BookingController extends Controller implements HasMiddleware
             'miscellaneousItems' => $miscellaneousItems,
         ]);
 
-        return $pdf->stream('invoice_' . $serviceBooking->id . '.pdf');
+        return $pdf->stream('invoice_'.$serviceBooking->id.'.pdf');
     }
+
     public function otherInvoice($id)
     {
         $serviceBooking = OtherServiceBooking::with([
@@ -525,25 +526,25 @@ class BookingController extends Controller implements HasMiddleware
         // Convert "miscellaneous" to an array
         // Handle miscellaneous items
         $miscellaneousIds = [];
-        if (!empty($serviceBooking->miscellaneous)) {
+        if (! empty($serviceBooking->miscellaneous)) {
             $miscellaneousIds = array_filter(
                 array_map('trim', explode(',', trim($serviceBooking->miscellaneous, '"'))),
-                fn($id) => !empty($id)
+                fn ($id) => ! empty($id)
             );
         }
 
-        $miscellaneousItems = !empty($miscellaneousIds)
+        $miscellaneousItems = ! empty($miscellaneousIds)
             ? Miscellaneous::whereIn('id', $miscellaneousIds)->get()
             : collect();
 
         // Handle service jobs
         $serviceJobIds = [];
-        if (!empty($serviceBooking->service_job_id)) {
+        if (! empty($serviceBooking->service_job_id)) {
             $decoded = json_decode($serviceBooking->service_job_id, true);
             $serviceJobIds = is_array($decoded) ? $decoded : [];
         }
 
-        $serviceJobs = !empty($serviceJobIds)
+        $serviceJobs = ! empty($serviceJobIds)
             ? ServiceJob::with('service')->whereIn('id', $serviceJobIds)->get()
             : collect();
 
@@ -553,7 +554,7 @@ class BookingController extends Controller implements HasMiddleware
             'miscellaneousItems' => $miscellaneousItems,
         ]);
 
-        return $pdf->stream('invoice_' . $serviceBooking->id . '.pdf');
+        return $pdf->stream('invoice_'.$serviceBooking->id.'.pdf');
     }
 
     public function otherVehicle(Request $request)
@@ -569,12 +570,12 @@ class BookingController extends Controller implements HasMiddleware
         $query = OtherServiceBooking::query();
 
         // Apply search filter
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('reg_no', 'LIKE', "%$search%");
         }
 
         // Apply date range filter
-        if (!empty($startDate) && !empty($endDate)) {
+        if (! empty($startDate) && ! empty($endDate)) {
             $query->whereBetween('date', [$startDate, $endDate]);
         }
 
@@ -585,8 +586,8 @@ class BookingController extends Controller implements HasMiddleware
         $serviceBooking = ($perPage === 'all') ? $query->get() : $query->paginate((int) $perPage);
 
         // Fetch other necessary data
-        $timeslots   = TimeSlot::all();
-        $services    = Service::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
         $serviceJobs = ServiceJob::all();
 
         // Prepare miscellaneous items
@@ -610,13 +611,12 @@ class BookingController extends Controller implements HasMiddleware
         ));
     }
 
-
     public function createOtherVehicle()
     {
-        $timeslots      = TimeSlot::all();
-        $services       = Service::all();
-        $serviceJobs    = ServiceJob::all();
-        $miscellaneous  = Miscellaneous::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
+        $serviceJobs = ServiceJob::all();
+        $miscellaneous = Miscellaneous::all();
 
         return view('backend.service-management.bookings.create-other', compact('timeslots', 'services', 'serviceJobs', 'miscellaneous'));
     }
@@ -630,78 +630,78 @@ class BookingController extends Controller implements HasMiddleware
 
         // Validate the request data
         $validatedData = $request->validate([
-            'date'                        => 'required|date',
-            'reg_no'                      => 'required',
-            'time_slot_id'                => 'required|exists:time_slots,id',
-            'service_job_id'              => 'nullable|array',
-            'service_job_id.*'            => 'exists:service_jobs,id',
-            'odometer'                    => 'nullable|string',
-            'service_interval'            => 'nullable|string',
-            'next_service_due'            => 'nullable',
-            'gst_toggle'                  => 'nullable|boolean',
-            'gst_percentage'              => 'nullable|numeric',
-            'total'                       => 'nullable|numeric',
-            'miscellaneous_name'          => 'nullable|array',
-            'miscellaneous_name.*'        => 'nullable|string',
-            'miscellaneous_quantity'      => 'nullable|array',
-            'miscellaneous_quantity.*'    => 'nullable|numeric',
-            'miscellaneous_price'         => 'nullable|array',
-            'miscellaneous_price.*'       => 'nullable|numeric',
-            'miscellaneous_total_price'   => 'nullable|array',
+            'date' => 'required|date',
+            'reg_no' => 'required',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'service_job_id' => 'nullable|array',
+            'service_job_id.*' => 'exists:service_jobs,id',
+            'odometer' => 'nullable|string',
+            'service_interval' => 'nullable|string',
+            'next_service_due' => 'nullable',
+            'gst_toggle' => 'nullable|boolean',
+            'gst_percentage' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'miscellaneous_name' => 'nullable|array',
+            'miscellaneous_name.*' => 'nullable|string',
+            'miscellaneous_quantity' => 'nullable|array',
+            'miscellaneous_quantity.*' => 'nullable|numeric',
+            'miscellaneous_price' => 'nullable|array',
+            'miscellaneous_price.*' => 'nullable|numeric',
+            'miscellaneous_total_price' => 'nullable|array',
             'miscellaneous_total_price.*' => 'nullable|numeric',
-            'abn'                         => 'nullable|string',
-            'color'                       => 'nullable|string',
-            'mobile'                      => 'nullable|string',
-            'cust_name'                   => 'nullable|string',
-            'street'                      => 'nullable|string',
-            'state'                       => 'nullable|string',
-            'post_code'                   => 'nullable|string',
-            'make'                        => 'nullable|string',
-            'model'                       => 'nullable|string',
-            'vin'                         => 'nullable|string',
-            'engine_no'                   => 'nullable|string',
-            'purchase_date'               => 'nullable|date',
-            'payment'                     => 'nullable|string',
-            'total_paid'                  => 'nullable|string',
-            'balance_due'                 => 'nullable|string',
+            'abn' => 'nullable|string',
+            'color' => 'nullable|string',
+            'mobile' => 'nullable|string',
+            'cust_name' => 'nullable|string',
+            'street' => 'nullable|string',
+            'state' => 'nullable|string',
+            'post_code' => 'nullable|string',
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'engine_no' => 'nullable|string',
+            'purchase_date' => 'nullable|date',
+            'payment' => 'nullable|string',
+            'total_paid' => 'nullable|string',
+            'balance_due' => 'nullable|string',
         ]);
 
         // Use a database transaction to ensure data consistency
         DB::transaction(function () use ($validatedData) {
             // Create the ServiceBooking
-            $booking                   = new OtherServiceBooking();
-            $booking->date             = $validatedData['date'];
-            $booking->time_slot_id     = $validatedData['time_slot_id'];
-            $booking->reg_no           = $validatedData['reg_no'];
-            $booking->service_job_id   = isset($validatedData['service_job_id'])
+            $booking = new OtherServiceBooking;
+            $booking->date = $validatedData['date'];
+            $booking->time_slot_id = $validatedData['time_slot_id'];
+            $booking->reg_no = $validatedData['reg_no'];
+            $booking->service_job_id = isset($validatedData['service_job_id'])
                 ? json_encode($validatedData['service_job_id'])
                 : null;
-            $booking->odometer         = $validatedData['odometer'];
+            $booking->odometer = $validatedData['odometer'];
             $booking->service_interval = $validatedData['service_interval'];
             $booking->next_service_due = $validatedData['next_service_due'];
-            $booking->gst_toggle       = $validatedData['gst_toggle'] ?? false;
-            $booking->gst_percentage   = $validatedData['gst_percentage'];
-            $booking->total            = $validatedData['total'];
-            $booking->abn              = $validatedData['abn'];
-            $booking->payment          = $validatedData['payment'];
-            $booking->total_paid       = $validatedData['total_paid'];
-            $booking->balance_due      = $validatedData['balance_due'];
+            $booking->gst_toggle = $validatedData['gst_toggle'] ?? false;
+            $booking->gst_percentage = $validatedData['gst_percentage'];
+            $booking->total = $validatedData['total'];
+            $booking->abn = $validatedData['abn'];
+            $booking->payment = $validatedData['payment'];
+            $booking->total_paid = $validatedData['total_paid'];
+            $booking->balance_due = $validatedData['balance_due'];
 
             // Auto-generate repair_order_no
-            $lastBooking              = OtherServiceBooking::orderBy('repair_order_no', 'desc')->first();
-            $lastRepairOrderNo        = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
-            $booking->repair_order_no = 'TEA-' . ($lastRepairOrderNo + 1);
+            $lastBooking = OtherServiceBooking::orderBy('repair_order_no', 'desc')->first();
+            $lastRepairOrderNo = $lastBooking ? intval(str_replace('TEA-', '', $lastBooking->repair_order_no)) : 0;
+            $booking->repair_order_no = 'TEA-'.($lastRepairOrderNo + 1);
 
-            $booking->color         = $validatedData['color'];
-            $booking->mobile        = $validatedData['mobile'];
-            $booking->cust_name     = $validatedData['cust_name'];
-            $booking->street        = $validatedData['street'];
-            $booking->state         = $validatedData['state'];
-            $booking->post_code     = $validatedData['post_code'];
-            $booking->make          = $validatedData['make'];
-            $booking->model         = $validatedData['model'];
-            $booking->vin           = $validatedData['vin'];
-            $booking->engine_no     = $validatedData['engine_no'];
+            $booking->color = $validatedData['color'];
+            $booking->mobile = $validatedData['mobile'];
+            $booking->cust_name = $validatedData['cust_name'];
+            $booking->street = $validatedData['street'];
+            $booking->state = $validatedData['state'];
+            $booking->post_code = $validatedData['post_code'];
+            $booking->make = $validatedData['make'];
+            $booking->model = $validatedData['model'];
+            $booking->vin = $validatedData['vin'];
+            $booking->engine_no = $validatedData['engine_no'];
             $booking->purchase_date = $validatedData['purchase_date'];
 
             // Save the booking
@@ -713,9 +713,9 @@ class BookingController extends Controller implements HasMiddleware
                 foreach ($validatedData['miscellaneous_name'] as $index => $name) {
                     if (! empty($name) && isset($validatedData['miscellaneous_price'][$index])) {
                         $miscellaneousItem = Miscellaneous::create([
-                            'name'        => $name,
-                            'quantity'    => $validatedData['miscellaneous_quantity'][$index],
-                            'price'       => $validatedData['miscellaneous_price'][$index],
+                            'name' => $name,
+                            'quantity' => $validatedData['miscellaneous_quantity'][$index],
+                            'price' => $validatedData['miscellaneous_price'][$index],
                             'total_price' => $validatedData['miscellaneous_total_price'][$index],
                         ]);
                         // Store the ID of the created miscellaneous item
@@ -740,18 +740,18 @@ class BookingController extends Controller implements HasMiddleware
             return redirect()->back()->with('error', 'Service Booking not found.');
         }
 
-        $timeslots      = TimeSlot::all();
-        $services       = Service::all();
-        $serviceJobs    = ServiceJob::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
+        $serviceJobs = ServiceJob::all();
         // Triple protection for selectedJobIds:
         $selectedJobIds = [];
-        if (!empty($serviceBooking->service_job_id)) {
+        if (! empty($serviceBooking->service_job_id)) {
             $decoded = json_decode($serviceBooking->service_job_id, true);
             $selectedJobIds = is_array($decoded) ? $decoded : [];
         }
 
         // Handle empty or invalid miscellaneous field
-        $miscellaneousIds   = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
+        $miscellaneousIds = $serviceBooking->miscellaneous ? explode(',', $serviceBooking->miscellaneous) : [];
         $miscellaneousItems = $miscellaneousIds ? Miscellaneous::whereIn('id', $miscellaneousIds)->get() : collect();
 
         return view('backend.service-management.bookings.edit-other', compact(
@@ -768,46 +768,46 @@ class BookingController extends Controller implements HasMiddleware
     {
         // Convert checkbox value to boolean manually
         $request->merge([
-            'gst_toggle'     => $request->has('gst_toggle') ? true : false,
+            'gst_toggle' => $request->has('gst_toggle') ? true : false,
             'gst_percentage' => $request->has('gst_toggle') ? $request->gst_percentage : 0, // Set default value if gst_toggle is false
         ]);
         // Validate the request data
         $validatedData = $request->validate([
-            'date'              => 'required|date',
-            'reg_no'            => 'required',
-            'time_slot_id'      => 'required|exists:time_slots,id',
-            'service_job_id'    => 'nullable|array',         // Ensure service_job_id is an array
-            'service_job_id.*'  => 'exists:service_jobs,id', // Ensure each ID exists in the service_jobs table
-            'odometer'          => 'nullable|string',
-            'service_interval'  => 'nullable|string',
-            'next_service_due'  => 'nullable',
-            'gst_toggle'        => 'nullable|boolean',
-            'gst_percentage'    => 'nullable|numeric',
-            'total'             => 'nullable|numeric',
-            'misc_name'         => 'nullable|array',
-            'misc_name.*'       => 'nullable|string',
-            'misc_qty'          => 'nullable|array',
-            'misc_qty.*'        => 'nullable|numeric',
-            'misc_cost'         => 'nullable|array',
-            'misc_cost.*'       => 'nullable|numeric',
-            'misc_total_cost'   => 'nullable|array',
+            'date' => 'required|date',
+            'reg_no' => 'required',
+            'time_slot_id' => 'required|exists:time_slots,id',
+            'service_job_id' => 'nullable|array',         // Ensure service_job_id is an array
+            'service_job_id.*' => 'exists:service_jobs,id', // Ensure each ID exists in the service_jobs table
+            'odometer' => 'nullable|string',
+            'service_interval' => 'nullable|string',
+            'next_service_due' => 'nullable',
+            'gst_toggle' => 'nullable|boolean',
+            'gst_percentage' => 'nullable|numeric',
+            'total' => 'nullable|numeric',
+            'misc_name' => 'nullable|array',
+            'misc_name.*' => 'nullable|string',
+            'misc_qty' => 'nullable|array',
+            'misc_qty.*' => 'nullable|numeric',
+            'misc_cost' => 'nullable|array',
+            'misc_cost.*' => 'nullable|numeric',
+            'misc_total_cost' => 'nullable|array',
             'misc_total_cost.*' => 'nullable|numeric',
-            'abn'               => 'nullable|string',
-            'color'             => 'nullable|string',
-            'mobile'            => 'nullable|string',
-            'cust_name'         => 'nullable|string',
-            'street'            => 'nullable|string',
-            'state'             => 'nullable|string',
-            'post_code'         => 'nullable|string',
-            'make'              => 'nullable|string',
-            'model'             => 'nullable|string',
-            'vin'               => 'nullable|string',
-            'engine_no'         => 'nullable|string',
-            'purchase_date'     => 'nullable|date',
-            'repair_order_no'   => 'nullable|string',
-            'payment'           => 'nullable|string',
-            'total_paid'        => 'nullable|string',
-            'balance_due'       => 'nullable|string',
+            'abn' => 'nullable|string',
+            'color' => 'nullable|string',
+            'mobile' => 'nullable|string',
+            'cust_name' => 'nullable|string',
+            'street' => 'nullable|string',
+            'state' => 'nullable|string',
+            'post_code' => 'nullable|string',
+            'make' => 'nullable|string',
+            'model' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'engine_no' => 'nullable|string',
+            'purchase_date' => 'nullable|date',
+            'repair_order_no' => 'nullable|string',
+            'payment' => 'nullable|string',
+            'total_paid' => 'nullable|string',
+            'balance_due' => 'nullable|string',
         ]);
 
         // Debugging: Check the validated data
@@ -820,31 +820,31 @@ class BookingController extends Controller implements HasMiddleware
 
             // Prepare the update data
             $updateData = [
-                'date'             => $validatedData['date'],
-                'time_slot_id'     => $validatedData['time_slot_id'],
-                'reg_no'           => $validatedData['reg_no'],
-                'odometer'         => $validatedData['odometer'],
+                'date' => $validatedData['date'],
+                'time_slot_id' => $validatedData['time_slot_id'],
+                'reg_no' => $validatedData['reg_no'],
+                'odometer' => $validatedData['odometer'],
                 'service_interval' => $validatedData['service_interval'],
                 'next_service_due' => $validatedData['next_service_due'],
-                'gst_toggle'       => $validatedData['gst_toggle'] ?? false,
-                'gst_percentage'   => $validatedData['gst_percentage'],
-                'total'            => $validatedData['total'],
-                'abn'              => $validatedData['abn'],
-                'color'            => $validatedData['color'],
-                'mobile'           => $validatedData['mobile'],
-                'cust_name'        => $validatedData['cust_name'],
-                'street'           => $validatedData['street'],
-                'state'            => $validatedData['state'],
-                'post_code'        => $validatedData['post_code'],
-                'make'             => $validatedData['make'],
-                'model'            => $validatedData['model'],
-                'vin'              => $validatedData['vin'],
-                'engine_no'        => $validatedData['engine_no'],
-                'purchase_date'    => $validatedData['purchase_date'],
-                'repair_order_no'  => $validatedData['repair_order_no'],
-                'payment'          => $validatedData['payment'],
-                'total_paid'       => $validatedData['total_paid'],
-                'balance_due'      => $validatedData['balance_due'],
+                'gst_toggle' => $validatedData['gst_toggle'] ?? false,
+                'gst_percentage' => $validatedData['gst_percentage'],
+                'total' => $validatedData['total'],
+                'abn' => $validatedData['abn'],
+                'color' => $validatedData['color'],
+                'mobile' => $validatedData['mobile'],
+                'cust_name' => $validatedData['cust_name'],
+                'street' => $validatedData['street'],
+                'state' => $validatedData['state'],
+                'post_code' => $validatedData['post_code'],
+                'make' => $validatedData['make'],
+                'model' => $validatedData['model'],
+                'vin' => $validatedData['vin'],
+                'engine_no' => $validatedData['engine_no'],
+                'purchase_date' => $validatedData['purchase_date'],
+                'repair_order_no' => $validatedData['repair_order_no'],
+                'payment' => $validatedData['payment'],
+                'total_paid' => $validatedData['total_paid'],
+                'balance_due' => $validatedData['balance_due'],
             ];
 
             // Handle service_job_id - check if it exists and is an array
@@ -866,17 +866,17 @@ class BookingController extends Controller implements HasMiddleware
                             // Update existing miscellaneous item
                             $miscellaneousItem = Miscellaneous::find($validatedData['misc_id'][$index]);
                             $miscellaneousItem->update([
-                                'name'        => $name,
-                                'quantity'    => $validatedData['misc_qty'][$index],
-                                'price'       => $validatedData['misc_cost'][$index],
+                                'name' => $name,
+                                'quantity' => $validatedData['misc_qty'][$index],
+                                'price' => $validatedData['misc_cost'][$index],
                                 'total_price' => $validatedData['misc_total_cost'][$index],
                             ]);
                         } else {
                             // Create new miscellaneous item
                             $miscellaneousItem = Miscellaneous::create([
-                                'name'        => $name,
-                                'quantity'    => $validatedData['misc_qty'][$index],
-                                'price'       => $validatedData['misc_cost'][$index],
+                                'name' => $name,
+                                'quantity' => $validatedData['misc_qty'][$index],
+                                'price' => $validatedData['misc_cost'][$index],
                                 'total_price' => $validatedData['misc_total_cost'][$index],
                             ]);
                         }
@@ -887,7 +887,7 @@ class BookingController extends Controller implements HasMiddleware
 
             // Delete old miscellaneous items that are not in the new list
             $oldMiscellaneousIds = explode(',', $booking->miscellaneous);
-            $idsToDelete         = array_diff($oldMiscellaneousIds, $miscellaneousIds);
+            $idsToDelete = array_diff($oldMiscellaneousIds, $miscellaneousIds);
             Miscellaneous::destroy($idsToDelete);
 
             // Update miscellaneous IDs in the booking
@@ -910,10 +910,11 @@ class BookingController extends Controller implements HasMiddleware
 
         return redirect()->route('services.company-vehicle')->with('success', 'Service Booking deleted successfully.');
     }
+
     // when i select the dates in the bookings it will get the days and according to that it will display timeslots in store form
     public function getTimeSlots(Request $request)
     {
-        $date      = $request->input('date');
+        $date = $request->input('date');
         $dayOfWeek = \Carbon\Carbon::parse($date)->format('l');
 
         $type = in_array($dayOfWeek, ['Saturday', 'Sunday']) ? 'weekends' : 'weekdays';
@@ -924,7 +925,7 @@ class BookingController extends Controller implements HasMiddleware
         $timeSlots = TimeSlot::whereIn('days', [$type, 'both'])->get();
 
         // Log the retrieved time slots
-        Log::info("Time Slots Found: " . $timeSlots->count());
+        Log::info('Time Slots Found: '.$timeSlots->count());
 
         return response()->json($timeSlots);
     }
@@ -932,7 +933,7 @@ class BookingController extends Controller implements HasMiddleware
     // when i select the dates in the bookings it will get the days and according to that it will display timeslots in edit form page
     public function getTimeSlotsEdit(Request $request)
     {
-        $date      = $request->input('date');
+        $date = $request->input('date');
         $dayOfWeek = \Carbon\Carbon::parse($date)->format('l');
 
         // Determine if the selected date is a weekend or weekday
@@ -980,16 +981,16 @@ class BookingController extends Controller implements HasMiddleware
         }
 
         // Fetch other necessary data
-        $vehicle     = VehicleDetail::all();
-        $timeslots   = TimeSlot::all();
-        $services    = Service::all();
+        $vehicle = VehicleDetail::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
         $serviceJobs = ServiceJob::all();
 
         // Prepare an array to hold miscellaneous items for each booking
         $miscellaneousItems = [];
         foreach ($serviceBooking as $booking) {
-            $miscellaneousIds = !empty($booking->miscellaneous) ? explode(',', $booking->miscellaneous) : [];
-            $miscellaneousItems[$booking->id] = !empty($miscellaneousIds) ? Miscellaneous::whereIn('id', $miscellaneousIds)->get() : collect();
+            $miscellaneousIds = ! empty($booking->miscellaneous) ? explode(',', $booking->miscellaneous) : [];
+            $miscellaneousItems[$booking->id] = ! empty($miscellaneousIds) ? Miscellaneous::whereIn('id', $miscellaneousIds)->get() : collect();
         }
 
         return view('backend.invoice-management.company-invoice', compact(
@@ -1007,7 +1008,7 @@ class BookingController extends Controller implements HasMiddleware
     public function shareCompanyInvoice(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         $serviceBooking = ServiceBooking::with([
@@ -1039,8 +1040,8 @@ class BookingController extends Controller implements HasMiddleware
             'miscellaneousItems' => $miscellaneousItems,
         ], function ($message) use ($serviceBooking, $pdf, $request) {
             $message->to($request->email)
-                ->subject('Invoice #' . $serviceBooking->repair_order_no)
-                ->attachData($pdf->output(), 'invoice_' . $serviceBooking->repair_order_no . '.pdf');
+                ->subject('Invoice #'.$serviceBooking->repair_order_no)
+                ->attachData($pdf->output(), 'invoice_'.$serviceBooking->repair_order_no.'.pdf');
         });
 
         return redirect()->back()->with('success', 'Invoice sent successfully!');
@@ -1053,7 +1054,7 @@ class BookingController extends Controller implements HasMiddleware
         $sortOrder = $request->input('sort_order', 'asc');
 
         // Ensure sort_order is only 'asc' or 'desc'
-        if (!in_array($sortOrder, ['asc', 'desc'])) {
+        if (! in_array($sortOrder, ['asc', 'desc'])) {
             $sortOrder = 'asc'; // Default to ascending if an invalid value is passed
         }
 
@@ -1061,9 +1062,9 @@ class BookingController extends Controller implements HasMiddleware
         $query = OtherServiceBooking::query();
 
         // Check if any filter is applied
-        $hasSearch    = $request->has('search') && !empty($request->search);
-        $hasStartDate = $request->has('start_date') && !empty($request->start_date);
-        $hasEndDate   = $request->has('end_date') && !empty($request->end_date);
+        $hasSearch = $request->has('search') && ! empty($request->search);
+        $hasStartDate = $request->has('start_date') && ! empty($request->start_date);
+        $hasEndDate = $request->has('end_date') && ! empty($request->end_date);
 
         // Apply search filter if search term is provided
         if ($hasSearch) {
@@ -1089,8 +1090,8 @@ class BookingController extends Controller implements HasMiddleware
             $serviceBooking = $query->paginate($perPage); // Paginate with the provided per_page value
         }
 
-        $timeslots   = TimeSlot::all();
-        $services    = Service::all();
+        $timeslots = TimeSlot::all();
+        $services = Service::all();
         $serviceJobs = ServiceJob::all();
 
         // Prepare an array to hold miscellaneous items for each booking
@@ -1114,7 +1115,7 @@ class BookingController extends Controller implements HasMiddleware
     public function shareOtherInvoice(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email',
         ]);
 
         $serviceBooking = OtherServiceBooking::with([
@@ -1145,8 +1146,8 @@ class BookingController extends Controller implements HasMiddleware
             'miscellaneousItems' => $miscellaneousItems,
         ], function ($message) use ($serviceBooking, $pdf, $request) {
             $message->to($request->email)
-                ->subject('Invoice #' . $serviceBooking->repair_order_no)
-                ->attachData($pdf->output(), 'invoice_' . $serviceBooking->repair_order_no . '.pdf');
+                ->subject('Invoice #'.$serviceBooking->repair_order_no)
+                ->attachData($pdf->output(), 'invoice_'.$serviceBooking->repair_order_no.'.pdf');
         });
 
         return redirect()->back()->with('success', 'Invoice sent successfully!');

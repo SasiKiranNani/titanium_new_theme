@@ -10,7 +10,6 @@ use Illuminate\Routing\Controllers\Middleware;
 
 class SchedulesController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -48,7 +47,7 @@ class SchedulesController extends Controller implements HasMiddleware
         $request->validate([
             'time_slots' => 'required|array', // Ensure time_slots is an array
             'time_slots.*' => 'string|distinct', // Each time slot must be a string and unique
-            'days'         => 'nullable', // Ensure days is an array
+            'days' => 'nullable', // Ensure days is an array
         ]);
 
         // Store each selected time slot in the database
@@ -65,17 +64,18 @@ class SchedulesController extends Controller implements HasMiddleware
         $timeSlot = TimeSlot::findOrFail($id);
         $request->validate([
             'time_slot' => 'required|string',
-            'days'      => 'nullable',
+            'days' => 'nullable',
         ]);
 
         $timeSlot->update($request->all());
+
         return redirect()->back()->with('success', 'Time Slot Updated Successfully');
     }
 
     public function destroyTimeSlots($id)
     {
         TimeSlot::find($id)->delete();
+
         return redirect()->back()->with('success', 'Time Slot Deleted Successfully');
     }
-
 }

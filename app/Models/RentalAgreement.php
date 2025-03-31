@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RentalAgreement extends Model
 {
     protected $fillable = [
-        'user_id', 'vehicle_id', 'signature', 'pdf_path'
+        'user_id', 'vehicle_id', 'signature', 'pdf_path',
     ];
 
     // Define relationships

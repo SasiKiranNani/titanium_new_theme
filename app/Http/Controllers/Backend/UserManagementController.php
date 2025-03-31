@@ -5,17 +5,15 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Svg\Tag\Rect;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 
 class UserManagementController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -35,7 +33,6 @@ class UserManagementController extends Controller implements HasMiddleware
             new Middleware('permission:Delete Users', only: ['userDestroy']),
         ];
     }
-
 
     public function permission(Request $request)
     {
@@ -66,8 +63,9 @@ class UserManagementController extends Controller implements HasMiddleware
 
         if ($validator->passes()) {
             Permission::create([
-                'name' => $request->name
+                'name' => $request->name,
             ]);
+
             return redirect()->back()->with('success', 'Permission created successfully');
         } else {
             return redirect()->back()->withInput()->withErrors($validator);
@@ -96,6 +94,7 @@ class UserManagementController extends Controller implements HasMiddleware
     {
         $permission = Permission::findOrFail($id);
         $permission->delete();
+
         return redirect()->route('permissions')->with('success', 'Permission deleted successfully');
     }
 
@@ -117,7 +116,6 @@ class UserManagementController extends Controller implements HasMiddleware
 
     //     return view('backend.user-management.role', compact('roles', 'permissions', 'perPage'));
     // }
-
 
     public function role(Request $request)
     {
@@ -142,11 +140,12 @@ class UserManagementController extends Controller implements HasMiddleware
                 'name' => $request->name,
             ]);
 
-            if (!empty($request->permission)) {
+            if (! empty($request->permission)) {
                 foreach ($request->permission as $name) {
                     $role->givePermissionTo($name);
                 }
             }
+
             return redirect()->route('roles')->with('success', 'Role created successfully');
         } else {
             return redirect()->back()->withInput()->withErrors($validator);
@@ -158,18 +157,19 @@ class UserManagementController extends Controller implements HasMiddleware
         $role = Role::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles,name,' . $id . ',id',
+            'name' => 'required|unique:roles,name,'.$id.',id',
         ]);
 
         if ($validator->passes()) {
             $role->name = $request->name;
             $role->save();
 
-            if (!empty($request->permission)) {
+            if (! empty($request->permission)) {
                 $role->syncPermissions($request->permission);
             } else {
                 $role->syncPermissions([]);
             }
+
             return redirect()->route('roles')->with('success', 'Role updated successfully');
         } else {
             return redirect()->back()->withInput()->withErrors($validator);
@@ -180,6 +180,7 @@ class UserManagementController extends Controller implements HasMiddleware
     {
         $role = Role::findOrFail($id);
         $role->delete();
+
         return redirect()->route('roles')->with('success', 'Role deleted successfully');
     }
 
@@ -196,17 +197,17 @@ class UserManagementController extends Controller implements HasMiddleware
         $users = User::query();
 
         // Role filter
-        if (!empty($roleFilter)) {
+        if (! empty($roleFilter)) {
             $users->whereHas('roles', function ($query) use ($roleFilter) {
                 $query->where('id', $roleFilter);
             });
         }
 
         // Apply search filter if specified (only within the role-filtered results)
-        if (!empty($search)) {
+        if (! empty($search)) {
             $users->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
             });
         }
 
@@ -228,7 +229,6 @@ class UserManagementController extends Controller implements HasMiddleware
         return view('backend.user-management.user', compact('users', 'roles', 'search', 'sortBy', 'sortOrder', 'perPage', 'roleFilter'));
     }
 
-
     public function userStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -236,14 +236,14 @@ class UserManagementController extends Controller implements HasMiddleware
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
-            'role' => 'required|exists:roles,id'
+            'role' => 'required|exists:roles,id',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        $user = new User();
+        $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
@@ -266,8 +266,8 @@ class UserManagementController extends Controller implements HasMiddleware
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email,' . $id . ',id',
-            'role' => 'required|exists:roles,id'
+            'email' => 'required|email|unique:users,email,'.$id.',id',
+            'role' => 'required|exists:roles,id',
         ]);
 
         if ($validator->fails()) {
@@ -293,6 +293,7 @@ class UserManagementController extends Controller implements HasMiddleware
     {
         $user = User::findOrFail($id); // Find the user by ID
         $user->delete(); // Delete the user
+
         return redirect()->back()->with('success', 'User deleted successfully.');
     }
 }

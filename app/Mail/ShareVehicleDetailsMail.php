@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -15,10 +16,12 @@ class ShareVehicleDetailsMail extends Mailable
     {
         $this->data = $data;
     }
-// this was used to send the mail from the drivers list
+
+    // this was used to send the mail from the drivers list
     public function build()
     {
         $subject = 'Vehicle Details Shared';
+
         return $this->subject($subject)
             ->view('emails.user_notification')
             ->with('data', $this->data);

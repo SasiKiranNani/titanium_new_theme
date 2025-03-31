@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\AssignVehicle;
 use App\Models\OtherServiceBooking;
 use App\Models\ServiceBooking;
+use App\Models\User;
 use App\Models\VehicleDetail;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -20,7 +20,6 @@ class DashboardController extends Controller implements HasMiddleware
             new Middleware('permission:View Dashboard', only: ['index']),
         ];
     }
-
 
     public function index()
     {
@@ -73,14 +72,14 @@ class DashboardController extends Controller implements HasMiddleware
             // Only include vehicles that have rent periods overlapping with the selected range
             $rentReceived = AssignVehicle::whereBetween('rent_start_date', [$startDate, $endDate])
                 ->orWhereBetween('rent_end_date', [$startDate, $endDate])
-                ->sum('total_price');;
+                ->sum('total_price');
         } else {
             // If no date range is selected, return the total rent amount
             $rentReceived = AssignVehicle::sum('total_price');
         }
 
         return response()->json([
-            'totalEarnings' => $rentReceived
+            'totalEarnings' => $rentReceived,
         ]);
     }
 
@@ -95,7 +94,7 @@ class DashboardController extends Controller implements HasMiddleware
         return response()->json([
             'total' => (float) $query->sum('total'),
             'paid' => (float) $query->sum('total_paid'),
-            'outstanding' => (float) $query->sum('balance_due')
+            'outstanding' => (float) $query->sum('balance_due'),
         ]);
     }
 
@@ -110,7 +109,7 @@ class DashboardController extends Controller implements HasMiddleware
         return response()->json([
             'total' => (float) $query->sum('total'),
             'paid' => (float) $query->sum('total_paid'),
-            'outstanding' => (float) $query->sum('balance_due')
+            'outstanding' => (float) $query->sum('balance_due'),
         ]);
     }
 }

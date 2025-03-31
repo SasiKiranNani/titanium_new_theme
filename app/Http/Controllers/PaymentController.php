@@ -7,6 +7,7 @@ use App\Services\PayadvantageService;
 class PaymentController extends Controller
 {
     public $customerCode = null;
+
     public function initiate(PayadvantageService $payadvantageService)
     {
         $customerResponse = $payadvantageService->retrieveCustomer();
@@ -24,6 +25,7 @@ class PaymentController extends Controller
 
         if ($this->customerCode !== null) {
             $payment = $payadvantageService->createPayment($this->customerCode);
+
             return response()->json($payment->json());
         } else {
             return response()->json(['message' => 'Customer not found'], 404);

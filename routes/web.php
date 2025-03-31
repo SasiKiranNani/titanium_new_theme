@@ -1,17 +1,17 @@
 <?php
 
+use App\Http\Controllers\Backend\AccidentController;
+use App\Http\Controllers\Backend\AssignVehicleController;
+use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DriverController;
 use App\Http\Controllers\Backend\HirerController;
-use App\Http\Controllers\Backend\ShareController;
-use App\Http\Controllers\Backend\VehicleDetailController;
-use App\Http\Controllers\Backend\AssignVehicleController;
-use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\SchedulesController;
 use App\Http\Controllers\Backend\ServiceController;
-use App\Http\Controllers\Backend\AccidentController;
+use App\Http\Controllers\Backend\ShareController;
 use App\Http\Controllers\Backend\UserManagementController;
+use App\Http\Controllers\Backend\VehicleDetailController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RedirectController;
@@ -77,7 +77,6 @@ Route::middleware([
         Route::get('/assign/vehicle/ongoing', [AssignVehicleController::class, 'onGoing'])->name('assign.vehicle.ongoing');
         Route::get('/assign/vehicle/completed', [AssignVehicleController::class, 'completed'])->name('assign.vehicle.completed');
 
-
         Route::delete('/assign-vehicle/delete/{id}', [AssignVehicleController::class, 'destroy'])->name('assign.vehicle.delete');
         Route::get('/assign-vehicle/agreement/{id}', [AssignVehicleController::class, 'getagreement1'])->name('assign.vehicle.agreement');
 
@@ -115,7 +114,7 @@ Route::middleware([
         Route::get('/get-time-slots', [BookingController::class, 'getTimeSlots'])->name('get.time.slots');
         Route::get('/get-time-slots-edit', [BookingController::class, 'getTimeSlotsEdit'])->name('get.time.slots-edit');
 
-        //other company vehicle bookings pages
+        // other company vehicle bookings pages
         Route::get('/services/other-vehicle', [BookingController::class, 'otherVehicle'])->name('services.other-vehicle');
         Route::get('/services/other-vehicle/create', [BookingController::class, 'createOtherVehicle'])->name('services.other-vehicle.create');
         Route::post('/services/other-vehicle/store', [BookingController::class, 'storeOtherVehicle'])->name('services.other-vehicle.store');
@@ -148,8 +147,7 @@ Route::middleware([
 Route::get('/vehicle-details/{id}', [ShareController::class, 'showVehicleDetails'])->name('share.vehicle.details');
 Route::get('/send-user-vehicle-email/{user_id}/{vehicle_id}/{token}', [ShareController::class, 'driversAgreement'])->name('send.user.vehicle.email');
 Route::post('/booking/sucsess', [HirerController::class, 'storeHirerDetails'])->name('hirer.store');
-
-
+Route::post('/driver-details/submit', [HirerController::class, 'handle'])->name('hirer.handle');
 
 Route::middleware([
     'auth:web',
@@ -181,7 +179,6 @@ Route::get('/link-expired', function () {
 Route::get('/ddr-form', function () {
     return view('backend.payment.direct-debit-form');
 })->name('ddr.form');
-
 
 Route::get('/redirect', [RedirectController::class, 'index'])->middleware('auth');
 

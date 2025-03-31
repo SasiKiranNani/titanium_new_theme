@@ -5,16 +5,14 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\VehicleDetail;
-use App\Models\AssignVehicle;
 use App\Models\VehicleFile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\File;
 
 class VehicleDetailController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -25,7 +23,6 @@ class VehicleDetailController extends Controller implements HasMiddleware
             new Middleware('permission:Vehicles Details', only: ['getVehicleDetail']),
         ];
     }
-
 
     public function index(Request $request)
     {
@@ -82,6 +79,7 @@ class VehicleDetailController extends Controller implements HasMiddleware
     public function create()
     {
         $categories = Category::all();
+
         return view('backend.vehicle-management.vehicle-detail.create', compact('categories'));
     }
 
@@ -100,38 +98,38 @@ class VehicleDetailController extends Controller implements HasMiddleware
     {
         // Validate the incoming request data
         $request->validate([
-            'reg_no'                                  => 'required',
-            'purchase_date'                           => 'nullable|date_format:Y-m',
-            'fuel_type'                               => 'nullable',
-            'make'                                    => 'nullable',
-            'vin'                                     => 'nullable',
-            'model'                                   => 'nullable',
-            'battery_size'                            => 'nullable',
-            'engine_no'                               => 'nullable',
-            'owner'                                   => 'nullable',
-            'color'                                   => 'nullable',
-            'type'                                    => 'nullable',
-            'odometer'                                => 'nullable',
-            'transmission'                            => 'nullable',
-            'reg_expiry_date'                         => 'nullable',
-            'last_service_date'                       => 'nullable',
-            'rented'                                  => 'nullable',
-            'insurance_company'                       => 'nullable',
-            'insurance_number'                        => 'nullable',
+            'reg_no' => 'required',
+            'purchase_date' => 'nullable|date_format:Y-m',
+            'fuel_type' => 'nullable',
+            'make' => 'nullable',
+            'vin' => 'nullable',
+            'model' => 'nullable',
+            'battery_size' => 'nullable',
+            'engine_no' => 'nullable',
+            'owner' => 'nullable',
+            'color' => 'nullable',
+            'type' => 'nullable',
+            'odometer' => 'nullable',
+            'transmission' => 'nullable',
+            'reg_expiry_date' => 'nullable',
+            'last_service_date' => 'nullable',
+            'rented' => 'nullable',
+            'insurance_company' => 'nullable',
+            'insurance_number' => 'nullable',
             'vehicle_inspection_report_expiring_date' => 'nullable',
-            'thumbnail'                               => 'nullable|image|max:2048', // Ensure it's an image and limit size
-            'thumbnail_alt'                           => 'nullable',
-            'category_id'                             => 'required|exists:categories,id', // Validate category_id
-            'cost_per_week'                           => 'nullable',
-            'company_name'                            => 'required',
-            'abn'                                     => 'nullable',
-            'notes'                                   => 'nullable',
-            'files.*'                                 => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
+            'thumbnail' => 'nullable|image|max:2048', // Ensure it's an image and limit size
+            'thumbnail_alt' => 'nullable',
+            'category_id' => 'required|exists:categories,id', // Validate category_id
+            'cost_per_week' => 'nullable',
+            'company_name' => 'required',
+            'abn' => 'nullable',
+            'notes' => 'nullable',
+            'files.*' => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
         ]);
 
         // Convert the purchase_date from 'YYYY-MM' to 'YYYY-MM-DD' only if it's not null
         if ($request->purchase_date && preg_match('/^\d{4}-\d{2}$/', $request->purchase_date)) {
-            $request->merge(['purchase_date' => $request->purchase_date . '-01']); // Append '-01' to make it a valid date
+            $request->merge(['purchase_date' => $request->purchase_date.'-01']); // Append '-01' to make it a valid date
         } else {
             $request->merge(['purchase_date' => null]); // Explicitly set to null if not provided
         }
@@ -139,8 +137,8 @@ class VehicleDetailController extends Controller implements HasMiddleware
         // Handle Thumbnail Image
         $thumbnailName = null; // Initialize thumbnail name
         if ($request->hasFile('thumbnail')) {
-            $thumbnail     = $request->file('thumbnail');                         // Get the uploaded file
-            $thumbnailName = time() . '_' . $thumbnail->getClientOriginalName();  // Create a unique name
+            $thumbnail = $request->file('thumbnail');                         // Get the uploaded file
+            $thumbnailName = time().'_'.$thumbnail->getClientOriginalName();  // Create a unique name
             $thumbnail->move(public_path('vehicles/thumbnails'), $thumbnailName); // Move the file to the desired location
         }
 
@@ -148,7 +146,7 @@ class VehicleDetailController extends Controller implements HasMiddleware
         $rentedValue = $request->has('rented') ? 1 : 0; // 1 if checked, 0 if not
 
         // Fetch the category name using the category_id
-        $category     = Category::find($request->category_id);
+        $category = Category::find($request->category_id);
         $categoryName = $category ? $category->name : '';
 
         // Generate the slug using company_name, category_name, make, and model
@@ -160,46 +158,46 @@ class VehicleDetailController extends Controller implements HasMiddleware
 
         // Create the vehicle detail record
         $vehicleDetail = VehicleDetail::create([
-            'slug'                                    => $slug,
-            'reg_no'                                  => $request->reg_no,
-            'purchase_date'                           => $request->purchase_date, // Store as 'YYYY-MM-DD'
-            'fuel_type'                               => $request->fuel_type,
-            'make'                                    => $request->make,
-            'vin'                                     => $request->vin,
-            'model'                                   => $request->model,
-            'battery_size'                            => $request->battery_size,
-            'engine_no'                               => $request->engine_no,
-            'owner'                                   => $request->owner,
-            'color'                                   => $request->color,
-            'type'                                    => $request->type,
-            'odometer'                                => $request->odometer,
-            'transmission'                            => $request->transmission,
-            'reg_expiry_date'                         => $request->reg_expiry_date,
-            'last_service_date'                       => $request->last_service_date,
-            'rented'                                  => $rentedValue, // Use the determined value for rented
-            'insurance_company'                       => $request->insurance_company,
-            'insurance_number'                        => $request->insurance_number,
+            'slug' => $slug,
+            'reg_no' => $request->reg_no,
+            'purchase_date' => $request->purchase_date, // Store as 'YYYY-MM-DD'
+            'fuel_type' => $request->fuel_type,
+            'make' => $request->make,
+            'vin' => $request->vin,
+            'model' => $request->model,
+            'battery_size' => $request->battery_size,
+            'engine_no' => $request->engine_no,
+            'owner' => $request->owner,
+            'color' => $request->color,
+            'type' => $request->type,
+            'odometer' => $request->odometer,
+            'transmission' => $request->transmission,
+            'reg_expiry_date' => $request->reg_expiry_date,
+            'last_service_date' => $request->last_service_date,
+            'rented' => $rentedValue, // Use the determined value for rented
+            'insurance_company' => $request->insurance_company,
+            'insurance_number' => $request->insurance_number,
             'vehicle_inspection_report_expiring_date' => $request->vehicle_inspection_report_expiring_date,
-            'thumbnail'                               => $thumbnailName,
-            'thumbnail_alt'                           => $request->thumbnail_alt,
-            'category_id'                             => $request['category_id'], // Save category_id
-            'cost_per_week'                           => $request->cost_per_week,
-            'company_name'                            => $request->company_name,
-            'abn'                                     => $request->abn,
-            'notes'                                   => $request->notes,
+            'thumbnail' => $thumbnailName,
+            'thumbnail_alt' => $request->thumbnail_alt,
+            'category_id' => $request['category_id'], // Save category_id
+            'cost_per_week' => $request->cost_per_week,
+            'company_name' => $request->company_name,
+            'abn' => $request->abn,
+            'notes' => $request->notes,
         ]);
 
         // Handle Multiple File Uploads
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $fileName = $request->reg_no . '_' . $file->getClientOriginalName();  // Create a unique name
+                $fileName = $request->reg_no.'_'.$file->getClientOriginalName();  // Create a unique name
                 $file->move(public_path('vehicles/files'), $fileName);     // Move the file to the desired location
 
                 // Save the file details to the VehicleFile model
                 VehicleFile::create([
                     'vehicle_detail_id' => $vehicleDetail->id,
-                    'file_path'         => 'vehicles/files/' . $fileName,
-                    'file_name'        => $fileName,
+                    'file_path' => 'vehicles/files/'.$fileName,
+                    'file_name' => $fileName,
                 ]);
             }
         }
@@ -213,38 +211,38 @@ class VehicleDetailController extends Controller implements HasMiddleware
         $vehicle = VehicleDetail::findOrFail($request->id);
         // Validate the incoming request data
         $request->validate([
-            'reg_no'                                  => 'required',
-            'purchase_date'                           => 'nullable|date_format:Y-m',
-            'fuel_type'                               => 'nullable',
-            'make'                                    => 'nullable',
-            'vin'                                     => 'nullable',
-            'model'                                   => 'nullable',
-            'battery_size'                            => 'nullable',
-            'engine_no'                               => 'nullable',
-            'owner'                                   => 'nullable',
-            'color'                                   => 'nullable',
-            'type'                                    => 'nullable',
-            'odometer'                                => 'nullable',
-            'transmission'                            => 'nullable',
-            'reg_expiry_date'                         => 'nullable',
-            'last_service_date'                       => 'nullable',
-            'rented'                                  => 'nullable',
-            'insurance_company'                       => 'nullable',
-            'insurance_number'                        => 'nullable',
+            'reg_no' => 'required',
+            'purchase_date' => 'nullable|date_format:Y-m',
+            'fuel_type' => 'nullable',
+            'make' => 'nullable',
+            'vin' => 'nullable',
+            'model' => 'nullable',
+            'battery_size' => 'nullable',
+            'engine_no' => 'nullable',
+            'owner' => 'nullable',
+            'color' => 'nullable',
+            'type' => 'nullable',
+            'odometer' => 'nullable',
+            'transmission' => 'nullable',
+            'reg_expiry_date' => 'nullable',
+            'last_service_date' => 'nullable',
+            'rented' => 'nullable',
+            'insurance_company' => 'nullable',
+            'insurance_number' => 'nullable',
             'vehicle_inspection_report_expiring_date' => 'nullable',
-            'thumbnail'                               => 'nullable|image|max:2048', // Ensure it's an image and limit size
-            'thumbnail_alt'                           => 'nullable',
-            'category_id'                             => 'required|exists:categories,id', // Validate category_id
-            'cost_per_week'                           => 'nullable',
-            'company_name'                            => 'required',
-            'abn'                                     => 'nullable',
-            'notes'                                   => 'nullable',
-            'files.*'                                 => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
+            'thumbnail' => 'nullable|image|max:2048', // Ensure it's an image and limit size
+            'thumbnail_alt' => 'nullable',
+            'category_id' => 'required|exists:categories,id', // Validate category_id
+            'cost_per_week' => 'nullable',
+            'company_name' => 'required',
+            'abn' => 'nullable',
+            'notes' => 'nullable',
+            'files.*' => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx', // Validate multiple files
         ]);
 
         // Convert the purchase_date from 'YYYY-MM' to 'YYYY-MM-DD' only if it's not null
         if ($request->purchase_date && preg_match('/^\d{4}-\d{2}$/', $request->purchase_date)) {
-            $request->merge(['purchase_date' => $request->purchase_date . '-01']); // Append '-01' to make it a valid date
+            $request->merge(['purchase_date' => $request->purchase_date.'-01']); // Append '-01' to make it a valid date
         } else {
             $request->merge(['purchase_date' => null]); // Explicitly set to null if not provided
         }
@@ -253,24 +251,23 @@ class VehicleDetailController extends Controller implements HasMiddleware
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail if it exists
             if (! empty($vehicle->thumbnail)) {
-                $oldThumbnailPath = public_path('vehicles/thumbnails/' . $vehicle->thumbnail);
+                $oldThumbnailPath = public_path('vehicles/thumbnails/'.$vehicle->thumbnail);
                 if (File::exists($oldThumbnailPath)) {
                     File::delete($oldThumbnailPath);
                 }
             }
 
             // Store new thumbnail
-            $thumbnail     = $request->file('thumbnail');
-            $thumbnailName = time() . '_' . $thumbnail->getClientOriginalName(); // Ensure unique name
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailName = time().'_'.$thumbnail->getClientOriginalName(); // Ensure unique name
             $thumbnail->move(public_path('vehicles/thumbnails'), $thumbnailName);
             $vehicle->thumbnail = $thumbnailName; // Update the vehicle's thumbnail field
         }
 
         $rentedValue = $request->has('rented') ? 1 : 0; // 1 if checked, 0 if not
 
-
         // Fetch the category name using the category_id
-        $category     = Category::find($request->category_id);
+        $category = Category::find($request->category_id);
         $categoryName = $category ? $category->name : '';
 
         // Generate the slug using company_name, category_name, make, and model
@@ -280,51 +277,51 @@ class VehicleDetailController extends Controller implements HasMiddleware
         $slug = preg_replace('/-+/', '-', $slug);          // Collapse multiple hyphens
         $slug = trim($slug, '-');                          // Trim any leading or trailing hyphens
 
-
         // Update the vehicle detail record
         $vehicle->update([
-            'slug'                                    => $slug,
-            'reg_no'                                  => $request->reg_no,
-            'purchase_date'                           => $request->purchase_date, // Store as 'YYYY-MM-DD'
-            'fuel_type'                               => $request->fuel_type,
-            'make'                                    => $request->make,
-            'vin'                                     => $request->vin,
-            'model'                                   => $request->model,
-            'battery_size'                            => $request->battery_size,
-            'engine_no'                               => $request->engine_no,
-            'owner'                                   => $request->owner,
-            'color'                                   => $request->color,
-            'type'                                    => $request->type,
-            'odometer'                                => $request->odometer,
-            'transmission'                            => $request->transmission,
-            'reg_expiry_date'                         => $request->reg_expiry_date,
-            'last_service_date'                       => $request->last_service_date,
-            'rented'                                  => $rentedValue, // Use the determined value for rented
-            'insurance_company'                       => $request->insurance_company,
-            'insurance_number'                        => $request->insurance_number,
+            'slug' => $slug,
+            'reg_no' => $request->reg_no,
+            'purchase_date' => $request->purchase_date, // Store as 'YYYY-MM-DD'
+            'fuel_type' => $request->fuel_type,
+            'make' => $request->make,
+            'vin' => $request->vin,
+            'model' => $request->model,
+            'battery_size' => $request->battery_size,
+            'engine_no' => $request->engine_no,
+            'owner' => $request->owner,
+            'color' => $request->color,
+            'type' => $request->type,
+            'odometer' => $request->odometer,
+            'transmission' => $request->transmission,
+            'reg_expiry_date' => $request->reg_expiry_date,
+            'last_service_date' => $request->last_service_date,
+            'rented' => $rentedValue, // Use the determined value for rented
+            'insurance_company' => $request->insurance_company,
+            'insurance_number' => $request->insurance_number,
             'vehicle_inspection_report_expiring_date' => $request->vehicle_inspection_report_expiring_date,
-            'thumbnail'                               => $vehicle->thumbnail,
-            'thumbnail_alt'                           => $request->thumbnail_alt,
-            'category_id'                             => $request['category_id'], // Save category_id
-            'cost_per_week'                           => $request->cost_per_week,
-            'company_name'                            => $request->company_name,
-            'abn'                                     => $request->abn,
-            'notes'                                   => $request->notes,
+            'thumbnail' => $vehicle->thumbnail,
+            'thumbnail_alt' => $request->thumbnail_alt,
+            'category_id' => $request['category_id'], // Save category_id
+            'cost_per_week' => $request->cost_per_week,
+            'company_name' => $request->company_name,
+            'abn' => $request->abn,
+            'notes' => $request->notes,
         ]);
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $fileName = $request->reg_no . '_' . $file->getClientOriginalName();  // Create a unique name
+                $fileName = $request->reg_no.'_'.$file->getClientOriginalName();  // Create a unique name
                 $file->move(public_path('vehicles/files'), $fileName);     // Move the file to the desired location
 
                 // Save the file details to the VehicleFile model
                 VehicleFile::create([
                     'vehicle_detail_id' => $vehicle->id,
-                    'file_path'         => 'vehicles/files/' . $fileName,
-                    'file_name'        => $fileName,
+                    'file_path' => 'vehicles/files/'.$fileName,
+                    'file_name' => $fileName,
                 ]);
             }
         }
+
         // Redirect with success message
         return redirect()->route('vehicle')->with('success', 'Vehicle detail updated successfully.');
     }
@@ -334,7 +331,7 @@ class VehicleDetailController extends Controller implements HasMiddleware
         $vehicle = VehicleDetail::findOrFail($id);
         // Delete Thumbnail
         if ($vehicle->thumbnail) {
-            $thumbnailPath = public_path('vehicles/thumbnails/' . $vehicle->thumbnail);
+            $thumbnailPath = public_path('vehicles/thumbnails/'.$vehicle->thumbnail);
             if (File::exists($thumbnailPath)) {
                 File::delete($thumbnailPath);
             }
@@ -363,12 +360,14 @@ class VehicleDetailController extends Controller implements HasMiddleware
     public function getVehicleDetail($id)
     {
         $vehicle = VehicleDetail::findOrFail($id);
+
         return view('backend.vehicle-management.vehicle-detail.details', compact('vehicle'));
     }
 
     public function details()
     {
         $vehicle = null;
+
         return view('backend.vehicle-management.vehicle-detail.details', compact('vehicle'));
     }
 }

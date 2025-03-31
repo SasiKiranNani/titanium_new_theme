@@ -60,7 +60,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class AssignVehicle extends Model
 {
@@ -109,6 +108,7 @@ class AssignVehicle extends Model
     public function getRentedAttribute($value)
     {
         $today = now()->toDateString();
+
         return ($today >= $this->rent_start_date && $today <= $this->rent_end_date) ? 1 : 0;
     }
 

@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\AssignVehicle;
+use App\Models\Category;
 use App\Models\User;
-use App\Models\VehicleDetail;
 use Illuminate\Http\Request;
-use DateTime;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use App\Models\Category;
 
 class AssignVehicleController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -26,7 +23,6 @@ class AssignVehicleController extends Controller implements HasMiddleware
             new Middleware('permission:View Signed Agreement', only: ['getagreement1']),
         ];
     }
-
 
     public function index(Request $request)
     {
@@ -69,9 +65,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
+                    $query->where('name', 'like', '%'.$search.'%');
                 })
-                    ->orWhere('reg_no', 'like', '%' . $search . '%');
+                    ->orWhere('reg_no', 'like', '%'.$search.'%');
             });
         }
 
@@ -88,7 +84,6 @@ class AssignVehicleController extends Controller implements HasMiddleware
 
         return view('backend.vehicle-management.assign-vehicles.list', compact('upcomingVehicles', 'perPage', 'users', 'search', 'startDate', 'endDate', 'categoryId', 'categories', 'sortOrder'));
     }
-
 
     public function onGoing(Request $request)
     {
@@ -133,9 +128,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
+                    $query->where('name', 'like', '%'.$search.'%');
                 })
-                    ->orWhere('reg_no', 'like', '%' . $search . '%');
+                    ->orWhere('reg_no', 'like', '%'.$search.'%');
             });
         }
 
@@ -179,9 +174,9 @@ class AssignVehicleController extends Controller implements HasMiddleware
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->whereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%'); // Filter by username
+                    $query->where('name', 'like', '%'.$search.'%'); // Filter by username
                 })
-                    ->orWhere('reg_no', 'like', '%' . $search . '%'); // Filter by registration number
+                    ->orWhere('reg_no', 'like', '%'.$search.'%'); // Filter by registration number
             });
         }
 

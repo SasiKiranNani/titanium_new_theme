@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\AssignVehicle;
 use App\Models\Driver;
 use App\Models\DriverFile;
 use App\Models\User;
 use App\Models\VehicleDetail;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +66,6 @@ class DriverController extends Controller implements HasMiddleware
     //     return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search'));
     // }
 
-
     public function index(Request $request)
     {
         $roles = Role::get();
@@ -103,12 +102,11 @@ class DriverController extends Controller implements HasMiddleware
         return view('backend.vehicle-management.driver-detail.list', compact('perPage', 'users', 'roles', 'vehicles', 'search', 'sortOrder'));
     }
 
-
     public function edit($id)
     {
-        $roles    = Role::get();
+        $roles = Role::get();
         $vehicles = VehicleDetail::get();
-        $user     = User::with('roles')->whereHas('roles', function ($query) {
+        $user = User::with('roles')->whereHas('roles', function ($query) {
             $query->where('name', 'driver');
         })->findOrFail($id);
 
@@ -121,58 +119,59 @@ class DriverController extends Controller implements HasMiddleware
     {
         $roles = Role::get();
         $vehicles = VehicleDetail::get();
+
         return view('backend.vehicle-management.driver-detail.create', compact('roles', 'vehicles'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'             => 'required|min:3',
-            'email'            => 'required|email|unique:users,email',
-            'password'         => 'required|min:8',
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             // Add driver fields validation if needed
-            'dob'              => 'nullable|date',
-            'licence_no'       => 'nullable|string|max:50',
-            'contact'          => 'nullable|string|max:15',
-            'address'          => 'nullable|string|max:255',
-            'suburb'           => 'nullable|string|max:100',
-            'state'            => 'nullable|string|max:50',
-            'postalcode'       => 'nullable|string|max:10',
-            'notes'            => 'nullable',
-            'files.*'          => 'nullable|file|max:2048',
+            'dob' => 'nullable|date',
+            'licence_no' => 'nullable|string|max:50',
+            'contact' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
+            'suburb' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:50',
+            'postalcode' => 'nullable|string|max:10',
+            'notes' => 'nullable',
+            'files.*' => 'nullable|file|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        $user             = new User();
-        $user->name       = $request->name;
-        $user->abn    = $request->abn;
-        $user->email      = $request->email;
-        $user->dob        = $request->dob;
+        $user = new User;
+        $user->name = $request->name;
+        $user->abn = $request->abn;
+        $user->email = $request->email;
+        $user->dob = $request->dob;
         $user->licence_no = $request->licence_no;
-        $user->contact    = $request->contact;
-        $user->address    = $request->address;
-        $user->suburb     = $request->suburb;
-        $user->state      = $request->state;
+        $user->contact = $request->contact;
+        $user->address = $request->address;
+        $user->suburb = $request->suburb;
+        $user->state = $request->state;
         $user->postalcode = $request->postalcode;
-        $user->password   = Hash::make($request->password);
-        $user->notes      = $request->notes;
+        $user->password = Hash::make($request->password);
+        $user->notes = $request->notes;
         $user->save();
 
         // Handle Multiple File Uploads
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $fileName = $request->name . '_' . $file->getClientOriginalName();  // Create a unique name
+                $fileName = $request->name.'_'.$file->getClientOriginalName();  // Create a unique name
                 $file->move(public_path('drivers/files'), $fileName);     // Move the file to the desired location
 
                 // Save the file details to the VehicleFile model
                 DriverFile::create([
                     'user_id' => $user->id,
-                    'file_path'         => 'drivers/files/' . $fileName,
-                    'file_name'        => $fileName,
+                    'file_path' => 'drivers/files/'.$fileName,
+                    'file_name' => $fileName,
                 ]);
             }
         }
@@ -187,47 +186,47 @@ class DriverController extends Controller implements HasMiddleware
         $user = User::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|min:3',
-            'email'      => 'required|email|unique:users,email,' . $id,
-            'dob'        => 'nullable|date',
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'dob' => 'nullable|date',
             'licence_no' => 'nullable|string|max:50',
-            'contact'    => 'nullable|string|max:15',
-            'address'    => 'nullable|string|max:255',
-            'suburb'     => 'nullable|string|max:100',
-            'state'      => 'nullable|string|max:50',
+            'contact' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
+            'suburb' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:50',
             'postalcode' => 'nullable|string|max:10',
-            'abn'        => 'nullable|string|max:50',
-            'notes'      => 'nullable',
-            'files.*'    => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx',
+            'abn' => 'nullable|string|max:50',
+            'notes' => 'nullable',
+            'files.*' => 'nullable|file|max:2048|mimes:jpg,jpeg,webp,png,pdf,doc,docx',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        $user->name       = $request->name;
-        $user->abn    = $request->abn;
-        $user->email      = $request->email;
-        $user->dob        = $request->dob;
+        $user->name = $request->name;
+        $user->abn = $request->abn;
+        $user->email = $request->email;
+        $user->dob = $request->dob;
         $user->licence_no = $request->licence_no;
-        $user->contact    = $request->contact;
-        $user->address    = $request->address;
-        $user->suburb     = $request->suburb;
-        $user->state      = $request->state;
+        $user->contact = $request->contact;
+        $user->address = $request->address;
+        $user->suburb = $request->suburb;
+        $user->state = $request->state;
         $user->postalcode = $request->postalcode;
-        $user->notes      = $request->notes;
+        $user->notes = $request->notes;
         $user->save();
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $fileName = $request->name . '_' . $file->getClientOriginalName();  // Create a unique name
+                $fileName = $request->name.'_'.$file->getClientOriginalName();  // Create a unique name
                 $file->move(public_path('drivers/files'), $fileName);     // Move the file to the desired location
 
                 // Save the file details to the VehicleFile model
                 DriverFile::create([
                     'user_id' => $user->id,
-                    'file_path'         => 'drivers/files/' . $fileName,
-                    'file_name'        => $fileName,
+                    'file_path' => 'drivers/files/'.$fileName,
+                    'file_name' => $fileName,
                 ]);
             }
         }
@@ -241,6 +240,7 @@ class DriverController extends Controller implements HasMiddleware
     {
         $user = User::findOrFail($id);
         $user->delete(); // Delete the user
+
         return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
@@ -285,8 +285,8 @@ class DriverController extends Controller implements HasMiddleware
 
     public function getDriverDetail($id)
     {
-        $user        = User::findOrFail($id);
-        $users       = User::all();
+        $user = User::findOrFail($id);
+        $users = User::all();
         $vehiclesall = VehicleDetail::all();
 
         foreach ($vehiclesall as $vehiclesregono) {
@@ -300,7 +300,7 @@ class DriverController extends Controller implements HasMiddleware
 
             foreach ($payments1 as $payment) {
                 $dateStart = $payment->rent_start_date;
-                $dateEnd   = $payment->rent_end_date;
+                $dateEnd = $payment->rent_end_date;
 
                 // Check if the current date is within the rental period
                 if (now()->between($dateStart, $dateEnd)) {

@@ -11,25 +11,27 @@ class AdminNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $agreementData;
-    public $pdfFilePath;
 
-    public function __construct($agreementData, $pdfFilePath)
+    public $agreementFIle;
+
+    public function __construct($agreementData, $agreementFIle)
     {
         $this->agreementData = $agreementData;
-        $this->pdfFilePath = $pdfFilePath;
+        $this->agreementFIle = $agreementFIle;
     }
-// this is the mail used to send the assign vehicle details and agreement to the admin
+
+    // this is the mail used to send the assign vehicle details and agreement to the admin
     public function build()
     {
         $email = $this->subject('New User Agreement')
-                      ->view('emails.admin_notification')
-                      ->with([
-                          'agreementData' => $this->agreementData,
-                      ]);
+            ->view('emails.admin_notification')
+            ->with([
+                'agreementData' => $this->agreementData,
+            ]);
 
         // Attach the PDF
-        if (file_exists($this->pdfFilePath)) {
-            $email->attach($this->pdfFilePath);
+        if (file_exists($this->agreementFIle)) {
+            $email->attach($this->agreementFIle);
         }
 
         return $email;

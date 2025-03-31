@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\VehicleAccident;
 use App\Models\VehicleAccidentFile;
 use App\Models\VehicleDetail;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 class AccidentController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -22,7 +21,6 @@ class AccidentController extends Controller implements HasMiddleware
             new Middleware('permission:Delete Accident', only: ['destroy']),
         ];
     }
-
 
     public function index(Request $request)
     {
@@ -58,10 +56,10 @@ class AccidentController extends Controller implements HasMiddleware
         return view('backend.service-management.accidents.index', compact('accidents', 'vehicles', 'perPage', 'sortOrder'));
     }
 
-
     public function create()
     {
         $vehicles = VehicleDetail::all();
+
         return view('backend.service-management.accidents.create', compact('vehicles'));
     }
 
@@ -77,7 +75,7 @@ class AccidentController extends Controller implements HasMiddleware
         ]);
 
         // Save the accident details
-        $accident = new VehicleAccident();
+        $accident = new VehicleAccident;
         $accident->vehicle_id = $request->vehicle_id;
         $accident->accident_date = $request->accident_date;
         $accident->insurance_ref = $request->insurance_ref;
@@ -98,8 +96,8 @@ class AccidentController extends Controller implements HasMiddleware
                 $lastFileNumber = $lastFile ? intval(explode('_', $lastFile->file)[2]) : 0;
                 $fileNumber = $lastFileNumber + 1;
 
-                $fileName = $reg_no . '_' . date('Ymd') . '_' . $fileNumber . '.' . $file->getClientOriginalExtension();
-                $filePath = 'accidents/files/' . $fileName; // Path to store in the database
+                $fileName = $reg_no.'_'.date('Ymd').'_'.$fileNumber.'.'.$file->getClientOriginalExtension();
+                $filePath = 'accidents/files/'.$fileName; // Path to store in the database
 
                 // Move the file to the public/accidents/files directory
                 $file->move(public_path('accidents/files'), $fileName);
@@ -119,6 +117,7 @@ class AccidentController extends Controller implements HasMiddleware
     {
         $accident = VehicleAccident::findOrFail($id);
         $vehicles = VehicleDetail::all();
+
         return view('backend.service-management.accidents.edit', compact('accident', 'vehicles'));
     }
 
@@ -154,8 +153,8 @@ class AccidentController extends Controller implements HasMiddleware
                 $lastFileNumber = $lastFile ? intval(explode('_', $lastFile->file)[2]) : 0;
                 $fileNumber = $lastFileNumber + 1;
 
-                $fileName = $reg_no . '_' . date('Ymd') . '_' . $fileNumber .  '.' . $file->getClientOriginalExtension();
-                $filePath = 'accidents/files/' . $fileName; // Path to store in the database
+                $fileName = $reg_no.'_'.date('Ymd').'_'.$fileNumber.'.'.$file->getClientOriginalExtension();
+                $filePath = 'accidents/files/'.$fileName; // Path to store in the database
 
                 // Move the file to the public/accidents/files directory
                 $file->move(public_path('accidents/files'), $fileName);

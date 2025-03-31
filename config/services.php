@@ -40,4 +40,8 @@ return [
         'password' => env('PAY_ADVANTAGE_PASSWORD'),
     ],
 
+    'admin' => [
+        'email' => env('ADMIN_EMAIL'),
+    ],
+
 ];
