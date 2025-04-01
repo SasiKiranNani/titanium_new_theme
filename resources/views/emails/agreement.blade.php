@@ -217,7 +217,7 @@
                 </tr>
                 <tr>
                     <td><b>Email</b></td>
-                    <td class="empty-cell">{{ $email }}</td>
+                    <td class="empty-cell" style="word-wrap: break-word; word-break: break-word;">{{ $email }}</td>
                 </tr>
                 <tr>
                     <td><b>Contact Number</b></td>

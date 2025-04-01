@@ -299,19 +299,31 @@
                     <tr>
                         <td rowspan="7"><b>Hirer</b></td>
                         <td><b>Name / Entity</b></td>
-                        <td class="empty-cell"><input type="text" name="name" class="form-control" required></td>
+                        <td class="empty-cell"><input type="text" name="name" class="form-control">
+                            @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
                     <tr>
                         <td><b>ABN / ACN</b></td>
-                        <td class="empty-cell"><input type="text" name="driver_abn" class="form-control"></td>
+                        <td class="empty-cell"><input type="text" name="driver_abn" class="form-control">
+                            @error('driver_abn')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
                     <tr>
                         <td><b>Address</b></td>
-                        <td class="empty-cell"><input type="text" name="address" class="form-control"></td>
+                        <td class="empty-cell"><input type="text" name="address" class="form-control">
+                            @error('address')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
                     <tr>
                         <td><b>Drivers' License No</b></td>
-                        <td class="empty-cell"><input type="text" name="licence_no" class="form-control"></td>
+                        <td class="empty-cell"><input type="text" name="licence_no" class="form-control">
+                            @error('licence_no')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
                     <tr>
                         <td><b>DOB</b></td>
@@ -324,11 +336,17 @@
                     </tr>
                     <tr>
                         <td><b>Email</b></td>
-                        <td class="empty-cell"><input type="email" name="email" class="form-control" required></td>
+                        <td class="empty-cell"><input type="email" name="email" class="form-control">
+                            @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
                     <tr>
                         <td><b>Contact Number</b></td>
-                        <td class="empty-cell"><input type="tel" name="contact" class="form-control"></td>
+                        <td class="empty-cell"><input type="tel" name="contact" class="form-control">
+                            @error('contact')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror</td>
                     </tr>
 
                     <tr>

@@ -261,6 +261,11 @@
             width: 100%;
             word-wrap: break-word;
         }
+
+        .sign {
+            display: flex;
+            margin: 5px 0px;
+        }
     </style>
 </head>
 
@@ -289,27 +294,39 @@
                     <tr>
                         <td rowspan="7"><b>Hirer</b></td>
                         <td><b>Name / Entity</b></td>
-                        <td class="empty-cell"><input type="text" name="name" class="form-control" required
+                        <td class="empty-cell"><input type="text" name="name" class="form-control"
                                 value="{{ $user->name }}">
                             @error('name')
-                                <spna class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </td>
                     </tr>
                     <tr>
                         <td><b>ABN / ACN</b></td>
                         <td class="empty-cell"><input type="text" name="driver_abn" class="form-control"
-                                value="{{ $user->abn }}"></td>
+                                value="{{ $user->abn }}">
+                            @error('driver_abn')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Address</b></td>
                         <td class="empty-cell"><input type="text" name="address" class="form-control"
-                                value="{{ $user->address }}"></td>
+                                value="{{ $user->address }}">
+                            @error('address')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Drivers' License No</b></td>
                         <td class="empty-cell"><input type="text" name="licence_no" class="form-control"
-                                value="{{ $user->licence_no }}"></td>
+                                value="{{ $user->licence_no }}">
+                            @error('licence_no')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </td>
                     </tr>
                     <tr>
                         <td><b>DOB</b></td>
@@ -322,13 +339,21 @@
                     </tr>
                     <tr>
                         <td><b>Email</b></td>
-                        <td class="empty-cell"><input type="email" name="email" class="form-control" required
-                                value="{{ $user->email }}"></td>
+                        <td class="empty-cell" style="word-wrap: break-word; word-break: break-word;">
+                            <p
+                                style="padding: 0px; margin: 0px; color: black; font-size: 16px; word-wrap: break-word; word-break: break-word;">
+                                {{ $user->email }}
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Contact Number</b></td>
                         <td class="empty-cell"><input type="tel" name="contact" class="form-control"
-                                value="{{ $user->contact }}"></td>
+                                value="{{ $user->contact }}">
+                            @error('contact')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </td>
                     </tr>
 
                     <tr>
@@ -350,12 +375,19 @@
                         <td><b>Address</b></td>
                         <td class="empty-cell"><input type="text" name="authorised_driver_address"
                                 class="form-control">
+                            @error('authorised_driver_address')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </td>
                     </tr>
                     <tr>
                         <td><b>Drivers' License No</b></td>
                         <td class="empty-cell"><input type="text" name="authorised_driver_license_no"
-                                class="form-control"></td>
+                                class="form-control">
+                            @error('authorised_driver_license_no')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
                     </tr>
                     <tr>
                         <td rowspan="4"><b>Vehicle</b></td>
@@ -454,14 +486,14 @@
                     <tr>
                         <td><b>Signature Method</b></td>
                         <td>
-                            <label>
+                            <label class="sign">
                                 <input type="radio" name="signature_method" value="esign"
-                                    onclick="toggleSignatureInput(this)" checked>
+                                    onclick="toggleSignatureInput(this)" checked style="width: fit-content">
                                 E-Sign
                             </label>
-                            <label>
+                            <label class="sign">
                                 <input type="radio" name="signature_method" value="upload"
-                                    onclick="toggleSignatureInput(this)">
+                                    onclick="toggleSignatureInput(this)" style="width: fit-content">
                                 Upload Signature Image
                             </label>
                         </td>
@@ -470,7 +502,8 @@
                     <tr id="uploadSignatureRow" class="hidden">
                         <td><b>Upload Digital Signature</b></td>
                         <td>
-                            <input type="file" class="form-control" id="signature" name="signature" accept="image/*">
+                            <input type="file" class="form-control" id="signature" name="signature"
+                                accept="image/*">
                             <br>
                             <img id="signaturePreview" src="#" alt="Signature Preview" class="hidden">
                         </td>
