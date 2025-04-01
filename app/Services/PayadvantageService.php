@@ -61,7 +61,7 @@ class PayadvantageService
         return $response;
     }
 
-    public function createPayment($customerCode, $driverABN, $depositAmount, $rentStartDate, $totalAmount, $rentEndDate)
+    public function createPayment($customerCode, $driverABN, $costPerWeek, $rentEndDate)
     {
         $response = Http::withHeaders([
             'accept' => 'application/json',
@@ -73,14 +73,12 @@ class PayadvantageService
             ],
             'Description' => 'Test Direct Debit',
             'ExternalID' => $driverABN,
-            'UpfrontAmount' => $depositAmount,
-            'UpfrontDate' => $rentStartDate,
-            'RecurringAmount' => $totalAmount - $depositAmount,
+            'RecurringAmount' => $costPerWeek,
             'RecurringDateStart' => $rentEndDate,
             'Frequency' => 'weekly',
-            'EndConditionAmount' => $totalAmount,
+            'EndConditionAmount' => null,
             'FailureOption' => 'pause',
-            'ReminderDays' => 1,
+            'ReminderDays' => 3,
             'OnchargedFees' => [],
         ]);
 

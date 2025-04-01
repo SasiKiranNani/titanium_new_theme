@@ -344,6 +344,7 @@
                                 style="padding: 0px; margin: 0px; color: black; font-size: 16px; word-wrap: break-word; word-break: break-word;">
                                 {{ $user->email }}
                             </p>
+                            <input type="hidden" name="email" class="form-control" value="{{ $user->email }}">
                         </td>
                     </tr>
                     <tr>
