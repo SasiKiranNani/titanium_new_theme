@@ -61,8 +61,14 @@ class PayadvantageService
         return $response;
     }
 
-    public function createPayment($customerCode, $driverABN, $costPerWeek, $rentEndDate)
+    public function createPayment($customerCode, $driverABN, $costPerWeek, $rentStartDate)
     {
+        $rentStartDay = date('w', strtotime($rentStartDate)); // Get the day of the week (0 = Sunday, 6 = Saturday)
+        if ($rentStartDay >= 0 && $rentStartDay <= 2) { // Sunday to Tuesday
+            $recurringDateStart = date('Y-m-d', strtotime('next Wednesday', strtotime($rentStartDate . ' +7 days')));
+        } elseif ($rentStartDay >= 3 && $rentStartDay <= 6) { // Wednesday to Saturday
+            $recurringDateStart = date('Y-m-d', strtotime('next Wednesday', strtotime($rentStartDate)));
+        }
         $response = Http::withHeaders([
             'accept' => 'application/json',
             'authorization' => 'Bearer ' . $this->token,
@@ -74,7 +80,7 @@ class PayadvantageService
             'Description' => 'Test Direct Debit',
             'ExternalID' => $driverABN,
             'RecurringAmount' => $costPerWeek,
-            'RecurringDateStart' => $rentEndDate,
+            'RecurringDateStart' => $recurringDateStart,
             'Frequency' => 'weekly',
             'EndConditionAmount' => null,
             'FailureOption' => 'pause',

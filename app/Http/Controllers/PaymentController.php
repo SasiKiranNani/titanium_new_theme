@@ -26,7 +26,7 @@ class PaymentController extends Controller
         }
 
         if ($this->customerCode !== null) {
-            $payment = $payadvantageService->createPayment($this->customerCode, $request->driver_abn, $request->cost_per_week, $request->rent_end_date);
+            $payment = $payadvantageService->createPayment($this->customerCode, $request->driver_abn, $request->cost_per_week, $request->rent_start_date);
             return redirect($payment->json()['AuthorisationLink']['Link']);
         } else {
             return response()->json(['message' => 'Customer not found'], 404);
