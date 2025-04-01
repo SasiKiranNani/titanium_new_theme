@@ -36,6 +36,9 @@ class PayadvantageService
 
     public function createCustomer($driverABN, $name, $licenceNumber, $email, $DOB, $contact)
     {
+        $customerName = explode(' ', $name, 2);
+        $firstName = $customerName[0];
+        $lastName = $customerName[1] ?? null;
         $response = Http::withHeaders([
             'accept' => 'application/json',
             'authorization' => 'Bearer ' . $this->token,
@@ -44,15 +47,15 @@ class PayadvantageService
             'ExternalID' => $driverABN,
             'IsConsumer' => true,
             'Name' => $name,
-            'FirstName' => '',
-            'LastName' => '',
+            'FirstName' => $firstName,
+            'LastName' => $lastName,
             'CustomRef' => $licenceNumber,
             'Email' => $email,
             'SendDirectDebitErrorEmails' => true,
             'SendPaymentReceiptEmails' => true,
             'DOB' => $DOB,
-            'Phone' => $contact,
-            'PhoneCountryID' => 61,
+            'Mobile' => str_starts_with($contact, '0') ? $contact : '0' . $contact,
+            'MobileCountryID' => 61,
         ]);
 
         return $response;

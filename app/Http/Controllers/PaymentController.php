@@ -14,7 +14,7 @@ class PaymentController extends Controller
         $customerResponse = $payadvantageService->retrieveCustomer();
         $customerRecords = $customerResponse->json()['Records'];
         foreach ($customerRecords as $customer) {
-            if ($customer['Email'] === $request->email) {
+            if ($customer['Email'] === $request->email && $customer['IsActive']) {
                 $this->customerCode = $customer['Code'];
                 break;
             }
